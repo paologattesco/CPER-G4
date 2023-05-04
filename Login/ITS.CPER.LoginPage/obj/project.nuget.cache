@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "F/7GfnHB3FcvY4+zz/r/FUFD3OHJMDeaLn0MsQKkAS69J5M/wnbd7YM/MJZ02QOP7GCSRgwrD5KxJbdyBXV06g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.LoginPage.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.16\\microsoft.aspnetcore.authorization.6.0.16.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.16\\microsoft.aspnetcore.components.6.0.16.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\6.0.16\\microsoft.aspnetcore.components.analyzers.6.0.16.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.components.authorization\\6.0.16\\microsoft.aspnetcore.components.authorization.6.0.16.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.metadata\\6.0.16\\microsoft.aspnetcore.metadata.6.0.16.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.3\\microsoft.extensions.logging.abstractions.6.0.3.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

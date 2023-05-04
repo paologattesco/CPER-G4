@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ITS.CPER.LoginPage.props" />
+</Project>
