@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z24EZoQxQ88RMIzU/pOoQL4nVR1VVr4aZmHqs6NdYOInk20a9yx8zT8MFVuhdFTCy8Oj61ENptkTsSVKQDU+bg==",
+  "dgSpecHash": "+eqwcH5yLiz+p140mCcnmPF/b2f6Oyr2wLhHuwqR7Yn4QW2FEOYHrIa5Ad4nuTZEpiXf3J6+Dd8xgdv3ExS/Hw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+  "projectFilePath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Samuelealberto\\.nuget\\packages\\azure.core\\1.31.0\\azure.core.1.31.0.nupkg.sha512",
     "C:\\Users\\Samuelealberto\\.nuget\\packages\\azure.storage.common\\12.15.0\\azure.storage.common.12.15.0.nupkg.sha512",

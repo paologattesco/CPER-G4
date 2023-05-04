@@ -1481,6 +1481,7 @@
       "ITS.CPER.SendDataQueue/1.0.0": {
         "dependencies": {
           "Azure.Storage.Queues": "12.14.0",
+          "Microsoft.Extensions.Configuration.UserSecrets": "6.0.1",
           "Microsoft.NET.Sdk.Functions": "4.1.1"
         },
         "runtime": {

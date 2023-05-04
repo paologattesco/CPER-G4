@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {}
+    "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj": {
+    "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj",
+        "projectUniqueName": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj",
         "projectName": "ITS.CPER.SendDataQueue",
-        "projectPath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj",
+        "projectPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj",
         "packagesPath": "C:\\Users\\Samuelealberto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\obj\\",
+        "outputPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -49,6 +49,10 @@
               "target": "Package",
               "version": "[12.14.0, )"
             },
+            "Microsoft.Extensions.Configuration.UserSecrets": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
             "Microsoft.NET.Sdk.Functions": {
               "target": "Package",
               "version": "[4.1.1, )"
@@ -74,14 +78,14 @@
         }
       }
     },
-    "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {
+    "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+        "projectUniqueName": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
         "projectName": "ITS.CPER.SimulatoreSmartWatch",
-        "projectPath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+        "projectPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
         "packagesPath": "C:\\Users\\Samuelealberto\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\obj\\",
+        "outputPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -103,8 +107,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj": {
-                "projectPath": "C:\\Users\\Samuelealberto\\Desktop\\ProjectWork2\\ProjectWork_2\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj"
+              "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj": {
+                "projectPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SendDataQueue\\ITS.CPER.SendDataQueue.csproj"
               }
             }
           }
