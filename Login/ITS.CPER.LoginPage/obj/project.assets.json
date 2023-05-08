@@ -405,9 +405,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.LoginPage.csproj",
-      "projectName": "ITS.CPER.LoginPage",
-      "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.LoginPage.csproj",
+      "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.WebPage.csproj",
+      "projectName": "ITS.CPER.WebPage",
+      "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.WebPage.csproj",
       "packagesPath": "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\obj\\",
       "projectStyle": "PackageReference",
