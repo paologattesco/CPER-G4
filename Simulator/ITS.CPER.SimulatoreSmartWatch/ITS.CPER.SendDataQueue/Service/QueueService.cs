@@ -20,7 +20,7 @@ public class QueueService
     public void Send(SmartWatch_Data newdata)
     {
         var data = JsonSerializer.Serialize(newdata);
-        var sender_data = Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(data));
+        var sender_data = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(data));
         _queueClient.SendMessage(sender_data);
     }
 }

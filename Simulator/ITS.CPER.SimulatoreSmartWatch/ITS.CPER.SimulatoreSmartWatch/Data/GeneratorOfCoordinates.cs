@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ITS.CPER.SimulatoreSmartWatch.Models;
+using Microsoft.Extensions.Configuration;
 using System.Timers;
-using ITS.CPER.SendDataQueue.Models;
+//using ITS.CPER.SendDataQueue.Models;
 namespace ITS.CPER.SimulatoreSmartWatch.Data;
+
 
 public class GeneratorOfCoordinates
 {
@@ -15,7 +17,6 @@ public class GeneratorOfCoordinates
     private System.Timers.Timer TimerForData = new System.Timers.Timer();
     private bool endTraining = false;
     private bool isStarted = false;
-
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
         // HAVERSINE FORMULA
@@ -34,7 +35,7 @@ public class GeneratorOfCoordinates
     public void GenerateCoordinates(double latitude, double longitude)
     {
         TimerForData.Elapsed += new ElapsedEventHandler(SendData);
-        TimerForData.Interval = 20000;
+        TimerForData.Interval = 10010;
         TimerForData.Enabled = true;
 
         // FIRST COORDINATES
@@ -53,9 +54,9 @@ public class GeneratorOfCoordinates
         double longitude2 = Math.Round((longitude * Math.PI / 180 + Math.Atan2(Math.Sin(angle * Math.PI / 180) * Math.Sin(pool_distance / EARTH_RADIUS) * Math.Cos(latitude * Math.PI / 180), Math.Cos(pool_distance / EARTH_RADIUS) - Math.Sin(latitude * Math.PI / 180) * Math.Sin(latitude2 * Math.PI / 180))) * 180 / Math.PI, 6);
 
         // DISTANCE
-        Heartbeat heartbeat = new Heartbeat();
         double distance = CalculateDistance(latitude, longitude, latitude2, longitude2);
 
+        Heartbeat heartbeat = new Heartbeat();
         if (!isStarted)
         {
             Console.WriteLine($"Latitude: {latitude}");
@@ -70,7 +71,7 @@ public class GeneratorOfCoordinates
         var heartbeatunderpression = heartbeat.HeartbeatUnderPressure();
         Console.WriteLine($"Pulse rate: {heartbeatunderpression} bpm");
 
-        var newData = new SmartWatch_Data()
+        SmartWatch_Data newData = new SmartWatch_Data()
         {
             Guid = Guid.NewGuid(),
             Latitude = latitude2,
@@ -81,6 +82,7 @@ public class GeneratorOfCoordinates
 
         if (endTraining)
         {
+            isStarted = false;
             return;
         }
         else
@@ -94,6 +96,5 @@ public class GeneratorOfCoordinates
     {
         endTraining = true;
     }
-
-
+    
 }

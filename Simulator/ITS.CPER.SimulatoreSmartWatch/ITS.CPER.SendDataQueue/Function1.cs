@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using ITS.CPER.SendDataQueue.Service;
 using ITS.CPER.SendDataQueue.Models;
-using Azure;
 
 namespace ITS.CPER.SendDataQueue;
 

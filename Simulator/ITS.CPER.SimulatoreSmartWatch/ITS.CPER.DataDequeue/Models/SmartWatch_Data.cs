@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITS.CPER.SimulatoreSmartWatch.Models;
+namespace ITS.CPER.DataDequeue.Models;
 
 public class SmartWatch_Data
 {
@@ -13,5 +13,4 @@ public class SmartWatch_Data
     public double Longitude { get; set; }
     public int Heartbeat { get; set; }
     public int NumberOfPoolLaps { get; set; }
-
 }

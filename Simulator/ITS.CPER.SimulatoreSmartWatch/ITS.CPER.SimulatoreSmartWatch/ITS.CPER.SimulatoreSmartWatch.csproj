@@ -13,8 +13,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ITS.CPER.SendDataQueue\ITS.CPER.SendDataQueue.csproj" />
-  </ItemGroup>
-
 </Project>
