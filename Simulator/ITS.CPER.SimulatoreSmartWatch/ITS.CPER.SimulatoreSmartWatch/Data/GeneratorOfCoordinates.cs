@@ -1,13 +1,13 @@
-﻿using ITS.CPER.SimulatoreSmartWatch.Models;
+﻿using ITS.CPER.SimulatoreSmartWatch;
 using Microsoft.Extensions.Configuration;
 using System.Timers;
-//using ITS.CPER.SendDataQueue.Models;
+using ITS.CPER.SimulatoreSmartWatch.Models;
+
 namespace ITS.CPER.SimulatoreSmartWatch.Data;
 
 
 public class GeneratorOfCoordinates
 {
-    private IConfiguration configuration;
     const double MIN_LATITUDE = -90.0;
     const double MAX_LATITUDE = 90.0;
     const double MIN_LONGITUDE = -180.0;
@@ -79,7 +79,7 @@ public class GeneratorOfCoordinates
             Heartbeat = heartbeatunderpression,
             NumberOfPoolLaps = 0
         };
-
+        newData.SendDataToQueue(newData);
         if (endTraining)
         {
             isStarted = false;

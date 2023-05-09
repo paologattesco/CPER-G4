@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITS.CPER.SimulatoreSmartWat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITS.CPER.SendDataQueue", "ITS.CPER.SendDataQueue\ITS.CPER.SendDataQueue.csproj", "{4145B279-78A5-443F-913A-E0E0D16A3679}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITS.CPER.DataDequeue", "ITS.CPER.DataDequeue\ITS.CPER.DataDequeue.csproj", "{88D95EBD-956A-4DF7-832C-3BD3C86AB736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITS.CPER.DataDequeue", "ITS.CPER.DataDequeue\ITS.CPER.DataDequeue.csproj", "{88D95EBD-956A-4DF7-832C-3BD3C86AB736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,9 +17,9 @@ public class QueueService
         _queueClient = new QueueClient(cs, "queueg4");
         _queueClient.CreateIfNotExists();
     }
-    public void Send(SmartWatch_Data newdata)
+    public void Send(SmartWatch_Data newData)
     {
-        var data = JsonSerializer.Serialize(newdata);
+        var data = JsonSerializer.Serialize(newData);
         var sender_data = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(data));
         _queueClient.SendMessage(sender_data);
     }
