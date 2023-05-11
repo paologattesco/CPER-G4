@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LlZsDAUCbKRmCzgSRID2ugd7j+EwKx+cg+y//lpNOxilvXBqEJuvBVgsMshsIfgalDTEXvCesJoOdoLlMkbg2Q==",
+  "dgSpecHash": "3t5eZoOQWDOJ/ritwBuQTZt6haFjPNJgrBzMkD+g3IpBNEN6Osi/cqhjHMtqOswSz/KUE4YIGIyenKj7zFBfAw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.WebPage.csproj",
+  "projectFilePath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.16\\microsoft.aspnetcore.authorization.6.0.16.nupkg.sha512",
     "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.16\\microsoft.aspnetcore.components.6.0.16.nupkg.sha512",

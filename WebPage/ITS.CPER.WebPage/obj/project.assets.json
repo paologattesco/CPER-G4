@@ -405,11 +405,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.WebPage.csproj",
+      "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj",
       "projectName": "ITS.CPER.WebPage",
-      "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\ITS.CPER.WebPage.csproj",
+      "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj",
       "packagesPath": "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Login\\ITS.CPER.LoginPage\\obj\\",
+      "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
