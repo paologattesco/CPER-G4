@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {}
+    "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj": {
+    "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
-        "projectName": "ITS.CPER.SimulatoreSmartWatch",
-        "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+        "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj",
+        "projectName": "ITS.CPER.WebPage",
+        "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\ITS.CPER.WebPage.csproj",
         "packagesPath": "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\obj\\",
+        "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\WebPage\\ITS.CPER.WebPage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -43,13 +43,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Azure.Storage.Queues": {
+            "Microsoft.AspNetCore.Components.Authorization": {
               "target": "Package",
-              "version": "[12.14.0, )"
-            },
-            "Microsoft.Extensions.Configuration.UserSecrets": {
-              "target": "Package",
-              "version": "[6.0.1, )"
+              "version": "[6.0.16, )"
             }
           },
           "imports": [
@@ -64,6 +60,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
