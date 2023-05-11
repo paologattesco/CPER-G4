@@ -1,4 +1,4 @@
-using ITS.CPER.LoginPage.Data;
+using ITS.CPER.WebPage.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
