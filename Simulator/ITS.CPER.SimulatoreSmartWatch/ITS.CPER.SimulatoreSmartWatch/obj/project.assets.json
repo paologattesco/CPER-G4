@@ -913,23 +913,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\": {},
+    "C:\\Users\\Samuelealberto\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+      "projectUniqueName": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
       "projectName": "ITS.CPER.SimulatoreSmartWatch",
-      "projectPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
-      "packagesPath": "C:\\Users\\Gattesco Paolo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gattesco Paolo\\.ssh\\project_work_key\\ProjectWork_CPER_G4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\obj\\",
+      "projectPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch.csproj",
+      "packagesPath": "C:\\Users\\Samuelealberto\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Samuelealberto\\OneDrive\\Desktop\\ProjectWork2_Gruppo4\\CPER-G4\\Simulator\\ITS.CPER.SimulatoreSmartWatch\\ITS.CPER.SimulatoreSmartWatch\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Gattesco Paolo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Samuelealberto\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
