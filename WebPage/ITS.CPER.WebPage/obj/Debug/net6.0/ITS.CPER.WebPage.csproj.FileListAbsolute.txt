@@ -1,0 +1,8 @@
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.csproj.AssemblyReference.cache
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.AssemblyInfoInputs.cache
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.AssemblyInfo.cs
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.csproj.CoreCompileInputs.cache
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.RazorAssemblyInfo.cache
+C:\Users\Gattesco Paolo\.ssh\project_work_key\ProjectWork_CPER_G4\CPER-G4\Login\ITS.CPER.LoginPage\obj\Debug\net6.0\ITS.CPER.WebPage.RazorAssemblyInfo.cs
