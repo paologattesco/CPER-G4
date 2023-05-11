@@ -15,13 +15,14 @@ namespace ITS.CPER.SimulatoreSmartWatch.Models;
 
 public class SmartWatch_Data
 {
-    public Guid Guid { get; set; }
+    public Guid SmartWatchId { get; set; }
+    public Guid ActivityGuid { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public int Heartbeat { get; set; }
     public int NumberOfPoolLaps { get; set; }
 
-    public async Task SendDataToQueue(SmartWatch_Data details)
+    public async Task ApiPost(SmartWatch_Data details)
     {
         var client = new HttpClient();
         var apiUrl = new Uri("http://localhost:7210/api/Function1");

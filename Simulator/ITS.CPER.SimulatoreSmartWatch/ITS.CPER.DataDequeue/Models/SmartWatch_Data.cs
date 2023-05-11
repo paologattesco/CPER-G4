@@ -8,7 +8,8 @@ namespace ITS.CPER.DataDequeue.Models;
 
 public class SmartWatch_Data
 {
-    public Guid Guid { get; set; }
+    public Guid SmartWatchId { get; set; }
+    public Guid ActivityGuid { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public int Heartbeat { get; set; }

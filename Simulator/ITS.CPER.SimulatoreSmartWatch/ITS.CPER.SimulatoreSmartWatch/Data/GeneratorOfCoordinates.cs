@@ -1,7 +1,5 @@
-﻿using ITS.CPER.SimulatoreSmartWatch;
-using Microsoft.Extensions.Configuration;
+﻿using ITS.CPER.SimulatoreSmartWatch.Models;
 using System.Timers;
-using ITS.CPER.SimulatoreSmartWatch.Models;
 
 namespace ITS.CPER.SimulatoreSmartWatch.Data;
 
@@ -37,7 +35,7 @@ public class GeneratorOfCoordinates
         TimerForData.Elapsed += new ElapsedEventHandler(SendData);
         TimerForData.Interval = 10010;
         TimerForData.Enabled = true;
-
+        var id_smartwatch = "";
         // FIRST COORDINATES
         if (latitude == 0 && longitude == 0)
         {
@@ -61,7 +59,9 @@ public class GeneratorOfCoordinates
         {
             Console.WriteLine($"Latitude: {latitude}");
             Console.WriteLine($"Longitude: {longitude}");
+            SelectSmartWatch();
             isStarted = true;
+            id_smartwatch = SelectSmartWatch();
         }
 
         Thread.Sleep(10000);
@@ -73,13 +73,14 @@ public class GeneratorOfCoordinates
 
         SmartWatch_Data newData = new SmartWatch_Data()
         {
-            Guid = Guid.NewGuid(),
+            SmartWatchId = Guid.Parse(id_smartwatch),
+            ActivityGuid = Guid.NewGuid(),
             Latitude = latitude2,
             Longitude = longitude2,
             Heartbeat = heartbeatunderpression,
             NumberOfPoolLaps = 0
         };
-        newData.SendDataToQueue(newData);
+        newData.ApiPost(newData);
         if (endTraining)
         {
             isStarted = false;
@@ -96,5 +97,17 @@ public class GeneratorOfCoordinates
     {
         endTraining = true;
     }
-    
+    public string SelectSmartWatch()
+    {
+        Dictionary<int, string> serialNumber = new Dictionary<int, string>();
+        serialNumber.Add(1, "fd130b2b-0c1d-491d-88f9-b726a5080831");
+        serialNumber.Add(2, "249c864b-61f9-40dd-a8e6-5c6b60c02045");
+        serialNumber.Add(3, "298435af-2010-4a9a-aea7-003977e8dcda");
+
+        Random rnd = new Random();
+        var RandomSmartWatch = rnd.Next(1, serialNumber.Count()+1);
+        return serialNumber[RandomSmartWatch];
+
+    }
+
 }
