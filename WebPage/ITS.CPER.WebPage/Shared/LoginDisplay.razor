@@ -1,13 +1,15 @@
-﻿<h3>LoginDisplay</h3>
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <form method="post" action="Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
+        <MudChip href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</MudChip>
+        <form method="post" action="Identity/Account/LogOut">
+            <MudChip><button type="submit" class="nav-link btn btn-link">Log out</button></MudChip>
+
         </form>
     </Authorized>
     <NotAuthorized>
-        <a href="Account/Login">Log in</a>
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+            <MudButton Variant="Variant.Filled" href="Identity/Account/Register">Register</MudButton>
+            <MudButton Variant="Variant.Filled" href="Identity/Account/Login">Log in</MudButton>
+        </MudButtonGroup>
     </NotAuthorized>
 </AuthorizeView>
