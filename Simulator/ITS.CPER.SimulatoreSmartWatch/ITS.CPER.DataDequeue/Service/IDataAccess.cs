@@ -8,5 +8,5 @@ namespace ITS.CPER.DataDequeue.Service;
 
 public interface IDataAccess
 {
-    void InsertHeartBeat(int Heartbeat)
+    void InsertHeartBeat(int Heartbeat);
 }
