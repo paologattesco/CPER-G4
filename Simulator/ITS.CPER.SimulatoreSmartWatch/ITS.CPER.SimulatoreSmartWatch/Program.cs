@@ -16,9 +16,8 @@ while (true)
             break;
         case 1:
             Console.WriteLine("Resting...");
-            Heartbeat heartbeat = new Heartbeat();
-            Console.WriteLine($"Pulse rate: {heartbeat.HeartbeatWithoutPressure()}");
-            Console.WriteLine();
+            Heartbeat restingHeartbeat = new Heartbeat();
+            Console.WriteLine($"Pulse rate: {restingHeartbeat.RestingHeartbeat()}\n");
             break;
     }
 }

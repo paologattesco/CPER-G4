@@ -16,7 +16,9 @@ public class GeneratorOfCoordinates
     private bool isStarted = false;
     private double totalDistance = 0.0;
     Random rand = new Random();
-    Heartbeat heartbeat = new Heartbeat();
+    Heartbeat restingHeartbeat = new Heartbeat();
+    Heartbeat trainingHeartbeat = new Heartbeat();
+
 
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
@@ -58,8 +60,7 @@ public class GeneratorOfCoordinates
     {
         Console.WriteLine($"Latitude: {lat}");
         Console.WriteLine($"Longitude: {lon}");
-        var heartbeatWithoutPressure = heartbeat.HeartbeatWithoutPressure();
-        Console.WriteLine($"Pulse rate: {heartbeatWithoutPressure} bpm");
+        Console.WriteLine($"Pulse rate: {restingHeartbeat.RestingHeartbeat()} bpm");
         isStarted = true;
         string idSmartwatch = SelectSmartWatch();
 
@@ -69,7 +70,7 @@ public class GeneratorOfCoordinates
             ActivityGuid = Guid.NewGuid(),
             Latitude = lat,
             Longitude = lon,
-            Heartbeat = heartbeatWithoutPressure,
+            Heartbeat = restingHeartbeat.RestingHeartbeat(),
             NumberOfPoolLaps = 0
         };
         startData.ApiPost(startData);
@@ -81,8 +82,7 @@ public class GeneratorOfCoordinates
         Console.WriteLine($"\nLatitude: {lat2}");
         Console.WriteLine($"Longitude: {longitude2}");
         Console.WriteLine($"Distance: {distance} meters");
-        var heartbeatUnderPressure = heartbeat.HeartbeatUnderPressure();
-        Console.WriteLine($"Pulse rate: {heartbeatUnderPressure} bpm");
+        Console.WriteLine($"Pulse rate: {trainingHeartbeat.TrainingHeartbeat()} bpm");
         totalDistance += distance;
 
         SmartWatch_Data newData = new SmartWatch_Data()
@@ -91,7 +91,7 @@ public class GeneratorOfCoordinates
             ActivityGuid = Guid.NewGuid(),
             Latitude = lat2,
             Longitude = longitude2,
-            Heartbeat = heartbeatUnderPressure,
+            Heartbeat = trainingHeartbeat.TrainingHeartbeat(),
             NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance)
         };
         newData.ApiPost(newData);
