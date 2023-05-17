@@ -7,10 +7,14 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <LoginDisplay />
+    <MudAppBar Elevation="0" Style="@($"background-color:{Colors.Grey.Darken4}; color:{Colors.Lime.Accent3};")">
+        <MudContainer Style="display:flex; flex-direction:row; align-items:center; padding:0px">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+            <MudText Style="font-size:x-large">Earth4Sport</MudText>
+        </MudContainer>
+        <MudContainer Style="display:flex; flex-direction:row; align-items:center; justify-content:flex-end; padding:0px">
+            <LoginDisplay />
+        </MudContainer>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
@@ -25,7 +29,7 @@
     </MudMainContent>
 </MudLayout>
 @code {
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
 
     void DrawerToggle()
     {
