@@ -1,15 +1,41 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudChip href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</MudChip>
-        <form method="post" action="Identity/Account/LogOut">
-            <MudChip><button type="submit" class="nav-link btn btn-link">Log out</button></MudChip>
+        <MudMenu>
+            <ActivatorContent>
+                @*<MudAvatar Image="images/toiletvisit.jpg" />*@
+                <MudButton Variant="Variant.Outlined" href="Identity/Account/Manage" Style="@($"color:{Colors.Lime.Accent3};")">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;" />
+                    <MudText>Hello, @context.User.Identity?.Name!</MudText>
+                </MudButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem>Profile</MudMenuItem>
+                <MudMenuItem>Settings</MudMenuItem>
+                <MudMenuItem>Sign Out</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
 
-        </form>
+        
     </Authorized>
     <NotAuthorized>
-        <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
-            <MudButton Variant="Variant.Filled" href="Identity/Account/Register">Register</MudButton>
-            <MudButton Variant="Variant.Filled" href="Identity/Account/Login">Log in</MudButton>
-        </MudButtonGroup>
+        @*<MudButton Variant="Variant.Outlined" href="Identity/Account/Login" Style="@($"color:{Colors.Lime.Accent3};")">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;"/> 
+            <MudText>Login</MudText>
+        </MudButton>*@
+
+        <MudMenu AnchorOrigin="Origin.BottomRight" ActivationEvent="@MouseEvent.MouseOver" FullWidth>
+            <ActivatorContent>
+                @*<MudAvatar Image="images/toiletvisit.jpg" />*@
+                <MudButton Variant="Variant.Outlined" Style="@($"color:{Colors.Lime.Accent3};")">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;" />
+                    <MudText>Hello, @context.User.Identity?.Name!</MudText>
+                </MudButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem>Profile</MudMenuItem>
+                <MudDivider DividerType="DividerType.Middle"/>
+                <MudMenuItem Href="Identity/Account/LogOut">Log out</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
     </NotAuthorized>
 </AuthorizeView>
