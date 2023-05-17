@@ -1,4 +1,4 @@
-namespace ITS.CPER.LoginPage.Data
+namespace ITS.CPER.WebPage.Data
 {
     public class WeatherForecastService
     {
