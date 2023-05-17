@@ -10,6 +10,7 @@ public class QueueService
 {
     private readonly IConfiguration _configuration;
     private readonly QueueClient _queueClient;
+
     public QueueService(IConfiguration configuration)
     {
         _configuration = configuration;
@@ -17,6 +18,7 @@ public class QueueService
         _queueClient = new QueueClient(cs, "queueg4");
         _queueClient.CreateIfNotExists();
     }
+
     public void Send(SmartWatch_Data newData)
     {
         var data = JsonSerializer.Serialize(newData);

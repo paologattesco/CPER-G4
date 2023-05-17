@@ -1,18 +1,17 @@
 ﻿using ITS.CPER.SimulatoreSmartWatch.Data;
 
-
 GeneratorOfCoordinates coordinates = new GeneratorOfCoordinates();
 
 while (true)
 {
-    Random rnd = new Random();
-    var activity = rnd.Next(0, 2);
+    Random rand = new Random();
+    var activity = rand.Next(0, 2);
 
     switch (activity)
     {
         case 0:
             Console.WriteLine("Workout in progress...\n");
-            coordinates.GenerateCoordinates(0.0, 0.0);
+            coordinates.Training(0.0, 0.0);
             Console.WriteLine();
             break;
         case 1:

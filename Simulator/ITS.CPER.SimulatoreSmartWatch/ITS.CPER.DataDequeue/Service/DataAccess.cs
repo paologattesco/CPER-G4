@@ -13,23 +13,24 @@ namespace ITS.CPER.DataDequeue.Service;
 
 public class DataAccess : IDataAccess
 {
-    private readonly string _InfluxToken;
+    private readonly string _influxToken;
     private readonly string _bucket;
     private readonly string _org;
 
     public DataAccess(IConfiguration configuration)
     {
-        _InfluxToken = configuration.GetConnectionString("InfluxToken");
+        _influxToken = configuration.GetConnectionString("InfluxToken");
         _bucket = configuration.GetConnectionString("Bucket");
         _org = configuration.GetConnectionString("Org");
     }
-    public void InsertHeartBeat(Guid id, int Heartbeat)
+
+    public void InsertHeartbeat(Guid id, int Heartbeat)
     {
-        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _InfluxToken);
-        var prova = $"smartwatches,smartwatch_id={id} HeartBeat={Heartbeat}";
+        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
+        var query = $"smartwatches,smartwatch_id={id} HeartBeat={Heartbeat}";
         using (var writeApi = client.GetWriteApi())
         {
-            writeApi.WriteRecord(prova,WritePrecision.Ns, _bucket, _org);
+            writeApi.WriteRecord(query, WritePrecision.Ns, _bucket, _org);
         }
         client.Dispose();
     }

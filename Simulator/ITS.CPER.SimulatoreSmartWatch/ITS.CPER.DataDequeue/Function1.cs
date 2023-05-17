@@ -12,6 +12,7 @@ public class Function1
 {
     private readonly IDataAccess _dataAccess;
     private readonly ILogger<Function1> _logger;
+
     public Function1(IDataAccess dataAccess, ILogger<Function1> logger)
     {
         _dataAccess = dataAccess;
@@ -23,9 +24,8 @@ public class Function1
     {
         var dateToConvert = Encoding.UTF8.GetString(encryptedmessage);
         var date = JsonSerializer.Deserialize<SmartWatch_Data>(dateToConvert);
-        Console.WriteLine(date);
         _logger.LogInformation($"C# Queue trigger function processed: {date}");
 
-        _dataAccess.InsertHeartBeat(date.SmartWatchId,date.Heartbeat);
+        _dataAccess.InsertHeartbeat(date.SmartWatchId,date.Heartbeat);
     }
 }

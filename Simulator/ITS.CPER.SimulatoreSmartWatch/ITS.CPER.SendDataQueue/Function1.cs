@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using ITS.CPER.SendDataQueue.Service;
 using ITS.CPER.SendDataQueue.Models;
-using Azure;
 using System.Text.Json;
 
 namespace ITS.CPER.SendDataQueue;
@@ -17,6 +15,7 @@ namespace ITS.CPER.SendDataQueue;
 public class Function1
 {
     private readonly IConfiguration _configuration;
+
     public Function1(IConfiguration configuration)
     {
         _configuration = configuration;
@@ -27,7 +26,6 @@ public class Function1
         ILogger log)
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
-
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
         var data = JsonSerializer.Deserialize<SmartWatch_Data>(requestBody);
@@ -40,5 +38,4 @@ public class Function1
         queue.Send(data);
         return new OkObjectResult(responseMessage);
     }
-
 }

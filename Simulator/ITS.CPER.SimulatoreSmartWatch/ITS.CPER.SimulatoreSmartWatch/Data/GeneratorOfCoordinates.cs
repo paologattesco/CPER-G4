@@ -98,7 +98,7 @@ public class GeneratorOfCoordinates
     }
 
     // RECURSIVE FUNCTION TO GENERATE COORDINATES WITHIN 0 TO 50 METERS DISTANCE
-    public void GenerateCoordinates(double latitude, double longitude)
+    public void Training(double latitude, double longitude)
     {
         timerForData.Elapsed += new ElapsedEventHandler(SendData);
         timerForData.Interval = 10010;
@@ -131,7 +131,7 @@ public class GeneratorOfCoordinates
         }
         else
         {
-            GenerateCoordinates(latitude2, longitude2);
+            Training(latitude2, longitude2);
         }
         while (endTraining != true) ;
     }
