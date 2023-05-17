@@ -26,6 +26,6 @@ public class Function1
         Console.WriteLine(date);
         _logger.LogInformation($"C# Queue trigger function processed: {date}");
 
-        _dataAccess.InsertHeartBeat(date.Heartbeat);
+        _dataAccess.InsertHeartBeat(date.SmartWatchId,date.Heartbeat);
     }
 }

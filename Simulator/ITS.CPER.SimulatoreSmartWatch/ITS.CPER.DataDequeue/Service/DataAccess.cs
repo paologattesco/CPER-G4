@@ -1,4 +1,5 @@
-﻿using InfluxDB.Client;
+﻿using Google.Protobuf.WellKnownTypes;
+using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -22,13 +23,14 @@ public class DataAccess : IDataAccess
         _bucket = configuration.GetConnectionString("Bucket");
         _org = configuration.GetConnectionString("Org");
     }
-    public void InsertHeartBeat(int Heartbeat)
+    public void InsertHeartBeat(Guid id, int Heartbeat)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _InfluxToken);
-        string prova = $"SimulatoDB,heartbeat={Heartbeat}";
+        var prova = $"smartwatches,smartwatch_id={id} HeartBeat={Heartbeat}";
         using (var writeApi = client.GetWriteApi())
         {
             writeApi.WriteRecord(prova,WritePrecision.Ns, _bucket, _org);
         }
+        client.Dispose();
     }
 }
