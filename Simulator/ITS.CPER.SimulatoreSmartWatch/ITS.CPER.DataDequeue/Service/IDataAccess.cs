@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITS.CPER.DataDequeue.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace ITS.CPER.DataDequeue.Service;
 
 public interface IDataAccess
 {
-    void InsertHeartbeat(Guid id, int Heartbeat);
+    void InsertHeartbeat(SmartWatch_Data data);
+    void InsertData(SmartWatch_Data data);
+
 }

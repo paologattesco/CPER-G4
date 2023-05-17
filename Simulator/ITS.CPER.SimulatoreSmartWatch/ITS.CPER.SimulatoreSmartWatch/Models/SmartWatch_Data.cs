@@ -4,8 +4,8 @@ namespace ITS.CPER.SimulatoreSmartWatch.Models;
 
 public class SmartWatch_Data
 {
-    public Guid SmartWatchId { get; set; }
-    public Guid ActivityGuid { get; set; }
+    public Guid SmartWatch_Id { get; set; }
+    public Guid Activity_Id { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public int Heartbeat { get; set; }

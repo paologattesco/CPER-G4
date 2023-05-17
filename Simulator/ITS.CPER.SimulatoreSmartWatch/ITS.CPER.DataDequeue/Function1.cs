@@ -26,6 +26,7 @@ public class Function1
         var date = JsonSerializer.Deserialize<SmartWatch_Data>(dateToConvert);
         _logger.LogInformation($"C# Queue trigger function processed: {date}");
 
-        _dataAccess.InsertHeartbeat(date.SmartWatchId,date.Heartbeat);
+        _dataAccess.InsertHeartbeat(date);
+        //_dataAccess.InsertData(date);
     }
 }

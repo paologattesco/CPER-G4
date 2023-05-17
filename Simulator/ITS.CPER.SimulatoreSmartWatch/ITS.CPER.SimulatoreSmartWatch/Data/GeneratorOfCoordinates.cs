@@ -65,8 +65,8 @@ public class GeneratorOfCoordinates
 
         SmartWatch_Data startData = new SmartWatch_Data()
         {
-            SmartWatchId = Guid.Parse(idSmartwatch),
-            ActivityGuid = Guid.NewGuid(),
+            SmartWatch_Id = Guid.Parse(idSmartwatch),
+            Activity_Id = Guid.NewGuid(),
             Latitude = lat,
             Longitude = lon,
             Heartbeat = heartbeatWithoutPressure,
@@ -87,8 +87,8 @@ public class GeneratorOfCoordinates
 
         SmartWatch_Data newData = new SmartWatch_Data()
         {
-            SmartWatchId = Guid.Parse(idSmartwatch),
-            ActivityGuid = Guid.NewGuid(),
+            SmartWatch_Id = Guid.Parse(idSmartwatch),
+            Activity_Id = Guid.NewGuid(),
             Latitude = lat2,
             Longitude = longitude2,
             Heartbeat = heartbeatUnderPressure,
