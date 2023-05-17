@@ -14,6 +14,7 @@ public class GeneratorOfCoordinates
     private System.Timers.Timer timerForData = new System.Timers.Timer();
     private bool endTraining = false;
     private bool isStarted = false;
+    private double totalDistance = 0.0;
     Random rand = new Random();
     Heartbeat heartbeat = new Heartbeat();
 
@@ -47,6 +48,12 @@ public class GeneratorOfCoordinates
         return (latitude2, longitude2);
     }
 
+    public double CalculatePoolLaps(double totalDistance)
+    {
+        double poolLaps = totalDistance / MAX_DISTANCE;
+        return Math.Floor(poolLaps); // Round down to the nearest integer
+    }
+
     public void PostFirstData(double lat, double lon)
     {
         Console.WriteLine($"Latitude: {lat}");
@@ -68,23 +75,24 @@ public class GeneratorOfCoordinates
         startData.ApiPost(startData);
     }
 
-    public void PostNextData(double lat2, double lon2, double dis)
+    public void PostNextData(double lat2, double longitude2, double distance)
     {
         string idSmartwatch = SelectSmartWatch();
         Console.WriteLine($"\nLatitude: {lat2}");
-        Console.WriteLine($"Longitude: {lon2}");
-        Console.WriteLine($"Distance: {dis} meters");
+        Console.WriteLine($"Longitude: {longitude2}");
+        Console.WriteLine($"Distance: {distance} meters");
         var heartbeatUnderPressure = heartbeat.HeartbeatUnderPressure();
         Console.WriteLine($"Pulse rate: {heartbeatUnderPressure} bpm");
+        totalDistance += distance;
 
         SmartWatch_Data newData = new SmartWatch_Data()
         {
             SmartWatchId = Guid.Parse(idSmartwatch),
             ActivityGuid = Guid.NewGuid(),
             Latitude = lat2,
-            Longitude = lon2,
+            Longitude = longitude2,
             Heartbeat = heartbeatUnderPressure,
-            NumberOfPoolLaps = 0
+            NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance)
         };
         newData.ApiPost(newData);
     }
