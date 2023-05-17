@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<MudDialog>
+    <DialogContent>Are you sure you want to exit from this account?</DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <form id="logoutForm" method="post" action="Identity/Account/LogOut?returnUrl=%2F">
+            <button type="submit" class="nav-link btn btn-link text-dark">Ok</button>
+        </form>
+        @*<MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>*@
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Cancel() => MudDialog.Cancel();
+}

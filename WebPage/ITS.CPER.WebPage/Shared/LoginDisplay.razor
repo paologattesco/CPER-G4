@@ -1,4 +1,7 @@
-﻿<AuthorizeView>
+﻿@using ITS.CPER.WebPage.Areas.Identity.Pages.Account;
+@inject IDialogService DialogService
+
+<AuthorizeView>
     <Authorized>
         <MudMenu AnchorOrigin="Origin.BottomRight" ActivationEvent="@MouseEvent.MouseOver" FullWidth>
             <ActivatorContent>
@@ -9,9 +12,13 @@
                 </MudButton>
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem><MudButton Href="Identity/Account/Account" Size="Size.Small">Profile</MudButton></MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Person">
+                    <MudButton Href="Identity/Account/Manage" Size="Size.Small">Profile</MudButton>
+                    </MudMenuItem>
                 <MudDivider DividerType="DividerType.Middle" />
-                <MudMenuItem><MudButton Href="Identity/Account/LogOut" Size="Size.Small">Log out</MudButton></MudMenuItem>
+                <MudMenuItem Icon="@Icons.Outlined.Logout" @onclick="OpenDialog">
+                    <MudButton Size="Size.Small" @onclick="OpenDialog">Log out</MudButton>
+                </MudMenuItem>
             </ChildContent>
         </MudMenu>
     </Authorized>
@@ -22,3 +29,12 @@
         </MudButton>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<Dialog>("Confirm", options);
+    }
+}
