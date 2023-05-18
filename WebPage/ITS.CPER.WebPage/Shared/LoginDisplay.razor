@@ -6,7 +6,7 @@
         <MudMenu AnchorOrigin="Origin.BottomRight" ActivationEvent="@MouseEvent.MouseOver" FullWidth>
             <ActivatorContent>
                 @*<MudAvatar Image="images/toiletvisit.jpg" />*@
-                <MudButton Variant="Variant.Outlined" Style="@($"color:{Colors.Lime.Accent3};")">
+                <MudButton Variant="Variant.Outlined" Style="@($"color:{Colors.LightGreen.Accent4};")">
                     <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;" />
                     <MudText>Hello, @context.User.Identity?.Name!</MudText>
                 </MudButton>
@@ -23,7 +23,7 @@
         </MudMenu>
     </Authorized>
     <NotAuthorized>
-        <MudButton Variant="Variant.Outlined" href="Identity/Account/Login" Style="@($"color:{Colors.Lime.Accent3};")">
+        <MudButton Variant="Variant.Outlined" href="Identity/Account/Login" Style="@($"color:{Colors.LightGreen.Accent4};")">
             <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;"/> 
             <MudText>Login</MudText>
         </MudButton>
