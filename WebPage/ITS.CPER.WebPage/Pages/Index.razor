@@ -3,18 +3,22 @@
 <PageTitle>HomePage</PageTitle>
 <AuthorizeView>
     <Authorized>
-
-        <MudGrid>
-            <MudItem xs="12">
-                @*inserire card della sessione*@
-            </MudItem>
-        </MudGrid>
-
+        <MudCard Class="align-center m-6">
+            <MudCardContent Class="align-center m-6">
+                <MudGrid Class="align-center m-6">
+                    <MudItem xs="12">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+        
         <MudScrollToTop>
             <MudFab Color="@Color.Default" Icon="@Icons.Material.Filled.ArrowCircleUp" />
         </MudScrollToTop>
     </Authorized>
     <NotAuthorized>
-        <MudImage ObjectFit="@ObjectFit.Fill" Style="width: -webkit-fill-available; padding: 0px;" Src="images/watch.jpg" Alt="SmartWatch" Elevation="25" />
+        <MudImage ObjectFit="@ObjectFit.Fill" Style="max-width: 100%;
+            max-height: 100%;" Src="images/watch.jpg" Alt="SmartWatch" Elevation="25" />
     </NotAuthorized>
 </AuthorizeView>
