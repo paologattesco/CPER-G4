@@ -76,7 +76,7 @@ public class DataAccess : IDataAccess
 
         var query = PointData.Measurement("smartwatches")
             .Tag("SmartWatch_Id", data.SmartWatch_Id.ToString())
-            .Tag("Activy_Id", data.Activity_Id.ToString())
+            .Tag("Activity_Id", data.Activity_Id.ToString())
             .Field("Latitude", data.Latitude)
             .Field("Lonigitude", data.Longitude)
             .Field("Heartbeat", data.Heartbeat)

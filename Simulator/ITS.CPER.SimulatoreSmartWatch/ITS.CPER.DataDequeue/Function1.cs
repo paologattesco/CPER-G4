@@ -29,11 +29,15 @@ public class Function1
         var Exists = _dataAccess.GetActivityId(date.Activity_Id);
         if(Exists)
         {
+            
             _dataAccess.UpdateActivity(date, date.Activity_Id);
         }
         else
         {
-            _dataAccess.InsertSqlManagement(date);
+            if (date.Latitude != 0 && date.Longitude != 0)
+            {
+                _dataAccess.InsertSqlManagement(date);
+            }
         }
         _dataAccess.InsertInfluxDb(date);
     }
