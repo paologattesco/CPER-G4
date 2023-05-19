@@ -26,7 +26,15 @@ public class Function1
         var date = JsonSerializer.Deserialize<SmartWatch_Data>(dateToConvert);
         _logger.LogInformation($"C# Queue trigger function processed: {date}");
 
-       _dataAccess.InsertInfluxDb(date);
-       _dataAccess.InsertSqlManagement(date);
+        var Exists = _dataAccess.GetActivityId(date.Activity_Id);
+        if(Exists)
+        {
+            _dataAccess.UpdateActivity(date, date.Activity_Id);
+        }
+        else
+        {
+            _dataAccess.InsertSqlManagement(date);
+        }
+        _dataAccess.InsertInfluxDb(date);
     }
 }

@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Drawing;
+using InfluxDB.Client.Writes;
+using System;
+using System.Collections.Generic;
 
 namespace ITS.CPER.DataDequeue.Service;
 
@@ -28,7 +32,7 @@ public class DataAccess : IDataAccess
     {
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
-        SqlCommand sql = (SqlCommand)connection.CreateCommand();
+        SqlCommand sql = connection.CreateCommand();
         
         sql.CommandText = $"INSERT INTO [dbo].[SmartWatches]([SmartWatch_Id],[Activity_Id],[Initial_Latitude],[Initial_Longitude],[Distance],[NumberOfPoolLaps],[Final_Latitude],[Final_Longitude])VALUES(@SmartWatch_Id,@Activity_Id,@Initial_Latitude,@Initial_Longitude,@Distance,@NumberOfPoolLaps,@Final_Latitude,@Final_Longitude)";
         sql.Parameters.AddWithValue("@SmartWatch_Id", data.SmartWatch_Id);
@@ -42,16 +46,47 @@ public class DataAccess : IDataAccess
         sql.ExecuteNonQuery();
     }
 
+    public void UpdateActivity(SmartWatch_Data data, Guid ActivityId)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = $"UPDATE [dbo].[SmartWatches] SET Distance = @Distance, NumberOfPoolLaps = @NumberOfPoolLaps, Final_Latitude = @Final_Latitude, Final_Longitude = @Final_Longitude WHERE Activity_Id = @Activity_Id";
+        sql.Parameters.AddWithValue("@Distance", data.Distance);
+        sql.Parameters.AddWithValue("@NumberOfPoolLaps", data.NumberOfPoolLaps);
+        sql.Parameters.AddWithValue("@Final_Latitude", data.Latitude);
+        sql.Parameters.AddWithValue("@Final_Longitude", data.Longitude);
+        sql.Parameters.AddWithValue("@Activity_Id", ActivityId);
+        sql.ExecuteNonQuery();
+    }
+    public bool GetActivityId(Guid ActivityId)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = $"SELECT COUNT(*) FROM [dbo].[SmartWatches] WHERE Activity_Id=@Activity_Id";
+        sql.Parameters.AddWithValue("@Activity_Id", ActivityId);
+        int count = (int)sql.ExecuteScalar();
+        bool hasResults = count > 0;
+        return hasResults;
+    }
     public void InsertInfluxDb(SmartWatch_Data data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
-        
-        var query = $"smartwatches,Smartwatch_Id={data.SmartWatch_Id},Activity_Id={data.Activity_Id} " +
-                    $"Latitude={data.Latitude.ToString(CultureInfo.InvariantCulture)},Longitude={data.Longitude.ToString(CultureInfo.InvariantCulture)},Heartbeat={data.Heartbeat},NumberOfPoolLaps={data.NumberOfPoolLaps}";
+
+        var query = PointData.Measurement("smartwatches")
+            .Tag("SmartWatch_Id", data.SmartWatch_Id.ToString())
+            .Tag("Activy_Id", data.Activity_Id.ToString())
+            .Field("Latitude", data.Latitude)
+            .Field("Lonigitude", data.Longitude)
+            .Field("Heartbeat", data.Heartbeat)
+            .Field("NumberOfPoolLaps", data.NumberOfPoolLaps)
+            .Timestamp(DateTime.UtcNow, WritePrecision.Ns); 
         using (var writeApi = client.GetWriteApi())
         {
-            writeApi.WriteRecord(query, WritePrecision.Ns, _bucket, _org);
+            writeApi.WritePoint(query, _bucket, _org);
         }
         client.Dispose();
     }
+
 }

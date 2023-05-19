@@ -12,7 +12,7 @@ public class GeneratorOfCoordinates
     const double MAX_DISTANCE = 50.0;
     const double EARTH_RADIUS = 6371000.0; // in meters
     private System.Timers.Timer timerForData = new System.Timers.Timer();
-    int TimeForTraining = 30000;
+    int TimeForTraining = 60000;
     private bool endTraining = false;
     private bool isStarted = false;
     private double totalDistance = 0.0;
