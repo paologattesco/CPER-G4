@@ -61,13 +61,12 @@ public class GeneratorOfCoordinates
         return Math.Floor(poolLaps); // Round down to the nearest integer
     }
 
-    public void PostFirstData(double lat, double lon)
+    public void PostFirstData(double lat, double lon, Guid NewActivity)
     {
         Console.WriteLine($"Latitude: {lat}");
         Console.WriteLine($"Longitude: {lon}");
         Console.WriteLine($"Pulse rate: {restingHeartbeat.RestingHeartbeat()} bpm");
         isStarted = true;
-        NewActivity = Guid.NewGuid();
         SmartWatchId = SelectSmartWatch();
         SmartWatch_Data startData = new SmartWatch_Data()
         {
@@ -81,7 +80,7 @@ public class GeneratorOfCoordinates
         startData.ApiPost(startData);
     }
 
-    public void PostNextData(double lat2, double longitude2, double distance)
+    public void PostNextData(double lat2, double longitude2, double distance, Guid NewActivity)
     {
         Console.WriteLine($"\nLatitude: {lat2}");
         Console.WriteLine($"Longitude: {longitude2}");
@@ -103,7 +102,7 @@ public class GeneratorOfCoordinates
     }
 
     // RECURSIVE FUNCTION TO GENERATE COORDINATES WITHIN 0 TO 50 METERS DISTANCE
-    public void Training(double latitude, double longitude)
+    public void Training(double latitude, double longitude, Guid NewActivity)
     {
 
         // FIRST COORDINATES
@@ -120,15 +119,13 @@ public class GeneratorOfCoordinates
 
         if (!isStarted)
         {
-            PostFirstData(latitude, longitude);
+            PostFirstData(latitude, longitude, NewActivity);
         }
 
         Thread.Sleep(10000);
-        PostNextData(latitude2, longitude2, distance);
+        PostNextData(latitude2, longitude2, distance, NewActivity);
         if(endTraining) { return; }
-        Training(latitude2, longitude2);
-        
-        
+        Training(latitude2, longitude2, NewActivity);        
     }
 
     void SendData(object? sender, ElapsedEventArgs e)
