@@ -75,7 +75,8 @@ public class GeneratorOfCoordinates
             Latitude = lat,
             Longitude = lon,
             Heartbeat = restingHeartbeat.RestingHeartbeat(),
-            NumberOfPoolLaps = 0
+            NumberOfPoolLaps = 0,
+            Distance = 0
         };
         startData.ApiPost(startData);
     }
@@ -95,7 +96,8 @@ public class GeneratorOfCoordinates
             Latitude = lat2,
             Longitude = longitude2,
             Heartbeat = trainingHeartbeat.TrainingHeartbeat(),
-            NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance)
+            NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance),
+            Distance = totalDistance
         };
         newData.ApiPost(newData);
 

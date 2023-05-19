@@ -10,7 +10,7 @@ public class SmartWatch_Data
     public double Longitude { get; set; }
     public int Heartbeat { get; set; }
     public int NumberOfPoolLaps { get; set; }
-
+    public double Distance { get; set; }
     public async Task ApiPost(SmartWatch_Data details)
     {
         var client = new HttpClient();

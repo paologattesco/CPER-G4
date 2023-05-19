@@ -9,7 +9,7 @@ namespace ITS.CPER.DataDequeue.Service;
 
 public interface IDataAccess
 {
-    void InsertHeartbeat(SmartWatch_Data data);
-    void InsertData(SmartWatch_Data data);
+    void InsertInfluxDb(SmartWatch_Data data);
+    void InsertSqlManagement(SmartWatch_Data data);
 
 }
