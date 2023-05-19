@@ -1,12 +1,36 @@
 ﻿@page "/"
 
 <PageTitle>HomePage</PageTitle>
-
 <AuthorizeView>
     <Authorized>
-
+        <MudCard Class="my-8 pt-8" Style="margin-left:16px; margin-right:16px;">
+            <MudCardContent>
+               <MudGrid>
+                    <MudItem xs="4">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                            <MudIcon>@Icons.Material.Filled.Pool</MudIcon>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="8">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=6</MudPaper>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=3</MudPaper>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
     </Authorized>
     <NotAuthorized>
-
+        <MudImage ObjectFit="@ObjectFit.Fill" Style="width: -webkit-fill-available; padding: 0px;" Src="images/watch.jpg" Alt="SmartWatch" Elevation="25" />
     </NotAuthorized>
 </AuthorizeView>
