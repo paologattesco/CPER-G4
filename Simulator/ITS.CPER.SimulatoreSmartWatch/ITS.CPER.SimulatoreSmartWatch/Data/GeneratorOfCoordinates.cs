@@ -12,14 +12,15 @@ public class GeneratorOfCoordinates
     const double MAX_DISTANCE = 50.0;
     const double EARTH_RADIUS = 6371000.0; // in meters
     private System.Timers.Timer timerForData = new System.Timers.Timer();
+    int TimeForTraining = 30000;
     private bool endTraining = false;
     private bool isStarted = false;
     private double totalDistance = 0.0;
     Random rand = new Random();
     Heartbeat restingHeartbeat = new Heartbeat();
     Heartbeat trainingHeartbeat = new Heartbeat();
-
-
+    private Guid NewActivity;
+    private Guid SmartWatchId;
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
         // HAVERSINE FORMULA
@@ -36,6 +37,10 @@ public class GeneratorOfCoordinates
 
     public (double, double) GenerateFirstCoordinates()
     {
+        endTraining = false;
+        timerForData = new System.Timers.Timer(TimeForTraining);
+        timerForData.Elapsed += SendData;
+        timerForData.Start();
         double latitude = Math.Round(rand.NextDouble() * (MAX_LATITUDE - MIN_LATITUDE) + MIN_LATITUDE, 6);
         double longitude = Math.Round(rand.NextDouble() * (MAX_LONGITUDE - MIN_LONGITUDE) + MIN_LONGITUDE, 6);
         return (latitude, longitude);
@@ -56,18 +61,17 @@ public class GeneratorOfCoordinates
         return Math.Floor(poolLaps); // Round down to the nearest integer
     }
 
-    public void PostFirstData(double lat, double lon)
+    public void PostFirstData(double lat, double lon, Guid NewActivity)
     {
         Console.WriteLine($"Latitude: {lat}");
         Console.WriteLine($"Longitude: {lon}");
         Console.WriteLine($"Pulse rate: {restingHeartbeat.RestingHeartbeat()} bpm");
         isStarted = true;
-        string idSmartwatch = SelectSmartWatch();
-
+        SmartWatchId = SelectSmartWatch();
         SmartWatch_Data startData = new SmartWatch_Data()
         {
-            SmartWatch_Id = Guid.Parse(idSmartwatch),
-            Activity_Id = Guid.NewGuid(),
+            SmartWatch_Id = SmartWatchId,
+            Activity_Id = NewActivity,
             Latitude = lat,
             Longitude = lon,
             Heartbeat = restingHeartbeat.RestingHeartbeat(),
@@ -76,9 +80,8 @@ public class GeneratorOfCoordinates
         startData.ApiPost(startData);
     }
 
-    public void PostNextData(double lat2, double longitude2, double distance)
+    public void PostNextData(double lat2, double longitude2, double distance, Guid NewActivity)
     {
-        string idSmartwatch = SelectSmartWatch();
         Console.WriteLine($"\nLatitude: {lat2}");
         Console.WriteLine($"Longitude: {longitude2}");
         Console.WriteLine($"Distance: {distance} meters");
@@ -87,22 +90,20 @@ public class GeneratorOfCoordinates
 
         SmartWatch_Data newData = new SmartWatch_Data()
         {
-            SmartWatch_Id = Guid.Parse(idSmartwatch),
-            Activity_Id = Guid.NewGuid(),
+            SmartWatch_Id = SmartWatchId,
+            Activity_Id = NewActivity,
             Latitude = lat2,
             Longitude = longitude2,
             Heartbeat = trainingHeartbeat.TrainingHeartbeat(),
             NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance)
         };
         newData.ApiPost(newData);
+
     }
 
     // RECURSIVE FUNCTION TO GENERATE COORDINATES WITHIN 0 TO 50 METERS DISTANCE
-    public void Training(double latitude, double longitude)
+    public void Training(double latitude, double longitude, Guid NewActivity)
     {
-        timerForData.Elapsed += new ElapsedEventHandler(SendData);
-        timerForData.Interval = 10010;
-        timerForData.Enabled = true;
 
         // FIRST COORDINATES
         if (latitude == 0 && longitude == 0)
@@ -118,37 +119,31 @@ public class GeneratorOfCoordinates
 
         if (!isStarted)
         {
-            PostFirstData(latitude, longitude);
+            PostFirstData(latitude, longitude, NewActivity);
         }
 
         Thread.Sleep(10000);
-        PostNextData(latitude2, longitude2, distance);
-
-        if (endTraining)
-        {
-            isStarted = false;
-            return;
-        }
-        else
-        {
-            Training(latitude2, longitude2);
-        }
-        while (endTraining != true) ;
+        PostNextData(latitude2, longitude2, distance, NewActivity);
+        if(endTraining) { return; }
+        Training(latitude2, longitude2, NewActivity);        
     }
 
     void SendData(object? sender, ElapsedEventArgs e)
     {
         endTraining = true;
+        isStarted = false;
+        timerForData.Stop();
     }
 
-    public string SelectSmartWatch()
+    public Guid SelectSmartWatch()
     {
-        Dictionary<int, string> serialNumber = new Dictionary<int, string>();
-        serialNumber.Add(1, "fd130b2b-0c1d-491d-88f9-b726a5080831");
-        serialNumber.Add(2, "249c864b-61f9-40dd-a8e6-5c6b60c02045");
-        serialNumber.Add(3, "298435af-2010-4a9a-aea7-003977e8dcda");
+        Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
+        serialNumber.Add(1, Guid.Parse("fd130b2b-0c1d-491d-88f9-b726a5080831"));
+        serialNumber.Add(2, Guid.Parse("249c864b-61f9-40dd-a8e6-5c6b60c02045"));
+        serialNumber.Add(3, Guid.Parse("298435af-2010-4a9a-aea7-003977e8dcda"));
 
         var randomSmartWatch = rand.Next(1, serialNumber.Count() + 1);
         return serialNumber[randomSmartWatch];
     }
+
 }
