@@ -16,84 +16,88 @@
         <MudScrollToTop>
             <MudFab Color="@Color.Default" Icon="@Icons.Material.Filled.ArrowCircleUp" />
         </MudScrollToTop>*@
-        @*<MudCard>
-            <MudCardHeader>
-                <CardHeaderAvatar>
-                    <MudAvatar Color="Color.Secondary">I</MudAvatar>
-                </CardHeaderAvatar>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.body1">Istra Croatia</MudText>
-                    <MudText Typo="Typo.body2">Peninsula in Europe</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardMedia Image="images/watch.jpg" />
-            <MudCardContent>
-                <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-                <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
-            </MudCardActions>
-        </MudCard>*@
         <style>
             body{
-                background-color: black;
+                background-color: none;
+                padding: 50px;
+                display: flex;
+            }
+            .card{
+                background-color: lightgrey;
+                height: 500px;
+                border-radius: 25px;
+                width: 100%;
+            }
+
+            .card .leftside{
+                display: flex;
+                width: 25%;
+                height: 100%;
+                background-color: whitesmoke;
+                border-top-left-radius: 25px;
+                border-bottom-left-radius: 25px;
+                padding: 50px;
+            }
+
+            .card .leftside .sessionCard{
+                border-radius: 25px;
+                width: 100%;
+                height: 100%;
+            }
+
+            .card .leftside .sessionCard .startEnd{
+                
+            }
+
+            .card .rightside {
+                display: flex;
+                width: 25%;
+                height: 100%;
+                border-radius: 25px;
+                padding: 50px;
             }
         </style>
-        @*<MudCarousel ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object" Style="max-width: 100%;
-            max-height: 500%;">
-            <MudCarouselItem Transition="transition" Color="@Color.Secondary">*@
-                <MudCard class="py-4 px-6 mx-4 rounded-xl" Style="background-color:whitesmoke">
+
+        <MudPaper Class="card" Elevation="3">
+            <MudPaper Class="leftside" Elevation="0">
+                <MudCard Class="sessionCard">
                     <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Secondary">I</MudAvatar>
-                        </CardHeaderAvatar>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">Istra Croatia</MudText>
-                            <MudText Typo="Typo.body2">Peninsula in Europe</MudText>
+                            <MudText Typo="Typo.h6">Session #1</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
-                    <MudCardMedia Image="images/watch.jpg" />
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <MudCardContent Class="startEnd">
+                        <MudText>Start: ...</MudText>
+                        <MudText>End ...</MudText>
                     </MudCardContent>
-                    <MudCardActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
-                    </MudCardActions>
                 </MudCard>
-           @* </MudCarouselItem>
-            <MudCarouselItem Transition="transition" Color="@Color.Secondary">
-                <MudCard class="mud-theme-primary py-4 px-6 mx-4 rounded-xl">
-                    <MudCardHeader>
-                        <CardHeaderAvatar>
-                            <MudAvatar Color="Color.Secondary">I</MudAvatar>
-                        </CardHeaderAvatar>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.body1">Istra Croatia</MudText>
-                            <MudText Typo="Typo.body2">Peninsula in Europe</MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardMedia Image="images/watch.jpg" />
-                    <MudCardContent>
-                        <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
-                    </MudCardActions>
-                </MudCard>
-            </MudCarouselItem>
-        </MudCarousel>*@
+            </MudPaper>
+            @*<MudCard Class="rightside">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Distance</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
+                    </CardHeaderActions>
+                </MudCardHeader>
+            </MudCard>*@
+        </MudPaper>
 
         @code {
         private bool arrows = true;
