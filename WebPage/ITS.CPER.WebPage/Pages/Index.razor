@@ -108,8 +108,18 @@
                         </CardHeaderActions>
                     </MudCardHeader>
                     <MudCardContent Class="startEnd">
-                        <MudText>Start: ...</MudText>
-                        <MudText>End: ...</MudText>
+                        @*TODO*@
+                        @if (smartwatch_data != null)
+                        {
+                            @foreach (var data in smartwatch_data)
+                            {
+                                <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
+                                <br />
+                                <br />
+                                <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
+                                <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
+                            }
+                        }
                     </MudCardContent>
                 </MudCard>
             </MudPaper>
@@ -123,12 +133,10 @@
                             @*TODO*@
                             @if (smartwatch_data != null)
                             {
-                            @foreach (var data in smartwatch_data)
-                            {
-                            <div class="mt-3">
-                            <p>Km: @data.Distance</p>
-                            </div>
-                            }
+                                @foreach (var data in smartwatch_data)
+                                {
+                                    <MudText>Km: @data.Distance</MudText>
+                                }
                             }
                         </CardHeaderContent>
                         <CardHeaderActions>
@@ -140,6 +148,13 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">Pool Laps</MudText>
+                            @if (smartwatch_data != null)
+                            {
+                                @foreach (var data in smartwatch_data)
+                                {
+                                    <MudText>N: @data.NumberOfPoolLaps</MudText>
+                                }
+                            }
                         </CardHeaderContent>
                         <CardHeaderActions>
                             <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
