@@ -1,5 +1,6 @@
 ﻿@page
 @model RegisterModel
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -9,7 +10,7 @@
             margin-right: -50px;
         }
     </style>
-    <div class="container py-4" >
+    <div class="container py-4" style="margin-top: 5rem !important">
         <div class="row g-0 align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55);backdrop-filter: blur(30px);">
@@ -18,30 +19,34 @@
                         <hr />
                         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="Email"/>
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Email" type="email" id="emailform" class="form-control" autocomplete="email" aria-required="true" placeholder="Email"/>
+                                <label for="emailform">Email</label>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Username" />
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.UserName" type="text" id="usernameform" class="form-control" autocomplete="username" aria-required="true" placeholder="Username" />
+                                <label for="usernameform">Username</label>
                                 <span asp-validation-for="Input.UserName" class="text-danger"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Password" type="password" id="passwordform" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                                <label for="passwordform">Password</label>
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm password" />
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.ConfirmPassword" type="password" id="confirmpasswordform" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm password" />
+                                <label for="confirmpasswordform">Confirm Password</label>
                                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                             </div>
-                            <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+                            <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4">REGISTER</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 mb-5 mb-lg-0">
                     @*<img src="/images/corsa.jpg" class="w-100 rounded-4 shadow-4" alt="" />*@
-                    <img src="/images/scarpa.jpg" class="w-100 rounded-4 shadow-4" alt="" style="max-height: 650px" />
+                    <img src="/images/smartwatch.jpg" class="rounded-4 shadow-4" alt="" style="max-height: 720px" />
                 </div>
         </div>
     </div>

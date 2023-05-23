@@ -2,17 +2,16 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Login";
 }
-<style>
-</style>
+
 <section class="text-center text-lg-start">
     <style>
     .cascading-right {
         margin-right: -50px;
     }
     </style>
-    <div class="container py-4" >
+    <div class="container py-4" style="margin-top: 7.5rem !important">
         <div class="row g-0 align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="card cascading-right" style="background: hsla(0, 0%, 100%, 0.55);backdrop-filter: blur(30px);">
@@ -20,13 +19,15 @@
                         <h2 class="fw-bold mb-5">Sign in</h2>
                         <hr />
                         <form id="account" method="post">
-                            <div class="form-outline mb-4">
+                            <div class="form-floating mb-4">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input asp-for="Input.UserName" type="text" id="usernameform" class="form-control" autocomplete="username" aria-required="true" placeholder="Username"/>
+                                <label for="usernameform">Username</label>
                                 <span asp-validation-for="Input.UserName" class="text-danger"></span>
                             </div>
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Password" type ="password" id="passwordform" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                                <label for="passwordform">Password</label>
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
                             <div class="form-check d-flex justify-content-center mb-4">
@@ -38,14 +39,11 @@
                                 </div>
                             </div>
                             <div>
-                            <button id="login-submit" type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-block mb-4">LOGIN</button>
                             </div>
                             <div>
                                 <p>
-                                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                                </p>
-                                <p>
-                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create a new account</a>
                                 </p>
                             </div>
                         </form>
@@ -54,7 +52,7 @@
             </div>
             <div class="col-lg-6 mb-5 mb-lg-0">
                 @*<img src="/images/corsa.jpg" class="w-100 rounded-4 shadow-4" alt="" />*@
-                <img src="/images/scarpa.jpg" class="w-100 rounded-4 shadow-4" alt="" style="max-height: 650px" />
+                <img src="/images/smartwatch.jpg" class="rounded-4 shadow-4" alt="" style="max-height: 650px" />
             </div>
         </div>
     </div>

@@ -1,30 +1,19 @@
 ﻿@page "/"
+@using ITS.CPER.WebPage.Data.Models;
 
 <PageTitle>HomePage</PageTitle>
 <AuthorizeView>
     <Authorized>
-        @*<MudCard Class="align-center m-6">
-            <MudCardContent Class="align-center m-6">
-                <MudGrid Class="align-center m-6">
-                    <MudItem xs="12">
-                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">xs=12</MudPaper>
-                    </MudItem>
-                </MudGrid>
-            </MudCardContent>
-        </MudCard>
-        
-        <MudScrollToTop>
-            <MudFab Color="@Color.Default" Icon="@Icons.Material.Filled.ArrowCircleUp" />
-        </MudScrollToTop>*@
         <style>
-            body{
-                background-color: none;
+            body {
+                background-color: #ADE8F4;
                 padding: 50px;
                 display: flex;
                 margin: 0;
             }
-            .card1{
-                background-color: lightgrey;
+
+            .card1 {
+                background-color: #03045E;
                 height: 500px;
                 border-top-left-radius: 25px;
                 border-bottom-left-radius: 25px;
@@ -32,30 +21,31 @@
                 float: left;
             }
 
-            .card1 .leftside{
-                display: flex;
-                width: 100%;
-                height: 100%;
-                background-color: whitesmoke;
-                border-top-left-radius: 25px;
-                border-bottom-left-radius: 25px;
-                border-top-right-radius: 0px;
-                border-bottom-right-radius: 0px;
-                padding: 50px;
-            }
+                .card1 .leftside {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #03045E;
+                    border-top-left-radius: 25px;
+                    border-bottom-left-radius: 25px;
+                    border-top-right-radius: 0px;
+                    border-bottom-right-radius: 0px;
+                    padding: 50px;
+                }
 
-            .card1 .leftside .sessionCard{
-                border-radius: 25px;
-                width: 100%;
-                height: 100%;
-            }
+                    .card1 .leftside .sessionCard {
+                        border-radius: 25px;
+                        width: 100%;
+                        height: 100%;
+                        box-shadow: 0px 5px 20px #0077B6;
+                    }
 
             /*.card .leftside .sessionCard .startEnd{
-                
-            }*/
 
-            .card2{
-                background-color: lightgrey;
+                        }*/
+
+            .card2 {
+                background-color: #0077B6;
                 height: 500px;
                 border-top-left-radius: 0px;
                 border-bottom-left-radius: 0px;
@@ -64,56 +54,62 @@
                 width: 75%;
                 float: right;
             }
-            .card2 .rightside {
-                background-color: lightgrey;
-                width: 100%;
-                height: 100%;
-                padding: 50px;
-                float: right;
-                border-top-left-radius: 0px;
-                border-bottom-left-radius: 0px;
-                border-top-right-radius: 25px;
-                border-bottom-right-radius: 25px;
-            }
 
-            .card2 .rightside .distanceCard{
-                margin: 10px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-            }
-            .card2 .rightside .poolsCard{
-                margin: 10px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-            }
+                .card2 .rightside {
+                    background-color: #0077B6;
+                    width: 100%;
+                    height: 100%;
+                    padding: 50px;
+                    float: right;
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
+                    border-top-right-radius: 25px;
+                    border-bottom-right-radius: 25px;
+                }
 
-            .card2 .rightside .heartbeatCard {
-                margin: 10px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-            }
+                    .card2 .rightside .distanceCard {
+                        margin-top: 30px;
+                        border-radius: 25px;
+                        width: 25%;
+                        height: 25%;
+                        box-shadow: 0px 5px 20px #48CAE4;
+                    }
+
+                    .card2 .rightside .poolsCard {
+                        margin-top: 20px;
+                        border-radius: 25px;
+                        width: 25%;
+                        height: 25%;
+                        box-shadow: 0px 5px 20px #48CAE4;
+                    }
+
+                    .card2 .rightside .heartbeatCard {
+                        margin-top: 20px;
+                        border-radius: 25px;
+                        width: 25%;
+                        height: 25%;
+                        box-shadow: 0px 5px 20px #48CAE4;
+                    }
             /*.card2 .rightside .heartbeatCard .rate {
-                ...
-            }*/
+                            ...
+                        }*/
         </style>
+
 
         <MudPaper Class="card1" Elevation="2">
             <MudPaper Class="leftside" Elevation="0">
-                <MudCard Class="sessionCard">
+                <MudCard Class="sessionCard" Elevation="0">
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">Session #1</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Color="Color.Primary" aria-label="add to favorite"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
                     <MudCardContent Class="startEnd">
                         <MudText>Start: ...</MudText>
-                        <MudText>End ...</MudText>
+                        <MudText>End: ...</MudText>
                     </MudCardContent>
                 </MudCard>
             </MudPaper>
@@ -124,41 +120,55 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">Distance</MudText>
-                            @*@foreach (var record in Model)
+                            @*TODO*@
+                            @*@if (smartwatch_data != null)
                             {
-                                    @record.Distance
+                            @foreach (var data in smartwatch_data)
+                            {
+                            <div class="mt-3">
+                            <p>Km: @data.Distance</p>
+                            </div>
+                            }
                             }*@
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
                 </MudCard>
                 <MudCard Class="poolsCard">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.h6">n. Pools</MudText>
+                            <MudText Typo="Typo.h6">Pool Laps</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
                 </MudCard>
                 <MudCard Class="heartbeatCard">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Heartbeat Rate</MudText>
+                            <MudText Typo="Typo.h6">Pulse Rate</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
+                            <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
                 </MudCard>
             </MudPaper>
         </MudPaper>
-        
+
 
         @code {
+        // TODO
+        //private IEnumerable<SmartWatch_Data>? smartwatch_data;
+
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
+        //}
+
         private bool arrows = true;
         private bool bullets = true;
         private bool enableSwipeGesture = true;
@@ -167,7 +177,15 @@
         }
     </Authorized>
     <NotAuthorized>
-        <MudImage ObjectFit="@ObjectFit.Fill" Style="max-width: 100%;
-            max-height: 100%;" Src="images/watch.jpg" Alt="SmartWatch" Elevation="25" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@700" rel="stylesheet">
+        <div style="background: #03043a; position: relative;">
+            <MudImage ObjectFit="@ObjectFit.Fill" Style="max-width: 100%; max-height: 100%; object-fit: cover; opacity: 0.45;" Src="images/swim.jpg" Alt="Earth4Sport" Elevation="25" />
+            <div style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #0092df; font-size: 48px; font-family: 'Kanit', sans-serif; font-weight: 700; text-shadow: 2px 2px 3px #333;">
+                Swim Smarter with Earth4Sport!
+            </div>
+        </div>
     </NotAuthorized>
+
 </AuthorizeView>

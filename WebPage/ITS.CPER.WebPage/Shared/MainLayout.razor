@@ -7,10 +7,9 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0" Style="@($"background-color:{Colors.Grey.Darken4}; color:{Colors.LightGreen.Accent4};")">
-        <MudContainer Style="display:flex; flex-direction:row; align-items:center; padding:0px">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-            <MudText Style="font-size:x-large">Earth4Sport</MudText>
+    <MudAppBar Elevation="0" Style="@($"background-color: #03043a; color:{Colors.LightGreen.Accent4};")">
+        <MudContainer Style="display:flex; flex-direction:row; justify-content:flex-start">
+            <MudImage Style="width: 30%" Src="images/logo.png" Alt="Earth4Sport" />
         </MudContainer>
         <MudContainer Style="display:flex; flex-direction:row; align-items:center; justify-content:flex-end; padding:0px">
             <LoginDisplay />
@@ -20,7 +19,6 @@
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">ITS.CPER.WebPage</MudText>
         </MudDrawerHeader>
-        <NavMenu />
     </MudDrawer>
     <MudMainContent>
         @Body

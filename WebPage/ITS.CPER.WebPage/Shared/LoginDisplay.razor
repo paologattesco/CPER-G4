@@ -5,10 +5,9 @@
     <Authorized>
         <MudMenu AnchorOrigin="Origin.BottomRight" ActivationEvent="@MouseEvent.MouseOver" FullWidth>
             <ActivatorContent>
-                @*<MudAvatar Image="images/toiletvisit.jpg" />*@
-                <MudButton Variant="Variant.Outlined" Style="@($"color:{Colors.LightGreen.Accent4};")">
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Style="@($"color:#0092df;")">
                     <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;" />
-                    <MudText>Hello, @context.User.Identity?.Name!</MudText>
+                    <MudText Typo="Typo.button">Welcome, @context.User.Identity?.Name!</MudText>
                 </MudButton>
             </ActivatorContent>
             <ChildContent>
@@ -23,9 +22,9 @@
         </MudMenu>
     </Authorized>
     <NotAuthorized>
-        <MudButton Variant="Variant.Outlined" href="Identity/Account/Login" Style="@($"color:{Colors.LightGreen.Accent4};")">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" href="Identity/Account/Login" Style="@($"color:#0092df;")">
             <MudIcon Icon="@Icons.Material.Filled.Person" Title="Account" Style="padding-right:5px; font-size:x-large;"/> 
-            <MudText>Login</MudText>
+            <MudText Typo="Typo.button">Login</MudText>
         </MudButton>
     </NotAuthorized>
 </AuthorizeView>
