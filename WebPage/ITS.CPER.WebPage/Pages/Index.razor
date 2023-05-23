@@ -21,44 +21,86 @@
                 background-color: none;
                 padding: 50px;
                 display: flex;
+                margin: 0;
             }
-            .card{
+            .card1{
                 background-color: lightgrey;
                 height: 500px;
-                border-radius: 25px;
-                width: 100%;
+                border-top-left-radius: 25px;
+                border-bottom-left-radius: 25px;
+                width: 25%;
+                float: left;
             }
 
-            .card .leftside{
+            .card1 .leftside{
                 display: flex;
-                width: 25%;
+                width: 100%;
                 height: 100%;
                 background-color: whitesmoke;
                 border-top-left-radius: 25px;
                 border-bottom-left-radius: 25px;
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
                 padding: 50px;
             }
 
-            .card .leftside .sessionCard{
+            .card1 .leftside .sessionCard{
                 border-radius: 25px;
                 width: 100%;
                 height: 100%;
             }
 
-            .card .leftside .sessionCard .startEnd{
+            /*.card .leftside .sessionCard .startEnd{
                 
+            }*/
+
+            .card2{
+                background-color: lightgrey;
+                height: 500px;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+                border-top-right-radius: 25px;
+                border-bottom-right-radius: 25px;
+                width: 75%;
+                float: right;
+            }
+            .card2 .rightside {
+                background-color: lightgrey;
+                width: 100%;
+                height: 100%;
+                padding: 50px;
+                float: right;
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+                border-top-right-radius: 25px;
+                border-bottom-right-radius: 25px;
             }
 
-            .card .rightside {
-                display: flex;
-                width: 25%;
-                height: 100%;
+            .card2 .rightside .distanceCard{
+                margin: 10px;
                 border-radius: 25px;
-                padding: 50px;
+                width: 25%;
+                height: 25%;
             }
+            .card2 .rightside .poolsCard{
+                margin: 10px;
+                border-radius: 25px;
+                width: 25%;
+                height: 25%;
+            }
+
+            .card2 .rightside .heartbeatCard {
+                margin: 10px;
+                border-radius: 25px;
+                width: 25%;
+                height: 25%;
+            }
+            /*.card2 .rightside .heartbeatCard .rate {
+                ...
+            }*/
         </style>
 
-        <MudPaper Class="card" Elevation="3">
+        <MudPaper Class="card1" Elevation="2">
             <MudPaper Class="leftside" Elevation="0">
                 <MudCard Class="sessionCard">
                     <MudCardHeader>
@@ -66,38 +108,55 @@
                             <MudText Typo="Typo.h6">Session #1</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Color="Color.Primary" aria-label="add to favorite"></MudIconButton>
                         </CardHeaderActions>
                     </MudCardHeader>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
                     <MudCardContent Class="startEnd">
                         <MudText>Start: ...</MudText>
                         <MudText>End ...</MudText>
                     </MudCardContent>
                 </MudCard>
             </MudPaper>
-            @*<MudCard Class="rightside">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h6">Distance</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite"></MudIconButton>
-                    </CardHeaderActions>
-                </MudCardHeader>
-            </MudCard>*@
         </MudPaper>
+        <MudPaper Class="card2" Elevation="2">
+            <MudPaper Class="rightside" Elevation="0">
+                <MudCard Class="distanceCard">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Distance</MudText>
+                            @*@foreach (var record in Model)
+                            {
+                                    @record.Distance
+                            }*@
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                </MudCard>
+                <MudCard Class="poolsCard">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">n. Pools</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                </MudCard>
+                <MudCard Class="heartbeatCard">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">Heartbeat Rate</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                </MudCard>
+            </MudPaper>
+        </MudPaper>
+        
 
         @code {
         private bool arrows = true;

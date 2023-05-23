@@ -1,3 +1,4 @@
+using InfluxDB.Client;
 using ITS.CPER.WebPage.Areas.Identity;
 using ITS.CPER.WebPage.Data;
 using Microsoft.AspNetCore.Components;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using ITS.CPER.WebPage.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddSingleton<InfluxDBService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
