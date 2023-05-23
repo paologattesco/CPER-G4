@@ -25,11 +25,7 @@ while (true)
 {
     var selectSmartWatch = rand.Next(0, smartWatches.Count());
     Console.WriteLine("Workout in progress...\n");
-    var LastSmartWatchDetails = coordinates.Training(smartWatches[selectSmartWatch]);
-    if(LastSmartWatchDetails.SmartWatch_Id == smartWatches[selectSmartWatch].SmartWatch_Id)
-    {
-        smartWatches[selectSmartWatch] = LastSmartWatchDetails;
-    }
+    smartWatches[selectSmartWatch] = coordinates.Training(smartWatches[selectSmartWatch]);
     Console.WriteLine();
 }
 

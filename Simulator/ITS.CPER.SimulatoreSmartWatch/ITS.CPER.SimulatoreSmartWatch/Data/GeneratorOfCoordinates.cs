@@ -12,14 +12,13 @@ public class GeneratorOfCoordinates
     const double MAX_LONGITUDE = 180.0;
     const double MAX_DISTANCE = 50.0;
     const double EARTH_RADIUS = 6371000.0; // in meters
-    private double totalDistance = 0.0;
 
     private System.Timers.Timer timerForData = new System.Timers.Timer();
     int TimeForTraining = 60000;
 
     private bool endTraining = false;
     private bool isStarted = false;
-
+    private bool lastDate = false;
     Random rand = new Random();
 
     Heartbeat restingHeartbeat = new Heartbeat();
@@ -28,6 +27,7 @@ public class GeneratorOfCoordinates
     private Guid NewActivity;
     private Guid SmartWatchId;
 
+    SmartWatch_Data tmp = new SmartWatch_Data();
 
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
@@ -95,7 +95,6 @@ public class GeneratorOfCoordinates
         Console.WriteLine($"Longitude: {longitude2}");
         Console.WriteLine($"Distance: {distance} meters");
         Console.WriteLine($"Pulse rate: {trainingHeartbeat.TrainingHeartbeat()} bpm");
-        totalDistance += distance + smartwatch.Distance;
 
         SmartWatch_Data newData = new SmartWatch_Data()
         {
@@ -104,8 +103,8 @@ public class GeneratorOfCoordinates
             Latitude = lat2,
             Longitude = longitude2,
             Heartbeat = trainingHeartbeat.TrainingHeartbeat(),
-            NumberOfPoolLaps = (int)CalculatePoolLaps(totalDistance),
-            Distance = totalDistance
+            NumberOfPoolLaps = (int)CalculatePoolLaps(distance + smartwatch.Distance),
+            Distance = distance + smartwatch.Distance
         };
         newData.ApiPost(newData);
         return newData;
@@ -115,7 +114,7 @@ public class GeneratorOfCoordinates
     // RECURSIVE FUNCTION TO GENERATE COORDINATES WITHIN 0 TO 50 METERS DISTANCE
     public SmartWatch_Data Training(SmartWatch_Data smartWatch)
     {
-        List<double> lastCoordinates = new List<double>();
+        timerForData.Start();
         // FIRST COORDINATES
         if (smartWatch.Latitude == 0 && smartWatch.Longitude == 0)
         {
@@ -133,9 +132,7 @@ public class GeneratorOfCoordinates
             }
             Thread.Sleep(10000);
             smartWatch = PostNextData(latitude2, longitude2, distance, smartWatch);
-            if (endTraining) { return smartWatch; }
             Training(smartWatch);
-            return smartWatch;
         }
         else
         {
@@ -145,22 +142,31 @@ public class GeneratorOfCoordinates
             // DISTANCE
             double distance = CalculateDistance(smartWatch.Latitude, smartWatch.Longitude, latitude2, longitude2);
 
-            if (!isStarted)
-            {
-                smartWatch = PostFirstData(smartWatch.Latitude, smartWatch.Longitude, smartWatch);
-            }
             Thread.Sleep(10000);
             smartWatch = PostNextData(latitude2, longitude2, distance, smartWatch);
-            if (endTraining) { return smartWatch; }
-            Training(smartWatch);
-            return smartWatch;
-        }    
+            if(endTraining)
+            {
+                if (!lastDate)
+                {
+                    tmp = smartWatch;
+                    lastDate = true;
+                    endTraining = false;
+                }
+                return smartWatch;
+            }
+            else
+            {
+                Training(smartWatch);
+            }
+        }
+        return tmp;
     }
 
     void SendData(object? sender, ElapsedEventArgs e)
     {
         endTraining = true;
         isStarted = false;
+        lastDate = false;
         timerForData.Stop();
     }
 }
