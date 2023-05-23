@@ -19,9 +19,9 @@ public class HomeController : Controller
                     new SmartWatch_Data
                     {
                         //Activity_Id = record.ToString,
-                        Latitude = int.Parse(record.ToString()),
-                        Longitude = int.Parse(record.ToString()),
-                        Heartbeat = int.Parse(record.ToString()),
+                        Initial_Latitude = int.Parse(record.ToString()),
+                        Initial_Longitude = int.Parse(record.ToString()),
+                        //Heartbeat = int.Parse(record.ToString()),
                         NumberOfPoolLaps = int.Parse(record.ToString()),
                         Distance = int.Parse(record.ToString())
                     }));
