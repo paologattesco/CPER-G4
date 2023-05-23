@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using ITS.CPER.WebPage.Data.Models;
+@inject IDataAccess _dataAccess
 
 <PageTitle>HomePage</PageTitle>
 <AuthorizeView>
@@ -121,7 +121,7 @@
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">Distance</MudText>
                             @*TODO*@
-                            @*@if (smartwatch_data != null)
+                            @if (smartwatch_data != null)
                             {
                             @foreach (var data in smartwatch_data)
                             {
@@ -129,7 +129,7 @@
                             <p>Km: @data.Distance</p>
                             </div>
                             }
-                            }*@
+                            }
                         </CardHeaderContent>
                         <CardHeaderActions>
                             <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
@@ -161,19 +161,18 @@
 
 
         @code {
-        // TODO
-        //private IEnumerable<SmartWatch_Data>? smartwatch_data;
+            //TODO
+            private bool arrows = true;
+            private bool bullets = true;
+            private bool enableSwipeGesture = true;
+            private bool autocycle = false;
+            private Transition transition = Transition.Slide;
+            private IEnumerable<SmartWatch_Data>? smartwatch_data;
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
-        //}
-
-        private bool arrows = true;
-        private bool bullets = true;
-        private bool enableSwipeGesture = true;
-        private bool autocycle = false;
-        private Transition transition = Transition.Slide;
+            protected override async Task OnInitializedAsync()
+            {
+            smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
+            }
         }
     </Authorized>
     <NotAuthorized>
