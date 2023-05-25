@@ -51,4 +51,16 @@ public class DataAccess : IDataAccess
         }
             return result;
     }
+
+    public void InsertNewUser(Guid id)
+    {
+        using var connection = new SqlConnection(_connectionDb);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = @"
+            INSERT INTO [dbo].[UserDetails]([UserId],[SmartWatch_Id])VALUES(@id,@guid)";
+        sql.Parameters.AddWithValue("@id", id);
+        sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
+        sql.ExecuteNonQuery();
+    }
 }
