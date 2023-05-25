@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITS.CPER.InternalWebPage", "ITS.CPER.InternalWebPage.csproj", "{60807835-D1DB-4D38-B3F9-8E3CD62EC519}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60807835-D1DB-4D38-B3F9-8E3CD62EC519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60807835-D1DB-4D38-B3F9-8E3CD62EC519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60807835-D1DB-4D38-B3F9-8E3CD62EC519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60807835-D1DB-4D38-B3F9-8E3CD62EC519}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D5F83A2-C52F-478F-AF6E-6E151D984CBA}
+	EndGlobalSection
+EndGlobal
