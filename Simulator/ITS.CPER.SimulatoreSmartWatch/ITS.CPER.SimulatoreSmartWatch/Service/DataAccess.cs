@@ -35,4 +35,22 @@ public class DataAccess : IDataAccess
         return result;
     }
 
+    public Guid GetUserId(Guid smartwatchId)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = $"SELECT [User_Id] FROM [dbo].[UserDetails] WHERE SmartWatch_Id = @SmartWatch_Id";
+        sql.Parameters.AddWithValue("@SmartWatch_Id", smartwatchId);
+        var result = new Guid();
+        using (SqlDataReader reader = sql.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                result = Guid.Parse((string)reader["User_Id"]);
+            }
+            reader.Close();
+        }
+        return result;
+    }
 }

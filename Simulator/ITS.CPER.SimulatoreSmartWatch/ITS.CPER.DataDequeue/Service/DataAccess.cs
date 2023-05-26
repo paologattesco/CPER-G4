@@ -34,7 +34,7 @@ public class DataAccess : IDataAccess
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
         
-        sql.CommandText = $"INSERT INTO [dbo].[SmartWatches]([SmartWatch_Id],[Activity_Id],[Initial_Latitude],[Initial_Longitude],[Distance],[NumberOfPoolLaps],[Final_Latitude],[Final_Longitude])VALUES(@SmartWatch_Id,@Activity_Id,@Initial_Latitude,@Initial_Longitude,@Distance,@NumberOfPoolLaps,@Final_Latitude,@Final_Longitude)";
+        sql.CommandText = $"INSERT INTO [dbo].[SmartWatches]([SmartWatch_Id],[Activity_Id],[Initial_Latitude],[Initial_Longitude],[Distance],[NumberOfPoolLaps],[Final_Latitude],[Final_Longitude],[FK_UserId])VALUES(@SmartWatch_Id,@Activity_Id,@Initial_Latitude,@Initial_Longitude,@Distance,@NumberOfPoolLaps,@Final_Latitude,@Final_Longitude,@User_Id)";
         sql.Parameters.AddWithValue("@SmartWatch_Id", data.SmartWatch_Id);
         sql.Parameters.AddWithValue("@Activity_Id", data.Activity_Id);
         sql.Parameters.AddWithValue("@Initial_Latitude", data.Latitude);
@@ -43,6 +43,7 @@ public class DataAccess : IDataAccess
         sql.Parameters.AddWithValue("@NumberOfPoolLaps", data.NumberOfPoolLaps);
         sql.Parameters.AddWithValue("@Final_Latitude", data.Latitude);
         sql.Parameters.AddWithValue("@Final_Longitude", data.Longitude);
+        sql.Parameters.AddWithValue("@User_Id", data.User_Id);
         sql.ExecuteNonQuery();
     }
 
@@ -75,6 +76,7 @@ public class DataAccess : IDataAccess
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
 
         var query = PointData.Measurement("smartwatches")
+            .Tag("User_Id", data.User_Id.ToString())
             .Tag("SmartWatch_Id", data.SmartWatch_Id.ToString())
             .Tag("Activity_Id", data.Activity_Id.ToString())
             .Field("Latitude", data.Latitude)

@@ -11,5 +11,6 @@ public class SmartWatch_Data
     public int Heartbeat { get; set; }
     public int NumberOfPoolLaps { get; set; }
     public double Distance { get; set; }
+    public Guid User_Id { get; set; }
 
 }

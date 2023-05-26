@@ -5,12 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-List<SmartWatch_Data> smartWatches = ListOfSmartWatch();
 Random rand = new Random();
 GeneratorOfCoordinates coordinates = new GeneratorOfCoordinates();
 
 while (true)
 {
+    List<SmartWatch_Data> smartWatches = ListOfSmartWatch();
     var selectSmartWatch = rand.Next(0, smartWatches.Count());
     Console.WriteLine("Workout in progress...\n");
     smartWatches[selectSmartWatch] = coordinates.Training(smartWatches[selectSmartWatch]);
@@ -33,8 +33,13 @@ Dictionary<int, Guid> DictionaryOfSmartWatches()
     return serialNumber;
 }
 
+
+
 List<SmartWatch_Data> ListOfSmartWatch()
 {
+    var serviceProvider = GetConfiguration();
+    var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
+
     var serialNumbers = DictionaryOfSmartWatches();
     List<SmartWatch_Data> smartWatches = new List<SmartWatch_Data>();
 
@@ -48,7 +53,8 @@ List<SmartWatch_Data> ListOfSmartWatch()
             Longitude = 0,
             Heartbeat = 0,
             NumberOfPoolLaps = 0,
-            Distance = 0
+            Distance = 0,
+            User_Id = _dataAccess.GetUserId(serialNumbers[i])
         };
         smartWatches.Add(newData);
     }

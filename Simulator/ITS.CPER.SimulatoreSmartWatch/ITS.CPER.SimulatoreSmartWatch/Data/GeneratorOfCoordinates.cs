@@ -83,7 +83,8 @@ public class GeneratorOfCoordinates
             Longitude = lon,
             Heartbeat = restingHeartbeat.RestingHeartbeat(),
             NumberOfPoolLaps = 0,
-            Distance = 0
+            Distance = 0,
+            User_Id = smartwatch.User_Id
         };
         startData.ApiPost(startData);
         return startData;
@@ -104,7 +105,8 @@ public class GeneratorOfCoordinates
             Longitude = longitude2,
             Heartbeat = trainingHeartbeat.TrainingHeartbeat(),
             NumberOfPoolLaps = (int)CalculatePoolLaps(distance + smartwatch.Distance),
-            Distance = distance + smartwatch.Distance
+            Distance = distance + smartwatch.Distance,
+            User_Id = smartwatch.User_Id
         };
         newData.ApiPost(newData);
         return newData;
