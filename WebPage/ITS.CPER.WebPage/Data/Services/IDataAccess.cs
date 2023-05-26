@@ -1,9 +1,13 @@
-﻿using ITS.CPER.WebPage.Data.Models;
+﻿using InfluxDB.Client;
+using ITS.CPER.WebPage.Data.Models;
 
 namespace ITS.CPER.WebPage.Data.Services;
 
 public interface IDataAccess
 {
     void InsertNewUser(Guid id);
-    Task<IEnumerable<SmartWatch_Data>> GetSmartWatchDataAsync();
+    Task<SmartWatch_Data>GetSmartWatchDataAsync(Guid id);
+    void HeartbeatQuery(SmartWatch_Data data);
+
+    Guid GetUserId(string userName);
 }

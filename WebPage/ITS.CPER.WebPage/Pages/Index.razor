@@ -1,5 +1,8 @@
 ﻿@page "/"
 @inject IDataAccess _dataAccess
+@using System.Security.Claims
+@using ITS.CPER.WebPage.Data.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>HomePage</PageTitle>
 <AuthorizeView>
@@ -111,14 +114,11 @@
                         @*TODO*@
                         @if (smartwatch_data != null)
                         {
-                            @foreach (var data in smartwatch_data)
-                            {
-                                <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
-                                <br />
-                                <br />
-                                <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
-                                <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
-                            }
+                            <MudText Typo="Typo.button">ID: @smartwatch_data.Activity_Id</MudText>
+                            <br />
+                            <br />
+                            <MudText>Start: @smartwatch_data.Initial_Latitude, @smartwatch_data.Initial_Longitude</MudText>
+                            <MudText>End: @smartwatch_data.Final_Latitude, @smartwatch_data.Final_Longitude</MudText>
                         }
                     </MudCardContent>
                 </MudCard>
@@ -133,10 +133,7 @@
                             @*TODO*@
                             @if (smartwatch_data != null)
                             {
-                                @foreach (var data in smartwatch_data)
-                                {
-                                    <MudText>Km: @data.Distance</MudText>
-                                }
+                                <MudText>Km: @smartwatch_data.Distance</MudText>
                             }
                         </CardHeaderContent>
                         <CardHeaderActions>
@@ -150,10 +147,7 @@
                             <MudText Typo="Typo.h6">Pool Laps</MudText>
                             @if (smartwatch_data != null)
                             {
-                                @foreach (var data in smartwatch_data)
-                                {
-                                    <MudText>N: @data.NumberOfPoolLaps</MudText>
-                                }
+                                <MudText>N: @smartwatch_data.NumberOfPoolLaps</MudText>
                             }
                         </CardHeaderContent>
                         <CardHeaderActions>
@@ -165,6 +159,7 @@
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6">Pulse Rate</MudText>
+
                         </CardHeaderContent>
                         <CardHeaderActions>
                             <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
@@ -182,12 +177,37 @@
             private bool enableSwipeGesture = true;
             private bool autocycle = false;
             private Transition transition = Transition.Slide;
-            private IEnumerable<SmartWatch_Data>? smartwatch_data;
+            private SmartWatch_Data? smartwatch_data;
 
-            protected override async Task OnInitializedAsync()
+        private User_Data? user_data;
+
+        protected override async Task OnInitializedAsync()
             {
-            smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            string user = authState.User.Identity.Name;
+            var a = 0;
+            //var results = await _dataAccess.QueryAsync(async query =>
+            //{
+            //    var flux = "from(bucket:\"SmartWatches\") |> range(start: 0)";
+            //    var tables = await query.QueryAsync(flux, "ProjectWork");
+            //    return tables.SelectMany(table =>
+            //        table.Records.Select(record =>
+            //            new SmartWatch_Data
+            //            {
+            //                Heartbeat = int.Parse(record.ToString())
+            //            }
+            //        )
+            //    );
+            //});
+            user_data = _dataAccess.GetUserId(user);
+            smartwatch_data = await _dataAccess.GetSmartWatchDataAsync(Guid.Parse(user_data));
+            //_dataAccess.HeartbeatQuery(smartwatch_data);
             }
+
+        //protected async Task QueryAsync()
+        //    {
+                
+        //    }
         }
     </Authorized>
     <NotAuthorized>
