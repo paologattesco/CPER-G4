@@ -17,7 +17,7 @@ public class DataAccess : IDataAccess
     {
         _connectionString = configuration.GetConnectionString("db");
     }
-    public List<Guid> ListOfSmartWatches()
+    public List<Guid> GetSmartWatchesId()
     {
         using var connection = new SqlConnection(_connectionString);
         connection.Open();

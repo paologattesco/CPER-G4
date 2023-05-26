@@ -8,5 +8,5 @@ namespace ITS.CPER.SimulatoreSmartWatch.Service;
 
 public interface IDataAccess
 {
-    List<Guid> ListOfSmartWatches();
+    List<Guid> GetSmartWatchesId();
 }

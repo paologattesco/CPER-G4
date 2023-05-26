@@ -25,7 +25,7 @@ Dictionary<int, Guid> DictionaryOfSmartWatches()
     var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
 
     Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
-    var smartwatches = _dataAccess.ListOfSmartWatches();
+    var smartwatches = _dataAccess.GetSmartWatchesId();
     for (int i = 0; i < smartwatches.Count; i++)
     {
         serialNumber.Add(i, smartwatches[i]);
