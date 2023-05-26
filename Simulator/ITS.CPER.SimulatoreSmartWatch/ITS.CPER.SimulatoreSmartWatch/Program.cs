@@ -5,26 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-var serviceProvider = GetConfiguration();
-var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
+List<SmartWatch_Data> smartWatches = ListOfSmartWatch();
 Random rand = new Random();
-var serialNumbers = DictionaryOfSmartWatches();
 GeneratorOfCoordinates coordinates = new GeneratorOfCoordinates();
-List<SmartWatch_Data> smartWatches = new List<SmartWatch_Data>();
-for(int i = 0; i < serialNumbers.Count(); i++)
-{
-   SmartWatch_Data newData = new SmartWatch_Data()
-        {
-            SmartWatch_Id = serialNumbers[i],
-            Activity_Id = Guid.NewGuid(),
-            Latitude = 0,
-            Longitude = 0,
-            Heartbeat = 0,
-            NumberOfPoolLaps = 0,
-            Distance = 0
-        };
-    smartWatches.Add(newData);
-}
 
 while (true)
 {
@@ -34,8 +17,13 @@ while (true)
     Console.WriteLine();
 }
 
+
+
 Dictionary<int, Guid> DictionaryOfSmartWatches()
 {
+    var serviceProvider = GetConfiguration();
+    var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
+
     Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
     var smartwatches = _dataAccess.ListOfSmartWatches();
     for (int i = 0; i < smartwatches.Count; i++)
@@ -43,6 +31,28 @@ Dictionary<int, Guid> DictionaryOfSmartWatches()
         serialNumber.Add(i, smartwatches[i]);
     }
     return serialNumber;
+}
+
+List<SmartWatch_Data> ListOfSmartWatch()
+{
+    var serialNumbers = DictionaryOfSmartWatches();
+    List<SmartWatch_Data> smartWatches = new List<SmartWatch_Data>();
+
+    for (int i = 0; i < serialNumbers.Count(); i++)
+    {
+        SmartWatch_Data newData = new SmartWatch_Data()
+        {
+            SmartWatch_Id = serialNumbers[i],
+            Activity_Id = Guid.NewGuid(),
+            Latitude = 0,
+            Longitude = 0,
+            Heartbeat = 0,
+            NumberOfPoolLaps = 0,
+            Distance = 0
+        };
+        smartWatches.Add(newData);
+    }
+    return smartWatches;
 }
 
 ServiceProvider GetConfiguration()
