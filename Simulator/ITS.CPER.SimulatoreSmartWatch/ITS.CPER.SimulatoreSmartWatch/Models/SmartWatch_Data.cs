@@ -5,11 +5,6 @@ namespace ITS.CPER.SimulatoreSmartWatch.Models;
 
 public class SmartWatch_Data
 {
-    private readonly IDataAccess _dataAccess;
-    public SmartWatch_Data(IDataAccess dataAccess)
-    {
-        _dataAccess = dataAccess;
-    }
     public Guid SmartWatch_Id { get; set; }
     public Guid Activity_Id { get; set; }
     public double Latitude { get; set; }
@@ -27,15 +22,5 @@ public class SmartWatch_Data
 
         var response = await client.PostAsync(apiUrl, content);
         response.EnsureSuccessStatusCode();
-    }
-    public Dictionary<int, Guid> DictionaryOfSmartWatches()
-    {
-        Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
-        var smartwatches = _dataAccess.ListOfSmartWatches();
-        for (int i = 0; i < smartwatches.Count; i++)
-        {
-            serialNumber.Add(i, smartwatches[i]);
-        }
-        return serialNumber;
     }
 }

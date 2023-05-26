@@ -1,7 +1,12 @@
 ﻿using ITS.CPER.SimulatoreSmartWatch.Data;
 using ITS.CPER.SimulatoreSmartWatch.Models;
-using System.Diagnostics;
+using ITS.CPER.SimulatoreSmartWatch.Service;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
+
+var serviceProvider = GetConfiguration();
+var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
 Random rand = new Random();
 var serialNumbers = DictionaryOfSmartWatches();
 GeneratorOfCoordinates coordinates = new GeneratorOfCoordinates();
@@ -29,5 +34,30 @@ while (true)
     Console.WriteLine();
 }
 
+Dictionary<int, Guid> DictionaryOfSmartWatches()
+{
+    Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
+    var smartwatches = _dataAccess.ListOfSmartWatches();
+    for (int i = 0; i < smartwatches.Count; i++)
+    {
+        serialNumber.Add(i, smartwatches[i]);
+    }
+    return serialNumber;
+}
 
+ServiceProvider GetConfiguration()
+{
+    IConfiguration configuration;
+    configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddUserSecrets<Program>(optional: true, reloadOnChange: false)
+                    .Build();
 
+    var serviceProvider = new ServiceCollection()
+                    .AddSingleton<IDataAccess, DataAccess>()
+                    .AddSingleton<IConfiguration>(configuration)
+                    .BuildServiceProvider();
+
+    return serviceProvider;
+}
