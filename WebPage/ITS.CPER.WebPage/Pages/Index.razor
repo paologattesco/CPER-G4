@@ -179,13 +179,12 @@
             private Transition transition = Transition.Slide;
             private SmartWatch_Data? smartwatch_data;
 
-        private User_Data? user_data;
-
         protected override async Task OnInitializedAsync()
             {
+
+            User_Data _userdata = new User_Data();
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             string user = authState.User.Identity.Name;
-            var a = 0;
             //var results = await _dataAccess.QueryAsync(async query =>
             //{
             //    var flux = "from(bucket:\"SmartWatches\") |> range(start: 0)";
@@ -199,9 +198,16 @@
             //        )
             //    );
             //});
-            user_data = _dataAccess.GetUserId(user);
-            smartwatch_data = await _dataAccess.GetSmartWatchDataAsync(Guid.Parse(user_data));
-            //_dataAccess.HeartbeatQuery(smartwatch_data);
+            
+            if (user != null)
+            {
+                _userdata.User_Id = _dataAccess.GetUserId(user);
+                smartwatch_data = await _dataAccess.GetSmartWatchDataAsync(_userdata.User_Id);
+
+                //smartwatch_data.Heartbeat = await _dataAccess.HeartbeatQuery(smartwatch_data);
+                await _dataAccess.HeartbeatQuery(smartwatch_data);
+            }
+            
             }
 
         //protected async Task QueryAsync()

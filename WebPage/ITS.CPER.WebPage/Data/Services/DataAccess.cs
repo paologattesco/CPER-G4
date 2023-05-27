@@ -2,8 +2,10 @@
 using ITS.CPER.WebPage.Data.Models;
 using Dapper;
 using InfluxDB.Client;
+using InfluxDB.Client.Core;
 using InfluxDB.Client.Writes;
 using System.Diagnostics;
+using InfluxDB.Client.Core.Flux.Domain;
 
 namespace ITS.CPER.WebPage.Data.Services;
 
@@ -74,29 +76,42 @@ public class DataAccess : IDataAccess
         sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
         sql.ExecuteNonQuery();
     }
-    public void HeartbeatQuery(SmartWatch_Data data)
+    public async Task<SmartWatch_Data> HeartbeatQuery(SmartWatch_Data data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
-
+        var activity_id = Convert.ToString(data.Activity_Id);
+        var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
         var flux = "from(bucket:\"SmartWatches\") " +
             "|> range(start: 0) \r\n" +
             "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
-            $"|> filter(fn: (r) => r[\"Activity_Id\"] == {data.Activity_Id})\r\n  " +
-            $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == {data.SmartWatch_Id})\r\n  " +
-            "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")";
+            $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
+            $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
+            "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")\r\n  " +
+            "|> keep(columns: [\"_value\"])\r\n  ";
 
-        var select = client.GetQueryApi();
-        var prova = select.QueryAsync(flux);
+        var queryApi = client.GetQueryApi();
+        //var csv = await queryApi.QueryRawAsync(flux, org: _org);
+        var fluxTables = queryApi.QueryAsync(flux, _org);
         var a = 0;
+
+        fluxTables.ForEach(fluxTable =>
+        {
+            var fluxRecords = fluxTable.Records;
+            fluxRecords.ForEach(fluxRecord =>
+            {
+                Console.WriteLine($"{fluxRecord.GetTime()}: {fluxRecord.GetValue()}");
+            });
+        });
+        return data;
     }
 
-    public Guid GetUserId(string userName)
+    public Guid GetUserId(string UserName)
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"SELECT [Id] FROM [dbo].[AspNetUsers] WHERE UserName = @userName";
-        sql.Parameters.AddWithValue("@userName", userName);
+        sql.CommandText = $"SELECT [Id] FROM [dbo].[AspNetUsers] WHERE UserName = @UserName";
+        sql.Parameters.AddWithValue("@UserName", UserName);
         var result = new Guid();
         using (SqlDataReader reader = sql.ExecuteReader())
         {

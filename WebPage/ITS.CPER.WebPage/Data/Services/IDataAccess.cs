@@ -7,7 +7,7 @@ public interface IDataAccess
 {
     void InsertNewUser(Guid id);
     Task<SmartWatch_Data>GetSmartWatchDataAsync(Guid id);
-    void HeartbeatQuery(SmartWatch_Data data);
+    Task<SmartWatch_Data> HeartbeatQuery(SmartWatch_Data data);
 
     Guid GetUserId(string userName);
 }
