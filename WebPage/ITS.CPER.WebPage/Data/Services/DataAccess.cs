@@ -103,7 +103,7 @@ public class DataAccess : IDataAccess
                 Heartbeat_Data newHearbeat = new Heartbeat_Data()
                 {
                     Time = (Instant)fluxRecord.GetTime(),
-                    Heartbeat = Convert.ToDouble(fluxRecord.GetValue())
+                    Heartbeat = Convert.ToInt32(fluxRecord.GetValue())
 
                 };
                 heartbeat.Add(newHearbeat);
