@@ -6,6 +6,7 @@ using InfluxDB.Client.Core;
 using InfluxDB.Client.Writes;
 using System.Diagnostics;
 using InfluxDB.Client.Core.Flux.Domain;
+using NodaTime;
 
 namespace ITS.CPER.WebPage.Data.Services;
 
@@ -23,7 +24,7 @@ public class DataAccess : IDataAccess
         _org = configuration.GetConnectionString("Org");
     }
 
-    public async Task<SmartWatch_Data> GetSmartWatchDataAsync(Guid id)
+    public async Task<IEnumerable<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
@@ -42,7 +43,7 @@ public class DataAccess : IDataAccess
             ";
         sql.Parameters.AddWithValue("@id", id);
         sql.ExecuteNonQuery();
-        var result = new SmartWatch_Data();
+        var result = new List<SmartWatch_Data>();
         using (SqlDataReader reader = sql.ExecuteReader())
         {
             while (reader.Read())
@@ -58,7 +59,7 @@ public class DataAccess : IDataAccess
                     Final_Latitude = Convert.ToDouble(reader["Final_Latitude"]),
                     Final_Longitude = Convert.ToDouble(reader["Final_Longitude"]),
                 };
-                result = smartWatch;
+                result.Add(smartWatch);
             }
             reader.Close();
         }
@@ -76,7 +77,7 @@ public class DataAccess : IDataAccess
         sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
         sql.ExecuteNonQuery();
     }
-    public async Task<SmartWatch_Data> HeartbeatQuery(SmartWatch_Data data)
+    public async Task<IEnumerable<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
         var activity_id = Convert.ToString(data.Activity_Id);
@@ -87,22 +88,29 @@ public class DataAccess : IDataAccess
             $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
             $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
             "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")\r\n  " +
-            "|> keep(columns: [\"_value\"])\r\n  ";
+            "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
 
         var queryApi = client.GetQueryApi();
-        //var csv = await queryApi.QueryRawAsync(flux, org: _org);
-        var fluxTables = queryApi.QueryAsync(flux, _org);
-        var a = 0;
+        var fluxTables = await queryApi.QueryAsync(flux, _org);
 
+        var heartbeat = new List<Heartbeat_Data>();
         fluxTables.ForEach(fluxTable =>
         {
             var fluxRecords = fluxTable.Records;
+
             fluxRecords.ForEach(fluxRecord =>
             {
-                Console.WriteLine($"{fluxRecord.GetTime()}: {fluxRecord.GetValue()}");
+                Heartbeat_Data newHearbeat = new Heartbeat_Data()
+                {
+                    Time = (Instant)fluxRecord.GetTime(),
+                    Heartbeat = Convert.ToDouble(fluxRecord.GetValue())
+
+                };
+                heartbeat.Add(newHearbeat);
+
             });
         });
-        return data;
+        return heartbeat;
     }
 
     public Guid GetUserId(string UserName)

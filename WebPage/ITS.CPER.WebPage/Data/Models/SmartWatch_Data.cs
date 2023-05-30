@@ -7,7 +7,6 @@ public class SmartWatch_Data
     public double Initial_Latitude { get; set; }
     public double Initial_Longitude { get; set; }
     public double Distance { get; set; }
-    public int Heartbeat { get; set; }
     public int NumberOfPoolLaps { get; set; }
     public double Final_Latitude { get; set; }
     public double Final_Longitude { get; set; }
