@@ -24,7 +24,7 @@ public class DataAccess : IDataAccess
         _org = configuration.GetConnectionString("Org");
     }
 
-    public async Task<IEnumerable<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
+    public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
@@ -77,7 +77,7 @@ public class DataAccess : IDataAccess
         sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
         sql.ExecuteNonQuery();
     }
-    public async Task<IEnumerable<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
+    public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
         var activity_id = Convert.ToString(data.Activity_Id);
