@@ -49,7 +49,7 @@
 
             /*.card .leftside .sessionCard .startEnd{
 
-                                                }*/
+                                                                                                            }*/
 
             .card2 {
                 background-color: #0077B6;
@@ -107,32 +107,26 @@
         </style>
         @if (smartwatch_data != null && smartwatch_data.Count() != 0 && heartbeat_data != null && heartbeat_data.Count() != 0)
         {
-            int i = 1;
-            int prova = 0;
+            int heartbeat_value = 0;
             int prova2 = 0;
-            @*<MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">*@
-                @foreach (var data in smartwatch_data)
+@*            <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+*@                @foreach (var data in smartwatch_data)
                 {
-                    @*foreach (var s in tmp)
-                    {*@
-                    @*<MudCarouselItem Transition="transition" Color="@Color.Primary">*@
-                    <div class="spaceCards">
-                        <MudPaper Class="card1" Elevation="2">
-                            <MudPaper Class="leftside" Elevation="0">
-                                <MudCard Class="sessionCard" Elevation="0">
-                                    <MudCardHeader>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.h6">Session #@(
-                                    i++
-                                    )</MudText>
+@*                    <MudCarouselItem Transition="transition" Color="@Color.Primary">
+*@                        <div class="spaceCards">
+                            <MudPaper Class="card1" Elevation="2">
+                                <MudPaper Class="leftside" Elevation="0">
+                                    <MudCard Class="sessionCard" Elevation="0">
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">Session</MudText>
+                                                <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
                                             </CardHeaderContent>
                                             <CardHeaderActions>
                                                 <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
                                             </CardHeaderActions>
                                         </MudCardHeader>
                                         <MudCardContent Class="startEnd">
-                                            <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
-                                            <br />
                                             <br />
                                             <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
                                             <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
@@ -168,7 +162,7 @@
                                         <MudCardHeader>
                                             <CardHeaderContent>
                                                 <MudText Typo="Typo.h6">Pulse Rate</MudText>
-                                                @*<MudText>@heartbeat_data bpm</MudText>*@
+                                                <MudText>@(heartbeat_value < heartbeat_data.Count() ? heartbeat_data.ElementAt(heartbeat_value++).Heartbeat.ToString() : string.Empty) bpm</MudText>
                                             </CardHeaderContent>
                                             <CardHeaderActions>
                                                 <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
@@ -176,20 +170,18 @@
                                         </MudCardHeader>
                                     </MudCard>
                                     <MudPaper Class="chart">
-
-                                <MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@tmp.Select(x => x).ToList()" @bind-SelectedIndex="index" XAxisLabels="@ListOfDates.Select(x => x).ElementAt(prova2++)" Width="100%" Height="350px"></MudChart>
+                                        <MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@tmp.Select(x => x).ToList()" @bind-SelectedIndex="index" XAxisLabels="@ListOfDates.Select(x => x).ElementAt(prova2++)" Width="100%" Height="350px"></MudChart>
                                     </MudPaper>
                                 </MudPaper>
                             </MudPaper>
                         </div>
                     @*</MudCarouselItem>*@
-                @*}*@
                 }
             @*</MudCarousel>*@
         }
         else
         {
-                        int prova2 = 0;
+
             <div class="spaceCards">
                 <MudPaper Class="card1" Elevation="2">
                     <MudPaper Class="leftside" Elevation="0">
@@ -248,34 +240,35 @@
                             </MudCardHeader>
                         </MudCard>
                         <MudPaper Class="chart">
-                            @*<MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@tmp.Select(x => x).ToList()" @bind-SelectedIndex="index" XAxisLabels="@ListOfDates.Select(x => x).ElementAt(prova2++)" Width="100%" Height="350px"></MudChart>*@
+                            @*<MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@Series" @bind-SelectedIndex="index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>*@
                         </MudPaper>
                     </MudPaper>
                 </MudPaper>
             </div>
         }
+
         @code {
-            private bool arrows = true;
-            private bool bullets = false;
-            private bool enableSwipeGesture = true;
-            private bool autocycle = false;
-            private Transition transition = Transition.Slide;
-            private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-            private List<Heartbeat_Data> heartbeat_data = new List<Heartbeat_Data>();
-            List<double> heartBeat = new List<double>();
-            List<string> Timestamp = new List<string>();
-            List<ChartSeries>tmp = new List<ChartSeries>();
-            List<string[]> ListOfDates = new List<string[]>();
-            int index = -1;
-            ChartSeries Series =
-            new ChartSeries()
-                {
-                    Name = "Bpm",
-                    Data = new double[] { }//heart
-                };
-            string[] XAxisLabels = {};
-            protected override async Task OnInitializedAsync()
-            {
+        private bool arrows = true;
+        private bool bullets = false;
+        private bool enableSwipeGesture = true;
+        private bool autocycle = false;
+        private Transition transition = Transition.Slide;
+        private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
+        private List<Heartbeat_Data> heartbeat_data = new List<Heartbeat_Data>();
+        List<double> heartBeat = new List<double>();
+        List<string> Timestamp = new List<string>();
+        List<ChartSeries> tmp = new List<ChartSeries>();
+        List<string[]> ListOfDates = new List<string[]>();
+        int index = -1;
+        ChartSeries Series =
+        new ChartSeries()
+        {
+            Name = "Bpm",
+            Data = new double[] { }//heart
+        };
+        string[] XAxisLabels = { };
+        protected override async Task OnInitializedAsync()
+        {
             User_Data _userdata = new User_Data();
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             string user = authState.User.Identity.Name;
@@ -305,11 +298,9 @@
                     ListOfDates.Add(XAxisLabels);
                     heartBeat.Clear();
                     Timestamp.Clear();
-                    }
                 }
             }
-
-
+        }
         }
     </Authorized>
     <NotAuthorized>
