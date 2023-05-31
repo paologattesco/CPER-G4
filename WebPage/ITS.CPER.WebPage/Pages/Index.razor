@@ -109,80 +109,87 @@
         {
             int i = 1;
             int prova = 0;
-            <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+            int prova2 = 0;
+            @*<MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">*@
                 @foreach (var data in smartwatch_data)
                 {
-                    <MudCarouselItem Transition="transition" Color="@Color.Primary">
-                        <div class="spaceCards">
-                            <MudPaper Class="card1" Elevation="2">
-                                <MudPaper Class="leftside" Elevation="0">
-                                    <MudCard Class="sessionCard" Elevation="0">
+                    @*foreach (var s in tmp)
+                    {*@
+                    @*<MudCarouselItem Transition="transition" Color="@Color.Primary">*@
+                    <div class="spaceCards">
+                        <MudPaper Class="card1" Elevation="2">
+                            <MudPaper Class="leftside" Elevation="0">
+                                <MudCard Class="sessionCard" Elevation="0">
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h6">Session #@(
+                                    i++
+                                    )</MudText>
+                                            </CardHeaderContent>
+                                            <CardHeaderActions>
+                                                <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
+                                            </CardHeaderActions>
+                                        </MudCardHeader>
+                                        <MudCardContent Class="startEnd">
+                                            <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
+                                            <br />
+                                            <br />
+                                            <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
+                                            <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudPaper>
+                            </MudPaper>
+                            <MudPaper Class="card2" Elevation="2">
+                                <MudPaper Class="rightside" Elevation="0">
+                                    <MudCard Class="distanceCard">
                                         <MudCardHeader>
                                             <CardHeaderContent>
-                                                <MudText Typo="Typo.h6">Session #@(i++)</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                            <MudCardContent Class="startEnd">
-                                                <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
-                                                <br />
-                                                <br />
-                                                <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
-                                                <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
-                                            </MudCardContent>
-                                        </MudCard>
+                                                <MudText Typo="Typo.h6">Distance</MudText>
+                                                <MudText>@data.Distance m</MudText>
+                                            </CardHeaderContent>
+                                            <CardHeaderActions>
+                                                <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                                            </CardHeaderActions>
+                                        </MudCardHeader>
+                                    </MudCard>
+                                    <MudCard Class="poolsCard">
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">Pool Laps</MudText>
+                                                <MudText>N: @data.NumberOfPoolLaps</MudText>
+                                            </CardHeaderContent>
+                                            <CardHeaderActions>
+                                                <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
+                                            </CardHeaderActions>
+                                        </MudCardHeader>
+                                    </MudCard>
+                                    <MudCard Class="heartbeatCard">
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">Pulse Rate</MudText>
+                                                @*<MudText>@heartbeat_data bpm</MudText>*@
+                                            </CardHeaderContent>
+                                            <CardHeaderActions>
+                                                <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
+                                            </CardHeaderActions>
+                                        </MudCardHeader>
+                                    </MudCard>
+                                    <MudPaper Class="chart">
+
+                                <MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@tmp.Select(x => x).ToList()" @bind-SelectedIndex="index" XAxisLabels="@ListOfDates.Select(x => x).ElementAt(prova2++)" Width="100%" Height="350px"></MudChart>
                                     </MudPaper>
                                 </MudPaper>
-                                <MudPaper Class="card2" Elevation="2">
-                                    <MudPaper Class="rightside" Elevation="0">
-                                        <MudCard Class="distanceCard">
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Distance</MudText>
-                                                    <MudText>@data.Distance m</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                        </MudCard>
-                                        <MudCard Class="poolsCard">
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Pool Laps</MudText>
-                                                    <MudText>N: @data.NumberOfPoolLaps</MudText>
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                        </MudCard>
-                                        <MudCard Class="heartbeatCard">
-                                            <MudCardHeader>
-                                                <CardHeaderContent>
-                                                    <MudText Typo="Typo.h6">Pulse Rate</MudText>
-                                                    @*<MudText>@heartbeat_data bpm</MudText>*@
-                                                </CardHeaderContent>
-                                                <CardHeaderActions>
-                                                    <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
-                                                </CardHeaderActions>
-                                            </MudCardHeader>
-                                        </MudCard>
-                                        <MudPaper Class="chart">
-                                            <MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@Series" @bind-SelectedIndex="index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
-                                        </MudPaper>
-                                    </MudPaper>
-                                </MudPaper>
-                            </div>
-                        </MudCarouselItem>
+                            </MudPaper>
+                        </div>
+                    @*</MudCarouselItem>*@
+                @*}*@
                 }
-            </MudCarousel>
+            @*</MudCarousel>*@
         }
         else
         {
-
+                        int prova2 = 0;
             <div class="spaceCards">
                 <MudPaper Class="card1" Elevation="2">
                     <MudPaper Class="leftside" Elevation="0">
@@ -241,38 +248,38 @@
                             </MudCardHeader>
                         </MudCard>
                         <MudPaper Class="chart">
-                            <MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@Series" @bind-SelectedIndex="index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+                            @*<MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@tmp.Select(x => x).ToList()" @bind-SelectedIndex="index" XAxisLabels="@ListOfDates.Select(x => x).ElementAt(prova2++)" Width="100%" Height="350px"></MudChart>*@
                         </MudPaper>
                     </MudPaper>
                 </MudPaper>
             </div>
         }
         @code {
-        private bool arrows = true;
-        private bool bullets = false;
-        private bool enableSwipeGesture = true;
-        private bool autocycle = false;
-        private Transition transition = Transition.Slide;
-        private List<SmartWatch_Data>? smartwatch_data;
-        private List<Heartbeat_Data>? heartbeat_data;
-
-        int index = -1; //default value cannot be 0 -> first selectedindex is 0.
-
-        List<ChartSeries> Series = new List<ChartSeries>()
-        {
-        new ChartSeries()
-        {
-        Name = "Bpm",
-        Data = new double[] {}
-        }
-        };
-        string[] XAxisLabels = { };
-
-        protected override async Task OnInitializedAsync()
-        {
+            private bool arrows = true;
+            private bool bullets = false;
+            private bool enableSwipeGesture = true;
+            private bool autocycle = false;
+            private Transition transition = Transition.Slide;
+            private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
+            private List<Heartbeat_Data> heartbeat_data = new List<Heartbeat_Data>();
+            List<double> heartBeat = new List<double>();
+            List<string> Timestamp = new List<string>();
+            List<ChartSeries>tmp = new List<ChartSeries>();
+            List<string[]> ListOfDates = new List<string[]>();
+            int index = -1;
+            ChartSeries Series =
+            new ChartSeries()
+                {
+                    Name = "Bpm",
+                    Data = new double[] { }//heart
+                };
+            string[] XAxisLabels = {};
+            protected override async Task OnInitializedAsync()
+            {
             User_Data _userdata = new User_Data();
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             string user = authState.User.Identity.Name;
+
             if (user != null)
             {
                 _userdata.User_Id = _dataAccess.GetUserId(user);
@@ -280,18 +287,27 @@
                 foreach (var data in smartwatch_data)
                 {
                     heartbeat_data = await _dataAccess.HeartbeatQuery(data);
-
                     for (int i = 0; i < heartbeat_data.Count(); i++)
                     {
-                        Series.Add(new ChartSeries()
-                        {
-                            Data = new double[] { heartbeat_data.Select(x => x.Heartbeat).ElementAt(i) }
-                        });
-                        string[] XAxisLabels = { Convert.ToString(heartbeat_data.Select(x => x.Time).ElementAt(i)) };
+                        heartBeat.Add(heartbeat_data[i].Heartbeat);
+                        Timestamp.Add(Convert.ToString(heartbeat_data[i].Time));
+                    }
+                    double[] heart = heartBeat.ToArray();
+                    string[] time = Timestamp.ToArray();
+                    Series =
+                    new ChartSeries()
+                    {
+                        Name = "Bpm",
+                        Data = heart
+                    };
+                    XAxisLabels = time;
+                    tmp.Add(Series);
+                    ListOfDates.Add(XAxisLabels);
+                    heartBeat.Clear();
+                    Timestamp.Clear();
                     }
                 }
             }
-        }
 
 
         }
