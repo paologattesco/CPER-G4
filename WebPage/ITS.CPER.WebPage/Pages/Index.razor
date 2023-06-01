@@ -110,19 +110,22 @@
         {
             int heartbeat_value = 0;
 
-            if (ListOfDates.Count > 0)
+            @if (ListOfDates.Count > 0)
             {
-                foreach (var data in smartwatch_data)
+                <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+                @foreach (var data in smartwatch_data)
                 {
-
+                <MudCarouselItem Transition="Transition.Fade">
                     <div class="spaceCards">
                         <MudPaper Class="card1" Elevation="2">
                             <MudPaper Class="leftside" Elevation="0">
                                 <MudCard Class="sessionCard" Elevation="0">
                                     <MudCardHeader>
                                         <CardHeaderContent>
-                                            <MudText Typo="Typo.h6">Session</MudText>
-                                            <MudText Typo="Typo.button">ID: @data.Activity_Id</MudText>
+                                            <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id])+1)</MudText>
+                                            <div>
+                                                <MudText>POSIZIONE</MudText>
+                                            </div>
                                         </CardHeaderContent>
                                         <CardHeaderActions>
                                             <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
@@ -183,9 +186,10 @@
                         </MudPaper>
                     </div>
                 }
+                    </MudCarouselItem>
             }
-            else
-            {
+                </MudCarousel>
+            }else{
                 <h1>loading ...</h1>
             }
 
