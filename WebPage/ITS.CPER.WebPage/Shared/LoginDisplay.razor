@@ -11,11 +11,7 @@
                 </MudButton>
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem>
-                    <MudIconButton Icon="@Icons.Material.Filled.Person" Href="Identity/Account/Manage" Size="Size.Small" /> Profile
-                </MudMenuItem>
-                <MudDivider DividerType="DividerType.Middle" />
-                <MudMenuItem @onclick="OpenDialog" Class="align-items-center">
+                <MudMenuItem @onclick="OpenDialog" Class="align-items-center" Style="padding-bottom:0px; padding-top:0px;">
                     <MudIconButton Icon="@Icons.Material.Outlined.Logout" Size="Size.Small" @onclick="OpenDialog" /> Log out
                 </MudMenuItem>
             </ChildContent>
