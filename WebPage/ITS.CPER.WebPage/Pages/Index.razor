@@ -163,11 +163,9 @@
                                 <MudCard Class="heartbeatCard">
                                     <MudCardHeader>
                                         <CardHeaderContent>
-                                            <MudText Typo="Typo.h6">Pulse Rate</MudText>
+                                            <MudText Typo="Typo.h6">Avg Pulse Rate</MudText>
                                             <MudText>
-                                           @*     @(
-                                                    heartbeat_value < heartbeat_data.Count() ? heartbeat_data.ElementAt(heartbeat_value++).Heartbeat.ToString() : string.Empty
-                                                    ) bpm*@
+                                                   @(ListOfAverageHeartbeat[data.Activity_Id].FirstOrDefault()) bpm
                                             </MudText>
                                         </CardHeaderContent>
                                         <CardHeaderActions>
@@ -286,8 +284,10 @@
     private Transition transition = Transition.Slide;
     private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
 
+    Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
     Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
     Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
+
     ChartSeries Series =
     new ChartSeries()
         {
@@ -300,6 +300,7 @@
     {
         Dictionary<Guid, List<ChartSeries>> xx = new Dictionary<Guid, List<ChartSeries>>();
         Dictionary<Guid, string[]> yy = new Dictionary<Guid, string[]>();
+        Dictionary<Guid, List<Double>> zz = new Dictionary<Guid, List<Double>>();
 
         User_Data _userdata = new User_Data();
         string user = (await AuthState).User.Identity.Name;
@@ -329,9 +330,11 @@
                 XAxisLabels = time;
                 xx.Add(data.Activity_Id, new() { Series });
                 yy.Add(data.Activity_Id, XAxisLabels);
+                zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
             }
             tmp = xx;
             ListOfDates = yy;
+            ListOfAverageHeartbeat = zz;
         }
     }
 }
