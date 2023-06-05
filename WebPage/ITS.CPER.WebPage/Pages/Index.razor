@@ -40,7 +40,6 @@
                 border-radius: 25px;
                 width: 100%;
                 height: 100%;
-                box-shadow: 0px 5px 20px #0077B6;
             }
 
     /*.card .leftside .sessionCard .startEnd{
@@ -99,7 +98,15 @@
                 margin-top: -375px;
                 margin-left: 30%;
                 border-radius: 25px;
+                padding-left: 10px;
+                padding-right: 10px;
             }
+
+    .progressCircle{
+        margin-top: 16%;
+        margin-right: 53%;
+        margin-left: 47%;
+    }
 </style>
 
 <PageTitle>HomePage</PageTitle>
@@ -119,22 +126,24 @@
                     <div class="spaceCards">
                         <MudPaper Class="card1" Elevation="2">
                             <MudPaper Class="leftside" Elevation="0">
-                                <MudCard Class="sessionCard" Elevation="0">
+                                        <MudCard Class="sessionCard" Elevation="0" Style="background-color:#03045E;">
                                     <MudCardHeader>
                                         <CardHeaderContent>
-                                            <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id])+1)</MudText>
-                                            <div>
-                                                <MudText>POSIZIONE</MudText>
+                                            <MudImage Style="width: 60%" Src="images/circlePersonSwim.jpeg" Alt="person swim" />
+                                            <div style="color: white; margin-top: 10px;">
+                                                <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />POSIZIONE</MudText>
                                             </div>
                                         </CardHeaderContent>
                                         <CardHeaderActions>
-                                            <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
+                                            <div style="display: flex; justify-content: flex-start; align-items: flex-start; margin-top: unset;">
+                                                <MudText Typo="Typo.h6" Style="color:white; margin-top: 7px; margin-left: -20px;">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
+                                            </div>
                                         </CardHeaderActions>
                                     </MudCardHeader>
                                     <MudCardContent Class="startEnd">
                                         <br />
-                                        <MudText>Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
-                                        <MudText>End: @data.Final_Latitude, @data.Final_Longitude</MudText>
+                                        <MudText Style="color:white;">Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
+                                        <MudText Style="color:white;">End: @data.Final_Latitude, @data.Final_Longitude</MudText>
                                     </MudCardContent>
                                 </MudCard>
                             </MudPaper>
@@ -190,7 +199,7 @@
             }
                 </MudCarousel>
             }else{
-                <h1>loading ...</h1>
+                <MudProgressCircular Class="progressCircle" Color="Color.Default" Style="height:70px; width:70px;" Indeterminate="true" />
             }
 
         }
