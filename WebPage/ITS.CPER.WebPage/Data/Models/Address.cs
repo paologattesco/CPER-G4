@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Data;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -10,48 +13,41 @@ namespace ITS.CPER.WebPage.Data.Models;
 
 public class Address
 {
-    public string? City { get; set; }
-    public string? State { get; set; }
-    public string? PostalCode { get; set; }
-    public string? Country { get; set; }
-    public string? Country_Code { get; set; }
-    public string? Suburb { get; set; }
-    public string? Road { get; set; }
-    public string? State_District { get; set; }
-}
-public class RootObject
-{
-    [DataMember]
-    public string place_id { get; set; }
-    [DataMember]
-    public string licence { get; set; }
-    [DataMember]
-    public string osm_type { get; set; }
-    [DataMember]
-    public string osm_id { get; set; }
-    [DataMember]
-    public string lat { get; set; }
-    [DataMember]
-    public string lon { get; set; }
-    [DataMember]
-    public string display_name { get; set; }
-    [DataMember]
-    public Address address { get; set; }
-    public async void GetAddress(double lat, double lon)
+    public string? country { get; set; }
+    public string? state { get; set; }
+    public string? city { get; set; }
+
+
+    public async Task<Address> GetAddress(double lat, double lon)
     {
-        var client = new HttpClient();
-        var apiUrl = new Uri($"http://nominatim.openstreetmap.org/reverse?format=json&lat={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+        Address address = new Address(); 
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"https://api.geoapify.com/v1/geocode/reverse?lat={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}&apiKey=ebce859ec6564aa0a534a22be6361d1c");
 
-        //var response = await client.GetAsync(apiUrl);
-        //response.EnsureSuccessStatusCode();
-        //var content = response.Content.ReadAsStringAsync();
-        //var a = 0;
+            // Setting content type.  
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        //var json = System.Text.Json.JsonSerializer.Serialize(details);
-        //var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // Initialization.  
+            HttpResponseMessage response = new HttpResponseMessage();
 
-        //var response = await client.PostAsync(apiUrl, content);
-        //response.EnsureSuccessStatusCode();
+            // HTTP GET  
+            response = await client.GetAsync(client.BaseAddress).ConfigureAwait(false);
+            if (response.IsSuccessStatusCode)
+            {
+                string result = response.Content.ReadAsStringAsync().Result;
+                JObject jObj = JObject.Parse(result);
+
+                address.country = (string?)jObj.SelectToken("features[0].properties.country");
+                address.state = (string?)jObj.SelectToken("features[0].properties.state");
+                address.city = (string?)jObj.SelectToken("features[0].properties.city");
+
+            }
+        }
+        return address;
     }
 }
+
+
+
 

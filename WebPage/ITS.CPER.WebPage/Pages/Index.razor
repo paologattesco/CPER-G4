@@ -295,7 +295,7 @@
     private bool autocycle = false;
     private Transition transition = Transition.Slide;
     private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-    private RootObject address = new RootObject();
+    private Address address = new Address();
     Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
     Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
     Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
@@ -343,8 +343,7 @@
                 xx.Add(data.Activity_Id, new() { Series });
                 yy.Add(data.Activity_Id, XAxisLabels);
                 zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
-                address.GetAddress(62.3221080000, 57.9157790000);
-                Console.WriteLine("Full Address" + address.display_name);
+                address = await address.GetAddress(62.3221080000, 57.9157790000);
             }
             tmp = xx;
             ListOfDates = yy;
