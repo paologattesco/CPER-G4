@@ -42,10 +42,10 @@ public class RootObject
         var client = new HttpClient();
         var apiUrl = new Uri($"http://nominatim.openstreetmap.org/reverse?format=json&lat={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
 
-        var response = await client.GetAsync(apiUrl);
-        response.EnsureSuccessStatusCode();
-        var content = response.Content.ReadAsStringAsync();
-        var a = 0;
+        //var response = await client.GetAsync(apiUrl);
+        //response.EnsureSuccessStatusCode();
+        //var content = response.Content.ReadAsStringAsync();
+        //var a = 0;
         //var json = System.Text.Json.JsonSerializer.Serialize(details);
         //var content = new StringContent(json, Encoding.UTF8, "application/json");
 
