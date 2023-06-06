@@ -102,11 +102,11 @@
                 padding-right: 10px;
             }
 
-    .progressCircle{
-        margin-top: 16%;
-        margin-right: 53%;
-        margin-left: 47%;
-    }
+            .progressCircle{
+                margin-top: 16%;
+                margin-right: 53%;
+                margin-left: 47%;
+            }
 </style>
 
 <PageTitle>HomePage</PageTitle>
@@ -115,8 +115,6 @@
   
         @if (smartwatch_data != null && smartwatch_data.Count() != 0)
         {
-            int heartbeat_value = 0;
-
             @if (ListOfDates.Count > 0)
             {
                 <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
@@ -142,8 +140,8 @@
                                     </MudCardHeader>
                                     <MudCardContent Class="startEnd">
                                         <br />
-                                        <MudText Style="color:white;">Start: @data.Initial_Latitude, @data.Initial_Longitude</MudText>
-                                        <MudText Style="color:white;">End: @data.Final_Latitude, @data.Final_Longitude</MudText>
+                                                    <MudText Style="color:white;">Start: @ListOfDates[data.Activity_Id].First()</MudText>
+                                                    <MudText Style="color:white;">End: @ListOfDates[data.Activity_Id].Last()</MudText>
                                     </MudCardContent>
                                 </MudCard>
                             </MudPaper>
@@ -296,7 +294,7 @@
     private bool autocycle = false;
     private Transition transition = Transition.Slide;
     private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-
+    private RootObject address = new RootObject();
     Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
     Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
     Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
@@ -344,10 +342,14 @@
                 xx.Add(data.Activity_Id, new() { Series });
                 yy.Add(data.Activity_Id, XAxisLabels);
                 zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
+                address.GetAddress(62.3221080000, 57.9157790000);
+                Console.WriteLine("Full Address" + address.display_name);
             }
             tmp = xx;
             ListOfDates = yy;
             ListOfAverageHeartbeat = zz;
+
         }
     }
+
 }
