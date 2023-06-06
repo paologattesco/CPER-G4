@@ -46,6 +46,7 @@ public class RootObject
         //response.EnsureSuccessStatusCode();
         //var content = response.Content.ReadAsStringAsync();
         //var a = 0;
+
         //var json = System.Text.Json.JsonSerializer.Serialize(details);
         //var content = new StringContent(json, Encoding.UTF8, "application/json");
 
