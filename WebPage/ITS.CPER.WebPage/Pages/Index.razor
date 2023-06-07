@@ -134,8 +134,10 @@
                                                 <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
                                                 @if (@ListOfAddress[data.Activity_Id].Select(x => x.Country).FirstOrDefault() != null)
                                                 {
-                                                    @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
-                                                }else{
+                                                                @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
+                                                                @Spazio
+                                                                @ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault()
+                                                            }else{
                                                 @ListOfAddress[data.Activity_Id].Select(x => x.Ocean ).FirstOrDefault()
 
                                                 }
@@ -358,4 +360,6 @@
             ListOfAddress = ii;
         }
     }
+
+    string Spazio = ", ";
 }

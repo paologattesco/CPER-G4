@@ -14,8 +14,7 @@ namespace ITS.CPER.WebPage.Data.Models;
 public class Address
 {
     public string? Country { get; set; }
-    //public string? State { get; set; }
-    //public string? City { get; set; }
+    public string? State { get; set; }
     public string? Ocean { get; set; }
 
     public async Task<Address> GetAddress(double lat, double lon)
@@ -38,9 +37,8 @@ public class Address
                 string result = response.Content.ReadAsStringAsync().Result;
                 JObject jObj = JObject.Parse(result);
                 address.Country = (string?)jObj.SelectToken("features[0].properties.country");
-                //address.State = (string?)jObj.SelectToken("features[0].properties.state");
-                //address.City = (string?)jObj.SelectToken("features[0].properties.city");
-                if(address.Country == null)
+                address.State = (string?)jObj.SelectToken("features[0].properties.state");
+                if (address.Country == null)
                 {
                     address.Ocean = (string?)jObj.SelectToken("features[0].properties.ocean");
                 }
