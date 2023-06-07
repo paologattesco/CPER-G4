@@ -13,14 +13,14 @@ namespace ITS.CPER.WebPage.Data.Models;
 
 public class Address
 {
-    public string? country { get; set; }
-    public string? state { get; set; }
-    public string? city { get; set; }
-
+    public string? Country { get; set; }
+    //public string? State { get; set; }
+    //public string? City { get; set; }
+    public string? Ocean { get; set; }
 
     public async Task<Address> GetAddress(double lat, double lon)
     {
-        Address address = new Address(); 
+        Address address = new Address();
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri($"https://api.geoapify.com/v1/geocode/reverse?lat={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}&apiKey=ebce859ec6564aa0a534a22be6361d1c");
@@ -37,11 +37,13 @@ public class Address
             {
                 string result = response.Content.ReadAsStringAsync().Result;
                 JObject jObj = JObject.Parse(result);
-
-                address.country = (string?)jObj.SelectToken("features[0].properties.country");
-                address.state = (string?)jObj.SelectToken("features[0].properties.state");
-                address.city = (string?)jObj.SelectToken("features[0].properties.city");
-
+                address.Country = (string?)jObj.SelectToken("features[0].properties.country");
+                //address.State = (string?)jObj.SelectToken("features[0].properties.state");
+                //address.City = (string?)jObj.SelectToken("features[0].properties.city");
+                if(address.Country == null)
+                {
+                    address.Ocean = (string?)jObj.SelectToken("features[0].properties.ocean");
+                }
             }
         }
         return address;

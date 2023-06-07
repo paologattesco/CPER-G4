@@ -132,9 +132,13 @@
                                             <div style="color: white; margin-top: 10px;">
                                                 <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
                                                 <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
-                                                    @ListOfAddress[data.Activity_Id].Select(x => x.country ).FirstOrDefault(), 
-                                                    @ListOfAddress[data.Activity_Id].Select(x => x.state).FirstOrDefault(), 
-                                                    @ListOfAddress[data.Activity_Id].Select(x => x.city).FirstOrDefault()
+                                                @if (@ListOfAddress[data.Activity_Id].Select(x => x.Country).FirstOrDefault() != null)
+                                                {
+                                                    @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
+                                                }else{
+                                                @ListOfAddress[data.Activity_Id].Select(x => x.Ocean ).FirstOrDefault()
+
+                                                }
                                                 </MudText>
                                             </div>
                                         </CardHeaderContent>
