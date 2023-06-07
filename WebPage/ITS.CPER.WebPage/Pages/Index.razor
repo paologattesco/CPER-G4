@@ -131,7 +131,8 @@
                                             <MudImage Style="width: 80%; border-radius:10px;" Src="images/sea-monkey.gif" Alt="person swim" />
                                             <div style="color: white; margin-top: 10px;">
                                                 <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
-                                                <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
+                                                <MudText Style="display: flex; flex-direction: row; align-items: center;">
+                                                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
                                                 @if (@ListOfAddress[data.Activity_Id].Select(x => x.Country).FirstOrDefault() != null)
                                                 {
                                                                 @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
