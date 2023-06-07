@@ -120,7 +120,7 @@
                 <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
                 @foreach (var data in smartwatch_data)
                 {
-                <MudCarouselItem Transition="Transition.Fade">
+                    <MudCarouselItem Transition="Transition.Fade">
                     <div class="spaceCards">
                         <MudPaper Class="card1" Elevation="2">
                             <MudPaper Class="leftside" Elevation="0">
@@ -135,9 +135,9 @@
                                                 <MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
                                                 @if (@ListOfAddress[data.Activity_Id].Select(x => x.Country).FirstOrDefault() != null)
                                                 {
-                                                                @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
-                                                                @Spazio
-                                                                @ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault()
+                                                                @(ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
+                                                                +", "+
+                                                                ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault())
                                                             }else{
                                                 @ListOfAddress[data.Activity_Id].Select(x => x.Ocean ).FirstOrDefault()
 
