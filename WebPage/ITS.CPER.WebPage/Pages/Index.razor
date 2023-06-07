@@ -130,14 +130,14 @@
                                             @*<MudImage Style="width: 60%" Src="images/circlePersonSwim.jpeg" Alt="person swim" />*@
                                             <MudImage Style="width: 80%; border-radius:10px;" Src="images/sea-monkey.gif" Alt="person swim" />
                                             <div style="color: white; margin-top: 10px;">
-                                                <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />POSIZIONE</MudText>
+                                                <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
+                                                <MudText><MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
+                                                    @ListOfAddress[data.Activity_Id].Select(x => x.country ).FirstOrDefault(), 
+                                                    @ListOfAddress[data.Activity_Id].Select(x => x.state).FirstOrDefault(), 
+                                                    @ListOfAddress[data.Activity_Id].Select(x => x.city).FirstOrDefault()
+                                                </MudText>
                                             </div>
                                         </CardHeaderContent>
-                                        <CardHeaderActions>
-                                            <div style="display: flex; justify-content: flex-start; align-items: flex-start; margin-top: unset;">
-                                                <MudText Typo="Typo.h6" Style="color:white; margin-top: 7px; margin-left: -20px;">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
-                                            </div>
-                                        </CardHeaderActions>
                                     </MudCardHeader>
                                     <MudCardContent Class="startEnd">
                                         <br />
@@ -299,6 +299,7 @@
     Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
     Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
     Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
+    Dictionary<Guid, List<Address>> ListOfAddress = new Dictionary<Guid, List<Address>>();
 
     ChartSeries Series =
     new ChartSeries()
@@ -313,6 +314,7 @@
         Dictionary<Guid, List<ChartSeries>> xx = new Dictionary<Guid, List<ChartSeries>>();
         Dictionary<Guid, string[]> yy = new Dictionary<Guid, string[]>();
         Dictionary<Guid, List<Double>> zz = new Dictionary<Guid, List<Double>>();
+        Dictionary<Guid, List<Address>> ii = new Dictionary<Guid, List<Address>>();
 
         User_Data _userdata = new User_Data();
         string user = (await AuthState).User.Identity.Name;
@@ -343,13 +345,13 @@
                 xx.Add(data.Activity_Id, new() { Series });
                 yy.Add(data.Activity_Id, XAxisLabels);
                 zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
-                address = await address.GetAddress(62.3221080000, 57.9157790000);
+                address = await address.GetAddress(data.Initial_Latitude, data.Initial_Longitude);
+                ii.Add(data.Activity_Id, new() { address });
             }
             tmp = xx;
             ListOfDates = yy;
             ListOfAverageHeartbeat = zz;
-
+            ListOfAddress = ii;
         }
     }
-
 }
