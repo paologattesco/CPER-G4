@@ -72,18 +72,11 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        Guid ProductionBatchGuid = Guid.NewGuid();
-        sql.CommandText = @"
-            INSERT INTO [dbo].[BatchesProduction]([Id],[Production_Date])VALUES(@batch_guid,@date)";
-        sql.Parameters.AddWithValue("@batch_guid", ProductionBatchGuid);
-        sql.Parameters.AddWithValue("@date", DateTime.Now);
-        sql.ExecuteNonQuery();
 
         sql.CommandText = @"
-            INSERT INTO [dbo].[SmartWatches]([Id],[FK_Batch_Id],[FK_User_Id])VALUES(@smartwatch_guid,@batch_id,@id)";
+            INSERT INTO [dbo].[SmartWatches]([Id],[FK_User_Id])VALUES(@smartwatch_guid,@id)";
         sql.Parameters.AddWithValue("@id", id);
         sql.Parameters.AddWithValue("@smartwatch_guid", Guid.NewGuid());
-        sql.Parameters.AddWithValue("@batch_id", ProductionBatchGuid);
         sql.ExecuteNonQuery();
  
     }
