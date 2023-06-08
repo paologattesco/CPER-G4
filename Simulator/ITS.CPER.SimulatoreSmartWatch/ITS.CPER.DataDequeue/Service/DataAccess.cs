@@ -34,16 +34,15 @@ public class DataAccess : IDataAccess
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
         
-        sql.CommandText = $"INSERT INTO [dbo].[SmartWatches]([SmartWatch_Id],[Activity_Id],[Initial_Latitude],[Initial_Longitude],[Distance],[NumberOfPoolLaps],[Final_Latitude],[Final_Longitude],[FK_UserId])VALUES(@SmartWatch_Id,@Activity_Id,@Initial_Latitude,@Initial_Longitude,@Distance,@NumberOfPoolLaps,@Final_Latitude,@Final_Longitude,@User_Id)";
-        sql.Parameters.AddWithValue("@SmartWatch_Id", data.SmartWatch_Id);
-        sql.Parameters.AddWithValue("@Activity_Id", data.Activity_Id);
+        sql.CommandText = $"INSERT INTO [dbo].[Activities]([Id],[Initial_Latitude],[Initial_Longitude],[Distance],[NumberOfPoolLaps],[Final_Latitude],[Final_Longitude],[FK_SmartWatch_Id])VALUES(@Id,@Initial_Latitude,@Initial_Longitude,@Distance,@NumberOfPoolLaps,@Final_Latitude,@Final_Longitude,@FK_SmartWatch_Id)";
+        sql.Parameters.AddWithValue("@Id", data.Activity_Id);
         sql.Parameters.AddWithValue("@Initial_Latitude", data.Latitude);
         sql.Parameters.AddWithValue("@Initial_Longitude", data.Longitude);
         sql.Parameters.AddWithValue("@Distance", data.Distance);
         sql.Parameters.AddWithValue("@NumberOfPoolLaps", data.NumberOfPoolLaps);
         sql.Parameters.AddWithValue("@Final_Latitude", data.Latitude);
         sql.Parameters.AddWithValue("@Final_Longitude", data.Longitude);
-        sql.Parameters.AddWithValue("@User_Id", data.User_Id);
+        sql.Parameters.AddWithValue("@FK_SmartWatch_Id", data.SmartWatch_Id);
         sql.ExecuteNonQuery();
     }
 
@@ -52,12 +51,12 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"UPDATE [dbo].[SmartWatches] SET Distance = @Distance, NumberOfPoolLaps = @NumberOfPoolLaps, Final_Latitude = @Final_Latitude, Final_Longitude = @Final_Longitude WHERE Activity_Id = @Activity_Id";
+        sql.CommandText = $"UPDATE [dbo].[Activities] SET Distance = @Distance, NumberOfPoolLaps = @NumberOfPoolLaps, Final_Latitude = @Final_Latitude, Final_Longitude = @Final_Longitude WHERE Id = @Id";
         sql.Parameters.AddWithValue("@Distance", data.Distance);
         sql.Parameters.AddWithValue("@NumberOfPoolLaps", data.NumberOfPoolLaps);
         sql.Parameters.AddWithValue("@Final_Latitude", data.Latitude);
         sql.Parameters.AddWithValue("@Final_Longitude", data.Longitude);
-        sql.Parameters.AddWithValue("@Activity_Id", ActivityId);
+        sql.Parameters.AddWithValue("@Id", ActivityId);
         sql.ExecuteNonQuery();
     }
     public bool GetActivityId(Guid ActivityId)
@@ -65,8 +64,8 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"SELECT COUNT(*) FROM [dbo].[SmartWatches] WHERE Activity_Id=@Activity_Id";
-        sql.Parameters.AddWithValue("@Activity_Id", ActivityId);
+        sql.CommandText = $"SELECT COUNT(*) FROM [dbo].[Activities] WHERE Id=@Id";
+        sql.Parameters.AddWithValue("@Id", ActivityId);
         int count = (int)sql.ExecuteScalar();
         bool hasResults = count > 0;
         return hasResults;

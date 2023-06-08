@@ -22,13 +22,13 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"SELECT [SmartWatch_Id] FROM [dbo].[UserDetails]";
+        sql.CommandText = $"SELECT [Id] FROM [dbo].[SmartWatches]";
         var result = new List<Guid>();
         using (SqlDataReader reader = sql.ExecuteReader())
         {
             while (reader.Read())
             {
-                result.Add(Guid.Parse((string)reader["SmartWatch_Id"]));
+                result.Add(Guid.Parse((string)reader["Id"]));
             }
             reader.Close();
         }
@@ -40,14 +40,14 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"SELECT [User_Id] FROM [dbo].[UserDetails] WHERE SmartWatch_Id = @SmartWatch_Id";
-        sql.Parameters.AddWithValue("@SmartWatch_Id", smartwatchId);
+        sql.CommandText = $"SELECT [FK_User_Id] FROM [dbo].[SmartWatches] WHERE Id = @Id";
+        sql.Parameters.AddWithValue("@Id", smartwatchId);
         var result = new Guid();
         using (SqlDataReader reader = sql.ExecuteReader())
         {
             while (reader.Read())
             {
-                result = Guid.Parse((string)reader["User_Id"]);
+                result = Guid.Parse((string)reader["FK_User_Id"]);
             }
             reader.Close();
         }
