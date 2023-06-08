@@ -135,13 +135,14 @@
                                                 <MudIcon Icon="@Icons.Material.Filled.LocationOn" Title="Location" Style="font-size:larger;" />
                                                 @if (@ListOfAddress[data.Activity_Id].Select(x => x.Country).FirstOrDefault() != null)
                                                 {
-                                                                @(ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
-                                                                +", "+
-                                                                ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault())
-                                                            }else{
-                                                @ListOfAddress[data.Activity_Id].Select(x => x.Ocean ).FirstOrDefault()
-
-                                                }
+                                                        @ListOfAddress[data.Activity_Id].Select(x => x.Country ).FirstOrDefault()
+                                                        if (@ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault() != null)
+                                                        {
+                                                            @(
+                                                            ", " +
+                                                            (ListOfAddress[data.Activity_Id].Select(x => x.State).FirstOrDefault()))
+                                                        }
+                                                    }
                                                 </MudText>
                                             </div>
                                         </CardHeaderContent>
