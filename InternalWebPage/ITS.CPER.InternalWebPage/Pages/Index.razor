@@ -288,40 +288,8 @@ else
     string[] XAxisLabels = { };
 
     protected override async Task OnInitializedAsync()
-    {
-        Dictionary<Guid, List<ChartSeries>> xx = new Dictionary<Guid, List<ChartSeries>>();
-        Dictionary<Guid, string[]> yy = new Dictionary<Guid, string[]>();
-        Dictionary<Guid, List<Double>> zz = new Dictionary<Guid, List<Double>>();
-
-        User_Data _userdata = new User_Data();
-        
-        smartwatch_data = await _dataAccess.GetSmartWatchDataAsync(_userdata.User_Id);
-        foreach (var data in smartwatch_data)
-        {
-            List<double> heartBeat = new List<double>();
-            List<string> Timestamp = new List<string>();
-            var heartbeatData = await _dataAccess.HeartbeatQuery(data);
-            for (int i = 0; i < heartbeatData.Count(); i++)
-            {
-                heartBeat.Add(heartbeatData[i].Heartbeat);
-                Timestamp.Add(Convert.ToString(heartbeatData[i].Time));
-            }
-            double[] heart = heartBeat.ToArray();
-            string[] time = Timestamp.ToArray();
-            Series =
-            new ChartSeries()
-                {
-                    Name = "Bpm",
-                    Data = heart
-                };
-            XAxisLabels = time;
-            xx.Add(data.Activity_Id, new() { Series });
-            yy.Add(data.Activity_Id, XAxisLabels);
-            zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
-        }
-        tmp = xx;
-        ListOfDates = yy;
-        ListOfAverageHeartbeat = zz;
+    {        
+        smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
     }
     }
 }

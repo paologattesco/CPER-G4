@@ -19,7 +19,7 @@ public class DataAccess : IDataAccess
         _org = configuration.GetConnectionString("Org");
     }
 
-    public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
+    public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync()
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
@@ -34,9 +34,7 @@ public class DataAccess : IDataAccess
                 ,[Final_Latitude]
                 ,[Final_Longitude]
             FROM [dbo].[SmartWatches]
-            WHERE FK_UserId = @id
             ";
-        sql.Parameters.AddWithValue("@id", id);
         sql.ExecuteNonQuery();
         var result = new List<SmartWatch_Data>();
         using (SqlDataReader reader = sql.ExecuteReader())
@@ -59,72 +57,5 @@ public class DataAccess : IDataAccess
             reader.Close();
         }
             return result;
-    }
-
-    public void InsertNewUser(Guid id)
-    {
-        using var connection = new SqlConnection(_connectionDb);
-        connection.Open();
-        SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = @"
-            INSERT INTO [dbo].[UserDetails]([User_Id],[SmartWatch_Id])VALUES(@id,@guid)";
-        sql.Parameters.AddWithValue("@id", id);
-        sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
-        sql.ExecuteNonQuery();
-    }
-    public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
-    {
-        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
-        var activity_id = Convert.ToString(data.Activity_Id);
-        var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
-        var flux = "from(bucket:\"SmartWatches\") " +
-            "|> range(start: 0) \r\n" +
-            "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
-            $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
-            $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
-            "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")\r\n  " +
-            "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
-
-        var queryApi = client.GetQueryApi();
-        var fluxTables = await queryApi.QueryAsync(flux, _org);
-
-        var heartbeat = new List<Heartbeat_Data>();
-        fluxTables.ForEach(fluxTable =>
-        {
-            var fluxRecords = fluxTable.Records;
-
-            fluxRecords.ForEach(fluxRecord =>
-            {
-                Heartbeat_Data newHearbeat = new Heartbeat_Data()
-                {
-                    Time = (Instant)fluxRecord.GetTime(),
-                    Heartbeat = Convert.ToInt32(fluxRecord.GetValue())
-
-                };
-                heartbeat.Add(newHearbeat);
-
-            });
-        });
-        return heartbeat;
-    }
-
-    public Guid GetUserId(string UserName)
-    {
-        using var connection = new SqlConnection(_connectionDb);
-        connection.Open();
-        SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = $"SELECT [Id] FROM [dbo].[AspNetUsers] WHERE UserName = @UserName";
-        sql.Parameters.AddWithValue("@UserName", UserName);
-        var result = new Guid();
-        using (SqlDataReader reader = sql.ExecuteReader())
-        {
-            while (reader.Read())
-            {
-                result = Guid.Parse((string)reader["Id"]);
-                
-            }
-            reader.Close();
-        }
-        return result;
     }
 }
