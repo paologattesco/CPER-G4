@@ -1,23 +1,27 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor;
+@inherits LayoutComponentBase
 
 <PageTitle>ITS.CPER.InternalWebPage</PageTitle>
 
-<div style="background-color: #03043a; color:#64DD17;">
-    <nav Elevation="0" style="background-color: #03043a; color:#64DD17;">
-        <div style="display:flex; flex-direction:row; justify-content:flex-start">
-            <img style="width: 30%" src="images/logo.png" alt="Earth4Sport" />
-        </div>
-    </nav>
-    @*<MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0" Style="@($"background-color: #03043a; color:{Colors.LightGreen.Accent4};")">
+        <MudContainer Style="display:flex; flex-direction:row; justify-content:flex-start">
+            <MudImage Style="width: 30%" Src="images/logo.png" Alt="Earth4Sport" />
+        </MudContainer>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">ITS.CPER.InternalWebPage</MudText>
         </MudDrawerHeader>
-    </MudDrawer>*@
-</div>
-<div>
-    @Body
-</div>
-
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 @code {
     bool _drawerOpen = false;
 

@@ -25,15 +25,16 @@ public class DataAccess : IDataAccess
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
         sql.CommandText = @"
-            SELECT [SmartWatch_Id]
-                ,[Activity_Id]
-                ,[Initial_Latitude]
-                ,[Initial_Longitude]
-                ,[Distance]
-                ,[NumberOfPoolLaps]
-                ,[Final_Latitude]
-                ,[Final_Longitude]
-            FROM [dbo].[SmartWatches]
+            SELECT a.FK_SmartWatch_Id
+            ,a.Id
+            ,a.Initial_Latitude
+            ,a.Initial_Longitude
+            ,a.Distance
+            ,a.NumberOfPoolLaps
+            ,a.Final_Latitude
+            ,a.Final_Longitude
+            FROM [dbo].[Activities] AS a
+            JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
             ";
         sql.ExecuteNonQuery();
         var result = new List<SmartWatch_Data>();
@@ -43,8 +44,8 @@ public class DataAccess : IDataAccess
             {
                 SmartWatch_Data smartWatch = new SmartWatch_Data
                 {
-                    SmartWatch_Id = Guid.Parse((string)reader["SmartWatch_Id"]),
-                    Activity_Id = Guid.Parse((string)reader["Activity_Id"]),
+                    SmartWatch_Id = Guid.Parse((string)reader["FK_SmartWatch_Id"]),
+                    Activity_Id = Guid.Parse((string)reader["Id"]),
                     Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
                     Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
                     Distance = Convert.ToDouble(reader["Distance"]),
@@ -56,6 +57,42 @@ public class DataAccess : IDataAccess
             }
             reader.Close();
         }
-            return result;
+        return result;
+    }
+
+    public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
+    {
+        using var client = new InfluxDBClient("https://eu-central-1-1.aws.cloud2.influxdata.com", _influxToken);
+        var activity_id = Convert.ToString(data.Activity_Id);
+        var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
+        var flux = "from(bucket:\"SmartWatches\") " +
+            "|> range(start: 0) \r\n" +
+            "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
+            $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
+            $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
+            "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")\r\n  " +
+            "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
+
+        var queryApi = client.GetQueryApi();
+        var fluxTables = await queryApi.QueryAsync(flux, _org);
+
+        var heartbeat = new List<Heartbeat_Data>();
+        fluxTables.ForEach(fluxTable =>
+        {
+            var fluxRecords = fluxTable.Records;
+
+            fluxRecords.ForEach(fluxRecord =>
+            {
+                Heartbeat_Data newHearbeat = new Heartbeat_Data()
+                {
+                    Time = (Instant)fluxRecord.GetTime(),
+                    Heartbeat = Convert.ToInt32(fluxRecord.GetValue())
+
+                };
+                heartbeat.Add(newHearbeat);
+
+            });
+        });
+        return heartbeat;
     }
 }
