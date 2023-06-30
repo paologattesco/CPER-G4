@@ -72,7 +72,7 @@ public class DataAccess : IDataAccess
     }
     public void InsertInfluxDb(SmartWatch_Data data)
     {
-        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
+        using var client = new InfluxDBClient("https://eu-central-1-1.aws.cloud2.influxdata.com", _influxToken);
 
         var query = PointData.Measurement("smartwatches")
             .Tag("User_Id", data.User_Id.ToString())
