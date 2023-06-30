@@ -23,23 +23,24 @@ public class DataAccess : IDataAccess
         _bucket = configuration.GetConnectionString("Bucket");
         _org = configuration.GetConnectionString("Org");
     }
-
-    public async Task<IEnumerable<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
+    //TODO
+    public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
         sql.CommandText = @"
-            SELECT [SmartWatch_Id]
-                ,[Activity_Id]
-                ,[Initial_Latitude]
-                ,[Initial_Longitude]
-                ,[Distance]
-                ,[NumberOfPoolLaps]
-                ,[Final_Latitude]
-                ,[Final_Longitude]
-            FROM [dbo].[SmartWatches]
-            WHERE FK_UserId = @id
+            SELECT a.FK_SmartWatch_Id
+            ,a.Id
+            ,a.Initial_Latitude
+            ,a.Initial_Longitude
+            ,a.Distance
+            ,a.NumberOfPoolLaps
+            ,a.Final_Latitude
+            ,a.Final_Longitude
+            FROM [dbo].[Activities] AS a
+            JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
+            WHERE s.FK_User_Id = @id
             ";
         sql.Parameters.AddWithValue("@id", id);
         sql.ExecuteNonQuery();
@@ -50,8 +51,8 @@ public class DataAccess : IDataAccess
             {
                 SmartWatch_Data smartWatch = new SmartWatch_Data
                 {
-                    SmartWatch_Id = Guid.Parse((string)reader["SmartWatch_Id"]),
-                    Activity_Id = Guid.Parse((string)reader["Activity_Id"]),
+                    SmartWatch_Id = Guid.Parse((string)reader["FK_SmartWatch_Id"]),
+                    Activity_Id = Guid.Parse((string)reader["Id"]),
                     Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
                     Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
                     Distance = Convert.ToDouble(reader["Distance"]),
@@ -71,13 +72,15 @@ public class DataAccess : IDataAccess
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
+
         sql.CommandText = @"
-            INSERT INTO [dbo].[UserDetails]([User_Id],[SmartWatch_Id])VALUES(@id,@guid)";
+            INSERT INTO [dbo].[SmartWatches]([Id],[FK_User_Id])VALUES(@smartwatch_guid,@id)";
         sql.Parameters.AddWithValue("@id", id);
-        sql.Parameters.AddWithValue("@guid",Guid.NewGuid());
+        sql.Parameters.AddWithValue("@smartwatch_guid", Guid.NewGuid());
         sql.ExecuteNonQuery();
+ 
     }
-    public async Task<IEnumerable<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
+    public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
         var activity_id = Convert.ToString(data.Activity_Id);
