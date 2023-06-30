@@ -109,219 +109,52 @@
 
 <PageTitle>HomePage</PageTitle>
 
-@if (smartwatch_data != null && smartwatch_data.Count() != 0)
+@if (smartwatch_data == null)
 {
-    @if (ListOfDates.Count > 0)
-    {
-        <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-        @foreach (var data in smartwatch_data)
-        {
-        <MudCarouselItem Transition="Transition.Fade">
-            <div class="spaceCards">
-                <MudPaper Class="card1" Elevation="2">
-                    <MudPaper Class="leftside" Elevation="0">
-                                <MudCard Class="sessionCard" Elevation="0" Style="background-color:#03045E;">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    @*<MudImage Style="width: 60%" Src="images/circlePersonSwim.jpeg" Alt="person swim" />*@
-                                    <MudImage Style="width: 80%; border-radius:10px;" Src="images/sea-monkey.gif" Alt="person swim" />
-                                    <div style="color: white; margin-top: 10px;">
-                                        <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
-                                        <MudText Style="display: flex; flex-direction: row; align-items: center;">
-                                        </MudText>
-                                    </div>
-                                </CardHeaderContent>
-                            </MudCardHeader>
-                            <MudCardContent Class="startEnd">
-                                <br />
-                                <MudText Style="color:white;">Start: @ListOfDates[data.Activity_Id].First()</MudText>
-                                <MudText Style="color:white;">End: @ListOfDates[data.Activity_Id].Last()</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudPaper>
-                </MudPaper>
-                <MudPaper Class="card2" Elevation="2">
-                    <MudPaper Class="rightside" Elevation="0">
-                        <MudCard Class="distanceCard">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">Distance</MudText>
-                                    <MudText>@data.Distance m</MudText>
-                                </CardHeaderContent>
-                                <CardHeaderActions>
-                                    <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                        </MudCard>
-                        <MudCard Class="poolsCard">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">Pool Laps</MudText>
-                                    <MudText>N: @data.NumberOfPoolLaps</MudText>
-                                </CardHeaderContent>
-                                <CardHeaderActions>
-                                    <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                        </MudCard>
-                        <MudCard Class="heartbeatCard">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.h6">Avg Pulse Rate</MudText>
-                                    <MudText>
-                                            @(ListOfAverageHeartbeat[data.Activity_Id].FirstOrDefault()) bpm
-                                    </MudText>
-                                </CardHeaderContent>
-                                <CardHeaderActions>
-                                    <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
-                                </CardHeaderActions>
-                            </MudCardHeader>
-                        </MudCard>
-                        <MudPaper Class="chart">
-                            <MudChart ChartType="ChartType.Line" Color="#F44336"
-                            ChartSeries="@(tmp[data.Activity_Id])"
-                            XAxisLabels="@(ListOfDates[data.Activity_Id])"
-                            Width="100%" Height="350px"></MudChart>
-                        </MudPaper>
-                    </MudPaper>
-                </MudPaper>
-            </div>
-        }
-            </MudCarouselItem>
-    }
-        </MudCarousel>
-    }else{
-        <MudProgressCircular Class="progressCircle" Color="Color.Default" Style="height:70px; width:70px;" Indeterminate="true" />
-    }
-
+    <p><em>Loading...</em></p>
 }
 else
 {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SmartWatch_Id</th>
+                <th>Activity_Id</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>NumberOfPoolLaps</th>
+                <th>Distance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in smartwatch_data)
+            {
+                <tr>
+                    <td>@data.SmartWatch_Id</td>
+                    <td>@data.Activity_Id</td>
+                    <td>@data.Initial_Latitude</td>
+                    <td>@data.Initial_Longitude</td>
+                    <td>@data.NumberOfPoolLaps</td>
+                    <td>@data.Distance</td>
 
-    <div class="spaceCards">
-        <MudPaper Class="card1" Elevation="2">
-            <MudPaper Class="leftside" Elevation="0">
-                <MudCard Class="sessionCard" Elevation="0">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">No session started</MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.WaterDrop" Color="Color.Primary" Style="pointer-events: none;" aria-label="add to favorite"></MudIconButton>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent Class="startEnd">
-                        <MudText Typo="Typo.button">ID: 0000-0000-0000-0000</MudText>
-                        <br />
-                        <br />
-                        <MudText>Start: ...</MudText>
-                        <MudText>End: ...</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudPaper>
-        </MudPaper>
-        <MudPaper Class="card2" Elevation="2">
-            <MudPaper Class="rightside" Elevation="0">
-                <MudCard Class="distanceCard">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Distance</MudText>
-                            <MudText>0 m</MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.CompareArrows" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                </MudCard>
-                <MudCard Class="poolsCard">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Pool Laps</MudText>
-                            <MudText>N: 0</MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIconButton Icon="@Icons.Material.Filled.Pool" Style="pointer-events: none;" Color="Color.Primary" aria-label="heart rate"></MudIconButton>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                </MudCard>
-                <MudCard Class="heartbeatCard">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.h6">Pulse Rate</MudText>
-                            <MudText>0 bpm</MudText>
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                </MudCard>
-                <MudPaper Class="chart">
-                    @*<MudChart ChartType="ChartType.Line" Color="#F44336" ChartSeries="@Series" @bind-SelectedIndex="index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>*@
-                </MudPaper>
-            </MudPaper>
-        </MudPaper>
-    </div>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 
 @code {
 
-    [CascadingParameter]
-    public Task<AuthenticationState> AuthState { get; set; }
     private bool arrows = true;
     private bool bullets = false;
     private bool enableSwipeGesture = true;
     private bool autocycle = false;
     private Transition transition = Transition.Slide;
     private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-    private Address address = new Address();
-    Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
-    Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
-    Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
-
-    ChartSeries Series =
-    new ChartSeries()
-        {
-            Name = "Bpm",
-            Data = new double[] { }//heart
-        };
-    string[] XAxisLabels = { };
 
     protected override async Task OnInitializedAsync()
     {
-        Dictionary<Guid, List<ChartSeries>> xx = new Dictionary<Guid, List<ChartSeries>>();
-        Dictionary<Guid, string[]> yy = new Dictionary<Guid, string[]>();
-        Dictionary<Guid, List<Double>> zz = new Dictionary<Guid, List<Double>>();
-
-        User_Data _userdata = new User_Data();
-        
-        smartwatch_data = await _dataAccess.GetSmartWatchDataAsync(_userdata.User_Id);
-        foreach (var data in smartwatch_data)
-        {
-            List<double> heartBeat = new List<double>();
-            List<string> Timestamp = new List<string>();
-            var heartbeatData = await _dataAccess.HeartbeatQuery(data);
-            for (int i = 0; i < heartbeatData.Count(); i++)
-            {
-                heartBeat.Add(heartbeatData[i].Heartbeat);
-                Timestamp.Add(Convert.ToString(heartbeatData[i].Time));
-            }
-            double[] heart = heartBeat.ToArray();
-            string[] time = Timestamp.ToArray();
-            Series =
-            new ChartSeries()
-                {
-                    Name = "Bpm",
-                    Data = heart
-                };
-            XAxisLabels = time;
-            xx.Add(data.Activity_Id, new() { Series });
-            yy.Add(data.Activity_Id, XAxisLabels);
-            zz.Add(data.Activity_Id, new() { Math.Round(heart.Average(), 0, MidpointRounding.AwayFromZero)});
-        }
-        tmp = xx;
-        ListOfDates = yy;
-        ListOfAverageHeartbeat = zz;
-    }
+        smartwatch_data = await _dataAccess.GetSmartWatchesDataAsync();
     }
 }

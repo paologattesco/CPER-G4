@@ -5,9 +5,7 @@ namespace ITS.CPER.InternalWebPage.Data.Services;
 
 public interface IDataAccess
 {
-    void InsertNewUser(Guid id);
-    Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id);
-    Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data);
+    Task<List<SmartWatch_Data>> GetSmartWatchesDataAsync();
 
-    Guid GetUserId(string userName);
+    Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data);
 }
