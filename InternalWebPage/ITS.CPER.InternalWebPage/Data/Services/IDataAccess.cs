@@ -5,5 +5,5 @@ namespace ITS.CPER.InternalWebPage.Data.Services;
 
 public interface IDataAccess
 {
-    Task<List<SmartWatch_Data>> GetSmartWatchDataAsync();
+    Task<List<SmartWatch_Data>> GetSmartWatchesDataAsync();
 }

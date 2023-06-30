@@ -19,7 +19,7 @@ public class DataAccess : IDataAccess
         _org = configuration.GetConnectionString("Org");
     }
 
-    public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync()
+    public async Task<List<SmartWatch_Data>> GetSmartWatchesDataAsync()
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();

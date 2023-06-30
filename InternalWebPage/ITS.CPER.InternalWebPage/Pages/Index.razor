@@ -109,12 +109,12 @@
 
 <PageTitle>HomePage</PageTitle>
 
-@if (smartwatch_data != null && smartwatch_data.Count() != 0)
+@if (smartwatches_data != null && smartwatches_data.Count() != 0)
 {
     @if (ListOfDates.Count > 0)
     {
         <MudCarousel Class="mud-width-full" Style="height:500px; border-radius: 25px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-        @foreach (var data in smartwatch_data)
+        @foreach (var data in smartwatches_data)
         {
         <MudCarouselItem Transition="Transition.Fade">
             <div class="spaceCards">
@@ -126,7 +126,6 @@
                                     @*<MudImage Style="width: 60%" Src="images/circlePersonSwim.jpeg" Alt="person swim" />*@
                                     <MudImage Style="width: 80%; border-radius:10px;" Src="images/sea-monkey.gif" Alt="person swim" />
                                     <div style="color: white; margin-top: 10px;">
-                                        <MudText Typo="Typo.h6">Session #@(Array.IndexOf(ListOfAverageHeartbeat.Values.ToArray(), ListOfAverageHeartbeat[data.Activity_Id]) + 1)</MudText>
                                         <MudText Style="display: flex; flex-direction: row; align-items: center;">
                                         </MudText>
                                     </div>
@@ -168,21 +167,12 @@
                             <MudCardHeader>
                                 <CardHeaderContent>
                                     <MudText Typo="Typo.h6">Avg Pulse Rate</MudText>
-                                    <MudText>
-                                            @(ListOfAverageHeartbeat[data.Activity_Id].FirstOrDefault()) bpm
-                                    </MudText>
                                 </CardHeaderContent>
                                 <CardHeaderActions>
                                     <MudIconButton Style="pointer-events: none;" Icon="@Icons.Material.Filled.MonitorHeart" Color="Color.Error" aria-label="heart rate"></MudIconButton>
                                 </CardHeaderActions>
                             </MudCardHeader>
                         </MudCard>
-                        <MudPaper Class="chart">
-                            <MudChart ChartType="ChartType.Line" Color="#F44336"
-                            ChartSeries="@(tmp[data.Activity_Id])"
-                            XAxisLabels="@(ListOfDates[data.Activity_Id])"
-                            Width="100%" Height="350px"></MudChart>
-                        </MudPaper>
                     </MudPaper>
                 </MudPaper>
             </div>
@@ -273,23 +263,21 @@ else
     private bool enableSwipeGesture = true;
     private bool autocycle = false;
     private Transition transition = Transition.Slide;
-    private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-    private Address address = new Address();
-    Dictionary<Guid, List<Double>> ListOfAverageHeartbeat = new Dictionary<Guid, List<Double>>();
-    Dictionary<Guid, List<ChartSeries>> tmp = new Dictionary<Guid, List<ChartSeries>>();
+    private List<SmartWatch_Data> smartwatches_data = new List<SmartWatch_Data>();
     Dictionary<Guid, string[]> ListOfDates = new Dictionary<Guid, string[]>();
 
-    ChartSeries Series =
-    new ChartSeries()
-        {
-            Name = "Bpm",
-            Data = new double[] { }//heart
-        };
     string[] XAxisLabels = { };
 
     protected override async Task OnInitializedAsync()
-    {        
-        smartwatch_data = await _dataAccess.GetSmartWatchDataAsync();
+    {
+        Dictionary<Guid, string[]> yy = new Dictionary<Guid, string[]>();
+        
+        smartwatches_data = await _dataAccess.GetSmartWatchesDataAsync();
+        foreach (var data in smartwatches_data)
+        {
+            yy.Add(data.Activity_Id, XAxisLabels);
+        }
+        ListOfDates = yy;
     }
     }
 }
