@@ -82,7 +82,7 @@ public class DataAccess : IDataAccess
     }
     public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
     {
-        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com", _influxToken);
+        using var client = new InfluxDBClient("https://eu-central-1-1.aws.cloud2.influxdata.com", _influxToken);
         var activity_id = Convert.ToString(data.Activity_Id);
         var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
         var flux = "from(bucket:\"SmartWatches\") " +
