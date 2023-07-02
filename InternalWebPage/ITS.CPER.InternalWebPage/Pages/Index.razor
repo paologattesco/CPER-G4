@@ -109,52 +109,71 @@
 
 <PageTitle>HomePage</PageTitle>
 
-@if (smartwatch_data == null)
+@if (smartwatch_data == null || heartbeat_data.Count() == 0)
 {
-    <p><em>Loading...</em></p>
+    <MudProgressCircular Class="progressCircle" Color="Color.Default" Style="height:70px; width:70px;" Indeterminate="true" />
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>SmartWatch_Id</th>
-                <th>Activity_Id</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>NumberOfPoolLaps</th>
-                <th>Distance</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in smartwatch_data)
+    <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh><strong>SmartWatch_Id</strong></MudTh>
+            <MudTh><strong>Activity_Id</strong></MudTh>
+            <MudTh><strong>Latitude</strong></MudTh>
+            <MudTh><strong>Longitude</strong></MudTh>
+            <MudTh><strong>Heartbeat</strong></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
+            <MudTd DataLabel="Activity_Id">@context.Activity_Id</MudTd>
+            @if (@context.Initial_Latitude >= 50 || @context.Initial_Latitude <= -50)
             {
-                <tr>
-                    <td>@data.SmartWatch_Id</td>
-                    <td>@data.Activity_Id</td>
-                    <td>@data.Initial_Latitude</td>
-                    <td>@data.Initial_Longitude</td>
-                    <td>@data.NumberOfPoolLaps</td>
-                    <td>@data.Distance</td>
-
-                </tr>
+                <MudTd DataLabel="Initial_Latitude">superato la soglia</MudTd>
+            }else{
+                <MudTd DataLabel="Initial_Latitude">tutto ok</MudTd>
             }
-        </tbody>
-    </table>
+
+            @if (@context.Initial_Longitude >= 180 || @context.Initial_Longitude <= -180)
+            {
+                <MudTd DataLabel="Initial_Longitude">superato la soglia</MudTd>
+            }else{
+                <MudTd DataLabel="Initial_Longitude">tutto ok</MudTd>
+            }
+
+            @*<MudTd DataLabel="Heartbeat">@heartbeat_data</MudTd>*@
+
+            @*<MudTd DataLabel="Heartbeat">@context.Heartbeat</MudTd>*@
+            @foreach(var prova in heartbeat_data)
+            {
+                <MudTd DataLabel="Heartbeat">@prova.Heartbeat</MudTd>
+
+            @*@if (@heartbeat_data.LastOrDefault().Heartbeat >= 150 || @heartbeat_data.LastOrDefault().Heartbeat <= -30)
+                {
+                <MudTd DataLabel="Heartbeat">@heartbeat_data.LastOrDefault().Heartbeat</MudTd>
+                }
+                else
+                {
+                <MudTd DataLabel="Heartbeat">@heartbeat_data.LastOrDefault().Heartbeat</MudTd>
+                }*@
+            }
+            
+
+        </RowTemplate>
+    </MudTable>
 }
 
 
 @code {
-
-    private bool arrows = true;
-    private bool bullets = false;
-    private bool enableSwipeGesture = true;
-    private bool autocycle = false;
-    private Transition transition = Transition.Slide;
+    private bool _loading=false;
     private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
+    private List<Heartbeat_Data> heartbeat_data = new List<Heartbeat_Data>();
 
     protected override async Task OnInitializedAsync()
     {
         smartwatch_data = await _dataAccess.GetSmartWatchesDataAsync();
+        foreach (var data in smartwatch_data)
+        {
+            heartbeat_data = await _dataAccess.HeartbeatQuery(data);
+        }
     }
 }

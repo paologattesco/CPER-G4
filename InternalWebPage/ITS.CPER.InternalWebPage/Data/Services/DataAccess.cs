@@ -47,11 +47,7 @@ public class DataAccess : IDataAccess
                     SmartWatch_Id = Guid.Parse((string)reader["FK_SmartWatch_Id"]),
                     Activity_Id = Guid.Parse((string)reader["Id"]),
                     Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
-                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
-                    Distance = Convert.ToDouble(reader["Distance"]),
-                    NumberOfPoolLaps = Convert.ToInt32(reader["NumberOfPoolLaps"]),
-                    Final_Latitude = Convert.ToDouble(reader["Final_Latitude"]),
-                    Final_Longitude = Convert.ToDouble(reader["Final_Longitude"]),
+                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"])
                 };
                 result.Add(smartWatch);
             }
