@@ -1,17 +1,11 @@
-﻿using ITS.CPER.SimulatoreSmartWatch.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITS.CPER.SimulatoreSmartWatch.Data;
+﻿namespace ITS.CPER.SimulatoreSmartWatch.Data;
 
 public class Heartbeat
 {
     private readonly Random rnd;
+    const int MIN_HEARBEAT = 20;
     const int RESTING_HEARTBEAT = 60;
-    const int MAX_HEARTBEAT = 200;
+    const int MAX_HEARTBEAT = 210;
 
     public Heartbeat() 
     {
@@ -20,8 +14,7 @@ public class Heartbeat
 
     public int TrainingHeartbeat()
     {
-        int maxRange = MAX_HEARTBEAT - RESTING_HEARTBEAT;
-        return RESTING_HEARTBEAT + rnd.Next(maxRange + 1);
+        return rnd.Next(MIN_HEARBEAT, MAX_HEARTBEAT + 1);
     }
 
     public int RestingHeartbeat()

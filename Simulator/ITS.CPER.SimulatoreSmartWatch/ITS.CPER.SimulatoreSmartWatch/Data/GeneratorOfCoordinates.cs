@@ -1,33 +1,32 @@
 ﻿using ITS.CPER.SimulatoreSmartWatch.Models;
-using System.Security.Cryptography;
 using System.Timers;
 
 namespace ITS.CPER.SimulatoreSmartWatch.Data;
 
 public class GeneratorOfCoordinates
 {
-    const double MIN_LATITUDE = -90.0;
-    const double MAX_LATITUDE = 90.0;
-    const double MIN_LONGITUDE = -180.0;
-    const double MAX_LONGITUDE = 180.0;
+    const double MIN_LATITUDE = -100.0;
+    const double MAX_LATITUDE = 100.0;
+    const double MIN_LONGITUDE = -190.0;
+    const double MAX_LONGITUDE = 190.0;
     const double MAX_DISTANCE = 50.0;
     const double EARTH_RADIUS = 6371000.0; // in meters
 
     private System.Timers.Timer timerForData = new System.Timers.Timer();
-    int TimeForTraining = 60000;
+    int trainingTime = 60000;
 
     private bool endTraining = false;
     private bool isStarted = false;
     private bool lastDate = false;
-    Random rand = new Random();
+    Random rnd = new Random();
 
     Heartbeat restingHeartbeat = new Heartbeat();
     Heartbeat trainingHeartbeat = new Heartbeat();
 
-    private Guid NewActivity;
-    private Guid SmartWatchId;
+    private Guid newActivity;
+    private Guid smartWatchId;
 
-    SmartWatch_Data tmp = new SmartWatch_Data();
+    SmartWatch tmp = new SmartWatch();
 
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
@@ -38,26 +37,26 @@ public class GeneratorOfCoordinates
         double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) * Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
         double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-        double dist = Math.Round(EARTH_RADIUS * c, 2);
+        double distance = Math.Round(EARTH_RADIUS * c, 2);
 
-        return dist;
+        return distance;
     }
 
     public (double, double) GenerateFirstCoordinates()
     {
         endTraining = false;
-        timerForData = new System.Timers.Timer(TimeForTraining);
+        timerForData = new System.Timers.Timer(trainingTime);
         timerForData.Elapsed += SendData;
         timerForData.Start();
-        double latitude = Math.Round(rand.NextDouble() * (MAX_LATITUDE - MIN_LATITUDE) + MIN_LATITUDE, 6);
-        double longitude = Math.Round(rand.NextDouble() * (MAX_LONGITUDE - MIN_LONGITUDE) + MIN_LONGITUDE, 6);
+        double latitude = Math.Round(rnd.NextDouble() * (MAX_LATITUDE - MIN_LATITUDE) + MIN_LATITUDE, 6);
+        double longitude = Math.Round(rnd.NextDouble() * (MAX_LONGITUDE - MIN_LONGITUDE) + MIN_LONGITUDE, 6);
         return (latitude, longitude);
     }
 
     public (double, double) GenerateNextCoordinates(double lat, double lon)
     {
-        double poolDistance = Math.Round(rand.NextDouble() * MAX_DISTANCE, 2);
-        double angle = Math.Round(rand.NextDouble() * 360, 2);
+        double poolDistance = Math.Round(rnd.NextDouble() * MAX_DISTANCE, 2);
+        double angle = Math.Round(rnd.NextDouble() * 360, 2);
         double latitude2 = Math.Round(Math.Asin(Math.Sin(lat * Math.PI / 180) * Math.Cos(poolDistance / EARTH_RADIUS) + Math.Cos(lat * Math.PI / 180) * Math.Sin(poolDistance / EARTH_RADIUS) * Math.Cos(angle * Math.PI / 180)) * 180 / Math.PI, 6);
         double longitude2 = Math.Round((lon * Math.PI / 180 + Math.Atan2(Math.Sin(angle * Math.PI / 180) * Math.Sin(poolDistance / EARTH_RADIUS) * Math.Cos(lat * Math.PI / 180), Math.Cos(poolDistance / EARTH_RADIUS) - Math.Sin(lat * Math.PI / 180) * Math.Sin(latitude2 * Math.PI / 180))) * 180 / Math.PI, 6);
         return (latitude2, longitude2);
@@ -69,13 +68,13 @@ public class GeneratorOfCoordinates
         return Math.Floor(poolLaps); // Round down to the nearest integer
     }
 
-    public SmartWatch_Data PostFirstData(double lat, double lon, SmartWatch_Data smartwatch)
+    public SmartWatch PostFirstData(double lat, double lon, SmartWatch smartwatch)
     {
         Console.WriteLine($"Latitude: {lat}");
         Console.WriteLine($"Longitude: {lon}");
         Console.WriteLine($"Pulse rate: {restingHeartbeat.RestingHeartbeat()} bpm");
         isStarted = true;
-        SmartWatch_Data startData = new SmartWatch_Data()
+        SmartWatch startData = new SmartWatch()
         {
             SmartWatch_Id = smartwatch.SmartWatch_Id,
             Activity_Id = smartwatch.Activity_Id,
@@ -90,14 +89,14 @@ public class GeneratorOfCoordinates
         return startData;
     }
 
-    public SmartWatch_Data PostNextData(double lat2, double longitude2, double distance, SmartWatch_Data smartwatch)
+    public SmartWatch PostNextData(double lat2, double longitude2, double distance, SmartWatch smartwatch)
     {
         Console.WriteLine($"\nLatitude: {lat2}");
         Console.WriteLine($"Longitude: {longitude2}");
         Console.WriteLine($"Distance: {distance} meters");
         Console.WriteLine($"Pulse rate: {trainingHeartbeat.TrainingHeartbeat()} bpm");
 
-        SmartWatch_Data newData = new SmartWatch_Data()
+        SmartWatch newData = new SmartWatch()
         {
             SmartWatch_Id = smartwatch.SmartWatch_Id,
             Activity_Id = smartwatch.Activity_Id,
@@ -114,7 +113,7 @@ public class GeneratorOfCoordinates
     }
 
     // RECURSIVE FUNCTION TO GENERATE COORDINATES WITHIN 0 TO 50 METERS DISTANCE
-    public SmartWatch_Data Training(SmartWatch_Data smartWatch)
+    public SmartWatch Training(SmartWatch smartWatch)
     {
         timerForData.Start();
         // FIRST COORDINATES

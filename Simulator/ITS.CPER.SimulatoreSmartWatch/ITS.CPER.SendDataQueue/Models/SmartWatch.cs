@@ -2,7 +2,7 @@
 
 namespace ITS.CPER.SendDataQueue.Models;
 
-public class SmartWatch_Data
+public class SmartWatch
 {
     public Guid SmartWatch_Id { get; set; }
     public Guid Activity_Id { get; set; }
@@ -12,5 +12,4 @@ public class SmartWatch_Data
     public int NumberOfPoolLaps { get; set; }
     public double Distance { get; set; }
     public Guid User_Id { get; set; }
-
 }

@@ -1,9 +1,8 @@
-﻿using ITS.CPER.SimulatoreSmartWatch.Service;
-using System.Text;
+﻿using System.Text;
 
 namespace ITS.CPER.SimulatoreSmartWatch.Models;
 
-public class SmartWatch_Data
+public class SmartWatch
 {
     public Guid SmartWatch_Id { get; set; }
     public Guid Activity_Id { get; set; }
@@ -13,7 +12,8 @@ public class SmartWatch_Data
     public int NumberOfPoolLaps { get; set; }
     public double Distance { get; set; }
     public Guid User_Id { get; set; }
-    public async Task ApiPost(SmartWatch_Data details)
+
+    public async Task ApiPost(SmartWatch details)
     {
         var client = new HttpClient();
         var apiUrl = new Uri("http://localhost:7210/api/Function1");

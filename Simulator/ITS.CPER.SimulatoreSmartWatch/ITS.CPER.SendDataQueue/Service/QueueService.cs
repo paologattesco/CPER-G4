@@ -19,7 +19,7 @@ public class QueueService
         _queueClient.CreateIfNotExists();
     }
 
-    public void Send(SmartWatch_Data newData)
+    public void SendToQueue(SmartWatch newData)
     {
         var data = JsonSerializer.Serialize(newData);
         var sender_data = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(data));

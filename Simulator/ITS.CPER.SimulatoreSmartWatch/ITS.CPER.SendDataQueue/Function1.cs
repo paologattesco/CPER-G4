@@ -28,14 +28,14 @@ public class Function1
         log.LogInformation("C# HTTP trigger function processed a request.");
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        var data = JsonSerializer.Deserialize<SmartWatch_Data>(requestBody);
+        var data = JsonSerializer.Deserialize<SmartWatch>(requestBody);
 
         string responseMessage = string.IsNullOrEmpty(null)
             ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
             : $"Hello This HTTP triggered function executed successfully.";
         QueueService queue = new QueueService(_configuration);
 
-        queue.Send(data);
+        queue.SendToQueue(data);
         return new OkObjectResult(responseMessage);
     }
 }

@@ -4,76 +4,89 @@ using ITS.CPER.SimulatoreSmartWatch.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace ITS.CPER.SimulatoreSmartWatch;
 
-Random rand = new Random();
-GeneratorOfCoordinates coordinates = new GeneratorOfCoordinates();
-
-while (true)
+public class Program
 {
-    List<SmartWatch_Data> smartWatches = ListOfSmartWatch();
-    var selectSmartWatch = rand.Next(0, smartWatches.Count());
-    Console.WriteLine("Workout in progress...\n");
-    smartWatches[selectSmartWatch] = coordinates.Training(smartWatches[selectSmartWatch]);
-    Console.WriteLine();
-}
+    private static IDataAccess _dataAccess;
+    private static GeneratorOfCoordinates _coordinates;
+    private static Random _rand;
 
-
-
-Dictionary<int, Guid> DictionaryOfSmartWatches()
-{
-    var serviceProvider = GetConfiguration();
-    var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
-
-    Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
-    var smartwatches = _dataAccess.GetSmartWatchesId();
-    for (int i = 0; i < smartwatches.Count; i++)
+    public static void Main(string[] args)
     {
-        serialNumber.Add(i, smartwatches[i]);
-    }
-    return serialNumber;
-}
+        _rand = new Random();
+        _coordinates = new GeneratorOfCoordinates();
 
-
-
-List<SmartWatch_Data> ListOfSmartWatch()
-{
-    var serviceProvider = GetConfiguration();
-    var _dataAccess = serviceProvider.GetRequiredService<IDataAccess>();
-
-    var serialNumbers = DictionaryOfSmartWatches();
-    List<SmartWatch_Data> smartWatches = new List<SmartWatch_Data>();
-
-    for (int i = 0; i < serialNumbers.Count(); i++)
-    {
-        SmartWatch_Data newData = new SmartWatch_Data()
+        while (true)
         {
-            SmartWatch_Id = serialNumbers[i],
-            Activity_Id = Guid.NewGuid(),
-            Latitude = 0,
-            Longitude = 0,
-            Heartbeat = 0,
-            NumberOfPoolLaps = 0,
-            Distance = 0,
-            User_Id = _dataAccess.GetUserId(serialNumbers[i])
-        };
-        smartWatches.Add(newData);
+            List<SmartWatch> smartwatches = GetSmartWatches();
+            var selectSmartWatch = _rand.Next(0, smartwatches.Count);
+            Console.WriteLine("Workout in progress...\n");
+            smartwatches[selectSmartWatch] = _coordinates.Training(smartwatches[selectSmartWatch]);
+            Console.WriteLine();
+        }
     }
-    return smartWatches;
-}
 
-ServiceProvider GetConfiguration()
-{
-    IConfiguration configuration;
-    configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddUserSecrets<Program>(optional: true, reloadOnChange: false)
-                    .Build();
+    private static IDataAccess InitializeDataAccess()
+    {
+        var serviceProvider = GetConfiguration();
+        return serviceProvider.GetRequiredService<IDataAccess>();
+    }
 
-    var serviceProvider = new ServiceCollection()
-                    .AddSingleton<IDataAccess, DataAccess>()
-                    .AddSingleton<IConfiguration>(configuration)
-                    .BuildServiceProvider();
+    private static Dictionary<int, Guid> DictionaryOfSmartWatches()
+    {
+        _dataAccess = InitializeDataAccess();
 
-    return serviceProvider;
+        Dictionary<int, Guid> serialNumber = new Dictionary<int, Guid>();
+        var smartwatches = _dataAccess.GetSmartWatchesId();
+
+        for (int i = 0; i < smartwatches.Count; i++)
+        {
+            serialNumber.Add(i, smartwatches[i]);
+        }
+
+        return serialNumber;
+    }
+
+    private static List<SmartWatch> GetSmartWatches()
+    {
+        _dataAccess = InitializeDataAccess();
+
+        var serialNumbers = DictionaryOfSmartWatches();
+        List<SmartWatch> smartwatches = new List<SmartWatch>();
+
+        foreach (var serialNumber in serialNumbers)
+        {
+            SmartWatch newData = new SmartWatch()
+            {
+                SmartWatch_Id = serialNumber.Value,
+                Activity_Id = Guid.NewGuid(),
+                Latitude = 0,
+                Longitude = 0,
+                Heartbeat = 0,
+                NumberOfPoolLaps = 0,
+                Distance = 0,
+                User_Id = _dataAccess.GetUserId(serialNumber.Value)
+            };
+            smartwatches.Add(newData);
+        }
+
+        return smartwatches;
+    }
+
+    private static ServiceProvider GetConfiguration()
+    {
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddUserSecrets<Program>(optional: true, reloadOnChange: false)
+            .Build();
+
+        var serviceProvider = new ServiceCollection()
+            .AddSingleton<IDataAccess, DataAccess>()
+            .AddSingleton<IConfiguration>(configuration)
+            .BuildServiceProvider();
+
+        return serviceProvider;
+    }
 }
