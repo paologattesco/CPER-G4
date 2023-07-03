@@ -62,3 +62,103 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+body {
+    background-color: #ADE8F4;
+    padding: 50px;
+    display: flex;
+    margin: 0;
+}
+
+.spaceCards {
+    height: 550px;
+}
+
+.card1 {
+    background-color: #03045E;
+    height: 500px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    width: 25%;
+    float: left;
+}
+
+    .card1 .leftside {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        background-color: #03045E;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        padding: 50px;
+    }
+
+        .card1 .leftside .sessionCard {
+            border-radius: 25px;
+            width: 100%;
+            height: 100%;
+        }                                                                                                                                                                                   }*/
+
+.card2 {
+    background-color: #0077B6;
+    height: 500px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    width: 75%;
+    float: right;
+}
+
+    .card2 .rightside {
+        background-color: #0077B6;
+        width: 100%;
+        height: 100%;
+        padding: 50px;
+        float: right;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+        .card2 .rightside .distanceCard {
+            margin-top: 30px;
+            border-radius: 25px;
+            width: 25%;
+            height: 25%;
+            box-shadow: 0px 5px 20px #48CAE4;
+        }
+
+        .card2 .rightside .poolsCard {
+            margin-top: 20px;
+            border-radius: 25px;
+            width: 25%;
+            height: 25%;
+            box-shadow: 0px 5px 20px #48CAE4;
+        }
+
+        .card2 .rightside .heartbeatCard {
+            margin-top: 20px;
+            border-radius: 25px;
+            width: 25%;
+            height: 25%;
+            box-shadow: 0px 5px 20px #48CAE4;
+        }
+
+        .card2 .rightside .chart {
+            display: flex;
+            margin-top: -375px;
+            margin-left: 30%;
+            border-radius: 25px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+.progressCircle {
+    margin-top: 16%;
+    margin-right: 53%;
+    margin-left: 47%;
+}

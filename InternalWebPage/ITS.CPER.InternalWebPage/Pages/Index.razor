@@ -5,108 +5,6 @@
 @using MudBlazor;
 @inject IDataAccess _dataAccess
 
-<style>
-    body {
-        background-color: #ADE8F4;
-        padding: 50px;
-        display: flex;
-        margin: 0;
-    }
-
-    .spaceCards {
-        height: 550px;
-    }
-
-    .card1 {
-        background-color: #03045E;
-        height: 500px;
-        border-top-left-radius: 25px;
-        border-bottom-left-radius: 25px;
-        width: 25%;
-        float: left;
-    }
-
-        .card1 .leftside {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            background-color: #03045E;
-            border-top-left-radius: 25px;
-            border-bottom-left-radius: 25px;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            padding: 50px;
-        }
-
-            .card1 .leftside .sessionCard {
-                border-radius: 25px;
-                width: 100%;
-                height: 100%;
-            }
-
-    .card2 {
-        background-color: #0077B6;
-        height: 500px;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
-        width: 75%;
-        float: right;
-    }
-
-        .card2 .rightside {
-            background-color: #0077B6;
-            width: 100%;
-            height: 100%;
-            padding: 50px;
-            float: right;
-            border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-        }
-
-            .card2 .rightside .distanceCard {
-                margin-top: 30px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-                box-shadow: 0px 5px 20px #48CAE4;
-            }
-
-            .card2 .rightside .poolsCard {
-                margin-top: 20px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-                box-shadow: 0px 5px 20px #48CAE4;
-            }
-
-            .card2 .rightside .heartbeatCard {
-                margin-top: 20px;
-                border-radius: 25px;
-                width: 25%;
-                height: 25%;
-                box-shadow: 0px 5px 20px #48CAE4;
-            }
-
-            .card2 .rightside .chart {
-                display: flex;
-                margin-top: -375px;
-                margin-left: 30%;
-                border-radius: 25px;
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .progressCircle{
-                margin-top: 16%;
-                margin-right: 53%;
-                margin-left: 47%;
-            }
-</style>
-
 <PageTitle>HomePage</PageTitle>
 
 @if (smartwatch_data == null || heartbeat_data.Count() == 0)
@@ -115,50 +13,63 @@
 }
 else
 {
-    <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+
+    <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm">
+        <ColGroup>
+            <col style="width:300px;" />
+            <col style="width:100px;" />
+            <col />
+            <col style="width:100px;" />
+        </ColGroup>
         <HeaderContent>
-            <MudTh><strong>SmartWatch_Id</strong></MudTh>
-            <MudTh><strong>Activity_Id</strong></MudTh>
-            <MudTh><strong>Latitude</strong></MudTh>
-            <MudTh><strong>Longitude</strong></MudTh>
-            <MudTh><strong>Heartbeat</strong></MudTh>
+            <MudTh></MudTh>
+            <MudTh>Initial Latitude</MudTh>
+            <MudTh>Initial Longitude</MudTh>
+            <MudTh>Final Latitude</MudTh>
+            <MudTh>Final Longitude</MudTh>
+            <MudTh>Heartbeat</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
-            <MudTd DataLabel="Activity_Id">@context.Activity_Id</MudTd>
-            @if (@context.Initial_Latitude >= 50 || @context.Initial_Latitude <= -50)
-            {
-                <MudTd DataLabel="Initial_Latitude">superato la soglia</MudTd>
-            }else{
-                <MudTd DataLabel="Initial_Latitude">tutto ok</MudTd>
-            }
-
-            @if (@context.Initial_Longitude >= 180 || @context.Initial_Longitude <= -180)
-            {
-                <MudTd DataLabel="Initial_Longitude">superato la soglia</MudTd>
-            }else{
-                <MudTd DataLabel="Initial_Longitude">tutto ok</MudTd>
-            }
-
-            @*<MudTd DataLabel="Heartbeat">@heartbeat_data</MudTd>*@
-
-            @*<MudTd DataLabel="Heartbeat">@context.Heartbeat</MudTd>*@
-            @foreach(var prova in heartbeat_data)
-            {
-                <MudTd DataLabel="Heartbeat">@prova.Heartbeat</MudTd>
-
-            @*@if (@heartbeat_data.LastOrDefault().Heartbeat >= 150 || @heartbeat_data.LastOrDefault().Heartbeat <= -30)
-                {
-                <MudTd DataLabel="Heartbeat">@heartbeat_data.LastOrDefault().Heartbeat</MudTd>
-                }
-                else
-                {
-                <MudTd DataLabel="Heartbeat">@heartbeat_data.LastOrDefault().Heartbeat</MudTd>
-                }*@
-            }
-            
-
+            <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.Activity_Id))">@((context.ShowDetails == true) ? "Hide" : "Show") Data Details</MudButton></MudTd>
+            <MudTd DataLabel="Initial_Latitude">@context.Initial_Latitude</MudTd>
+            <MudTd DataLabel="Initial_Longitude">@context.Initial_Longitude</MudTd>
+            <MudTd DataLabel="Final_Latitude">@context.Final_Latitude</MudTd>
+            <MudTd DataLabel="Final_Longitude">@context.Final_Longitude</MudTd>
+            <MudTd DataLabel="Heartbeat">120</MudTd>
         </RowTemplate>
+        <ChildRowContent>
+            @if (context.ShowDetails)
+            {
+                <MudTr>
+                    <td colspan="4">
+                        <MudCard Elevation="0">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.body1">Data Details for <strong>@context.Activity_Id</strong></MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent Class="pa-0">
+                                <MudTable Items="@smartwatch_data" Context="SmartWatchContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                    <ColGroup>
+                                        <col />
+                                        <col />
+                                        <col style="width:200px;" />
+                                    </ColGroup>
+                                    <HeaderContent>
+                                        <MudTh>Activity_Id</MudTh>
+                                        <MudTh>Production_Batch</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Activity_Id">@SmartWatchContext.Activity_Id</MudTd>
+                                        <MudTd DataLabel="ProdBatch">guid a caso</MudTd>
+                                    </RowTemplate>
+                                </MudTable>
+                            </MudCardContent>
+                        </MudCard>
+                    </td>
+                </MudTr>
+            }
+        </ChildRowContent>
     </MudTable>
 }
 
@@ -174,6 +85,13 @@ else
         foreach (var data in smartwatch_data)
         {
             heartbeat_data = await _dataAccess.HeartbeatQuery(data);
+            ShowBtnPress(data.Activity_Id);
         }
+    }
+
+    private void ShowBtnPress(Guid id)
+    {
+        SmartWatch_Data tmpData = smartwatch_data.First(f => f.Activity_Id == id);
+        tmpData.ShowDetails = !tmpData.ShowDetails;
     }
 }

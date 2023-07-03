@@ -29,8 +29,6 @@ public class DataAccess : IDataAccess
             ,a.Id
             ,a.Initial_Latitude
             ,a.Initial_Longitude
-            ,a.Distance
-            ,a.NumberOfPoolLaps
             ,a.Final_Latitude
             ,a.Final_Longitude
             FROM [dbo].[Activities] AS a
@@ -47,7 +45,9 @@ public class DataAccess : IDataAccess
                     SmartWatch_Id = Guid.Parse((string)reader["FK_SmartWatch_Id"]),
                     Activity_Id = Guid.Parse((string)reader["Id"]),
                     Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
-                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"])
+                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
+                    Final_Latitude = Convert.ToDouble(reader["Final_Latitude"]),
+                    Final_Longitude = Convert.ToDouble(reader["Final_Longitude"])
                 };
                 result.Add(smartWatch);
             }
