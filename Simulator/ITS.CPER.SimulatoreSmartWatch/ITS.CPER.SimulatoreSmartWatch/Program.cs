@@ -57,8 +57,6 @@ List<SmartWatch_Data> ListOfSmartWatch()
             User_Id = _dataAccess.GetUserId(serialNumbers[i])
         };
         smartWatches.Add(newData);
-        _dataAccess.InsertProductionBatch(newData.SmartWatch_Id);
-
     }
     return smartWatches;
 }

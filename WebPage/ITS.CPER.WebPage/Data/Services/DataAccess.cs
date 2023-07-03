@@ -2,11 +2,8 @@
 using ITS.CPER.WebPage.Data.Models;
 using Dapper;
 using InfluxDB.Client;
-using InfluxDB.Client.Core;
-using InfluxDB.Client.Writes;
-using System.Diagnostics;
-using InfluxDB.Client.Core.Flux.Domain;
 using NodaTime;
+using Npgsql;
 
 namespace ITS.CPER.WebPage.Data.Services;
 
@@ -16,12 +13,22 @@ public class DataAccess : IDataAccess
     private readonly string _influxToken;
     private readonly string _bucket;
     private readonly string _org;
+    private readonly string _host;
+    private readonly string _user;
+    private readonly string _dbname;
+    private readonly string _password;
+    private readonly string _port;
     public DataAccess(IConfiguration configuration)
     {
         _connectionDb = configuration.GetConnectionString("DbConnection");
         _influxToken = configuration.GetConnectionString("InfluxToken");
         _bucket = configuration.GetConnectionString("Bucket");
         _org = configuration.GetConnectionString("Org");
+        _host = configuration.GetConnectionString("Host");
+        _user = configuration.GetConnectionString("User");
+        _dbname = configuration.GetConnectionString("Dbname");
+        _password = configuration.GetConnectionString("Password");
+        _port = configuration.GetConnectionString("Port");
     }
     //TODO
     public async Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id)
@@ -67,18 +74,18 @@ public class DataAccess : IDataAccess
             return result;
     }
 
-    public void InsertNewUser(Guid id)
+    public Guid InsertNewUser(Guid id)
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
-
+        var smartwatch_id = Guid.NewGuid();
         sql.CommandText = @"
             INSERT INTO [dbo].[SmartWatches]([Id],[FK_User_Id])VALUES(@smartwatch_guid,@id)";
         sql.Parameters.AddWithValue("@id", id);
-        sql.Parameters.AddWithValue("@smartwatch_guid", Guid.NewGuid());
+        sql.Parameters.AddWithValue("@smartwatch_guid", smartwatch_id);
         sql.ExecuteNonQuery();
- 
+        return smartwatch_id;
     }
     public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
     {
@@ -134,5 +141,63 @@ public class DataAccess : IDataAccess
             reader.Close();
         }
         return result;
+    }
+
+    public void InsertProductionBatch(Guid smartwatchId)
+    {
+        string connString = $"User ID={_user};Password={_password};Host={_host};Port={_port};Database={_dbname};";
+        var todayDate = DateTime.Now;
+        var tmp_date = "";
+        var tmp_batch_id = "";
+        DateTime date;
+        Guid batch_id;
+
+        using (var conn = new NpgsqlConnection(connString))
+        {
+            conn.Open();
+            var controlDate = new NpgsqlCommand("SELECT date, batch_id FROM ProductionBatch WHERE date = (SELECT MAX(date) FROM ProductionBatch)", conn);
+            controlDate.ExecuteNonQuery();
+
+            using (NpgsqlDataReader reader = controlDate.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    tmp_date = Convert.ToString(reader["date"]);
+                    tmp_batch_id = Convert.ToString(reader["batch_id"]);
+                }
+                reader.Close();
+            }
+
+            using (var command = new NpgsqlCommand("INSERT INTO ProductionBatch (batch_id, smartwatch_id, date) VALUES (@batch_id, @smartwatch_id, @date)", conn))
+            {
+                if (tmp_date != "")
+                {
+                    date = Convert.ToDateTime(tmp_date);
+                    batch_id = Guid.Parse(tmp_batch_id);
+                    if (todayDate.Year == date.Year && todayDate.Month == date.Month && todayDate.Day == date.Day)
+                    {
+                        command.Parameters.AddWithValue("@batch_id", batch_id);
+                        command.Parameters.AddWithValue("@smartwatch_id", smartwatchId);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@batch_id", Guid.NewGuid());
+                        command.Parameters.AddWithValue("@smartwatch_id", smartwatchId);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@batch_id", Guid.NewGuid());
+                    command.Parameters.AddWithValue("@smartwatch_id", smartwatchId);
+                    command.Parameters.AddWithValue("@date", DateTime.Now);
+                    command.ExecuteNonQuery();
+                }
+            }
+            conn.Close();
+        }
     }
 }

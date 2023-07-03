@@ -140,7 +140,8 @@ namespace ITS.CPER.WebPage.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-                    _dataAccess.InsertNewUser(Guid.Parse(userId));
+                    var smartwatch_id = _dataAccess.InsertNewUser(Guid.Parse(userId));
+                    _dataAccess.InsertProductionBatch(smartwatch_id);
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
