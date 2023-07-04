@@ -79,7 +79,7 @@ public class DataAccess : IDataAccess
             .Tag("SmartWatch_Id", data.SmartWatch_Id.ToString())
             .Tag("Activity_Id", data.Activity_Id.ToString())
             .Field("Latitude", data.Latitude)
-            .Field("Lonigitude", data.Longitude)
+            .Field("Longitude", data.Longitude)
             .Field("Heartbeat", data.Heartbeat)
             .Field("NumberOfPoolLaps", data.NumberOfPoolLaps)
             .Timestamp(DateTime.UtcNow, WritePrecision.Ns); 

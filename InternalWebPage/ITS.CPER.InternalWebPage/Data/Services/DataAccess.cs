@@ -92,6 +92,45 @@ public class DataAccess : IDataAccess
         return result;
     }
 
+    public async Task<List<Activity>> GetActivitiesAsync(Guid id)
+    {
+        using var connection = new SqlConnection(_connectionDb);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = @"
+            SELECT a.FK_SmartWatch_Id
+            ,a.Id
+            ,a.Initial_Latitude
+            ,a.Initial_Longitude
+            ,a.Final_Latitude
+            ,a.Final_Longitude
+            FROM [dbo].[Activities] AS a
+            JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
+            WHERE a.FK_SmartWatch_Id = @id
+            ";
+        sql.Parameters.AddWithValue("@id", id);
+        sql.ExecuteNonQuery();
+        
+        var result = new List<Activity>();
+        using (SqlDataReader reader = sql.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                Activity activity = new Activity
+                {
+                    Activity_Id = Guid.Parse((string)reader["Id"]),
+                    Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
+                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
+                    Final_Latitude = Convert.ToDouble(reader["Final_Latitude"]),
+                    Final_Longitude = Convert.ToDouble(reader["Final_Longitude"])
+                };
+                result.Add(activity);
+            }
+            reader.Close();
+        }
+        return result;
+    }
+
     public async Task<List<HeartBeat>> HeartbeatQuery(SmartWatch data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
@@ -127,4 +166,47 @@ public class DataAccess : IDataAccess
         });
         return heartbeat;
     }
+
+    //QUERY INFLUX PER TUTTE LE ATTIVITA'
+    //LONGITUDE è MESSO SUL BUCKET COME LONIGITUDE
+    //public async Task<List<Activity>> ActivitiesQuery(SmartWatch data)
+    //{
+    //    using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
+    //    var activity_id = Convert.ToString(data.Activity_Id);
+    //    var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
+    //    var flux = "from(bucket: \"SmartWatches\")\r\n    " +
+    //        "|> range(start: 0)\r\n    " +
+    //        "|> filter(fn: (r) => r._measurement == \"smartwatches\")\r\n    " +
+    //        $"|> filter(fn: (r) => r.SmartWatch_Id == \"{smartwatch_id}\")\r\n    " +
+    //        $"|> filter(fn: (r) => r.Activity_Id == \"{activity_id}\")" +
+    //        "|> filter(\r\n        " +
+    //        "fn: (r) => r._field == \"Latitude\" or (r._field == \"Lonigitude\" or r._field == \"Heartbeat\")\r\n" +
+    //        "    )";
+
+
+
+    //    var queryApi = client.GetQueryApi();
+    //    var fluxTables = await queryApi.QueryAsync(flux, _org);
+
+    //    var activity = new List<Activity>();
+    //    fluxTables.ForEach(fluxTable =>
+    //    {
+    //        var fluxRecords = fluxTable.Records;
+
+    //        fluxRecords.ForEach(fluxRecord =>
+    //        {
+    //            Activity newActivity = new Activity()
+    //            {
+    //                Activity_Id = data.Activity_Id,
+    //                Final_Latitude = Convert.ToDouble(fluxRecord.GetValue()),
+    //                Final_Longitude = Convert.ToDouble(fluxRecord.GetValue()),
+    //                Heartbeat = Convert.ToInt32(fluxRecord.GetValue())
+
+    //            };
+    //            activity.Add(newActivity);
+
+    //        });
+    //    });
+    //    return activity;
+    //}
 }
