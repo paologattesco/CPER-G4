@@ -98,7 +98,7 @@ else
     private List<SmartWatch> smartwatch_data = new List<SmartWatch>();
     private List<Activity> activity_data = new List<Activity>();
     private List<HeartBeat> heartbeat_data = new List<HeartBeat>();
-
+    private Activity tmp = new Activity();
     private Dictionary<Guid, Guid> production_batch = new Dictionary<Guid, Guid>();
 
     protected override async Task OnInitializedAsync()
@@ -111,7 +111,8 @@ else
             //data.Heartbeat = heartbeat_data.Last().Heartbeat;
 
             //QUERY INFLUX PER TUTTE LE ATTIVITA'
-            //activity_data = await _dataAccess.ActivitiesQuery(data);
+            activity_data = await _dataAccess.ActivitiesQuery(data);
+            var a = 0;
         }
     }
     private void ShowBtnPress(Guid id)
