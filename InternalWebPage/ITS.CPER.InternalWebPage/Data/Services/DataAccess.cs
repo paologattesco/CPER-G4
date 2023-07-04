@@ -55,7 +55,7 @@ public class DataAccess : IDataAccess
         }
         return Task.FromResult(ListOfPb);
     }
-    public async Task<List<SmartWatch_Data>> GetSmartWatchesDataAsync()
+    public async Task<List<SmartWatch>> GetSmartWatchesDataAsync()
     {
         using var connection = new SqlConnection(_connectionDb);
         connection.Open();
@@ -71,12 +71,12 @@ public class DataAccess : IDataAccess
             JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
             ";
         sql.ExecuteNonQuery();
-        var result = new List<SmartWatch_Data>();
+        var result = new List<SmartWatch>();
         using (SqlDataReader reader = sql.ExecuteReader())
         {
             while (reader.Read())
             {
-                SmartWatch_Data smartWatch = new SmartWatch_Data
+                SmartWatch smartWatch = new SmartWatch
                 {
                     SmartWatch_Id = Guid.Parse((string)reader["FK_SmartWatch_Id"]),
                     Activity_Id = Guid.Parse((string)reader["Id"]),
@@ -92,9 +92,9 @@ public class DataAccess : IDataAccess
         return result;
     }
 
-    public async Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data)
+    public async Task<List<HeartBeat>> HeartbeatQuery(SmartWatch data)
     {
-        using var client = new InfluxDBClient("https://eu-central-1-1.aws.cloud2.influxdata.com", _influxToken);
+        using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
         var activity_id = Convert.ToString(data.Activity_Id);
         var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
         var flux = "from(bucket:\"SmartWatches\") " +
@@ -108,14 +108,14 @@ public class DataAccess : IDataAccess
         var queryApi = client.GetQueryApi();
         var fluxTables = await queryApi.QueryAsync(flux, _org);
 
-        var heartbeat = new List<Heartbeat_Data>();
+        var heartbeat = new List<HeartBeat>();
         fluxTables.ForEach(fluxTable =>
         {
             var fluxRecords = fluxTable.Records;
 
             fluxRecords.ForEach(fluxRecord =>
             {
-                Heartbeat_Data newHearbeat = new Heartbeat_Data()
+                HeartBeat newHearbeat = new HeartBeat()
                 {
                     Time = (Instant)fluxRecord.GetTime(),
                     Heartbeat = Convert.ToInt32(fluxRecord.GetValue())

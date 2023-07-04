@@ -13,29 +13,22 @@
 }
 else
 {
-
     <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm">
         <ColGroup>
-            <col style="width:300px;" />
-            <col style="width:100px;" />
+            <col style="width:200px;" />
+            <col style="width:200px;" />
             <col />
-            <col style="width:100px;" />
+            <col style="width:200px;" />
         </ColGroup>
         <HeaderContent>
             <MudTh></MudTh>
-            <MudTh>Initial Latitude</MudTh>
-            <MudTh>Initial Longitude</MudTh>
-            <MudTh>Final Latitude</MudTh>
-            <MudTh>Final Longitude</MudTh>
-            <MudTh>Heartbeat</MudTh>
+            <MudTh><strong>SmartWatch_Id</strong></MudTh>
+            <MudTh><strong>Production_Batch</strong></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.Activity_Id))">@((context.ShowDetails == true) ? "Hide" : "Show") Data Details</MudButton></MudTd>
-            <MudTd DataLabel="Initial_Latitude">@context.Initial_Latitude</MudTd>
-            <MudTd DataLabel="Initial_Longitude">@context.Initial_Longitude</MudTd>
-            <MudTd DataLabel="Final_Latitude">@context.Final_Latitude</MudTd>
-            <MudTd DataLabel="Final_Longitude">@context.Final_Longitude</MudTd>
-            <MudTd DataLabel="Heartbeat">120</MudTd>
+            <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.Activity_Id))">@((context.ShowDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
+            <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
+            <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
         </RowTemplate>
         <ChildRowContent>
             @if (context.ShowDetails)
@@ -45,7 +38,7 @@ else
                         <MudCard Elevation="0">
                             <MudCardHeader>
                                 <CardHeaderContent>
-                                    <MudText Typo="Typo.body1">Data Details for <strong>@context.Activity_Id</strong></MudText>
+                                    <MudText Typo="Typo.body1">Data Details for Activity <strong>@context.Activity_Id</strong></MudText>
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="pa-0">
@@ -56,12 +49,14 @@ else
                                         <col style="width:200px;" />
                                     </ColGroup>
                                     <HeaderContent>
-                                        <MudTh>Activity_Id</MudTh>
-                                        <MudTh>Production_Batch</MudTh>
+                                        <MudTh><strong>Latitude</strong></MudTh>
+                                        <MudTh><strong>Longitude</strong></MudTh>
+                                        <MudTh><strong>Heartbeat</strong></MudTh>
                                     </HeaderContent>
                                     <RowTemplate>
-                                        <MudTd DataLabel="Activity_Id">@SmartWatchContext.SmartWatch_Id</MudTd>
-                                        <MudTd DataLabel="ProdBatch">@production_batch[SmartWatchContext.Activity_Id]</MudTd>
+                                        <MudTd DataLabel="Final_Latitude">@context.Final_Latitude</MudTd>
+                                        <MudTd DataLabel="Final_Longitude">@context.Final_Longitude</MudTd>
+                                        <MudTd DataLabel="Heartbeat">@context.Heartbeat</MudTd>
                                     </RowTemplate>
                                 </MudTable>
                             </MudCardContent>
@@ -75,9 +70,8 @@ else
 
 
 @code {
-    private bool _loading=false;
-    private List<SmartWatch_Data> smartwatch_data = new List<SmartWatch_Data>();
-    private List<Heartbeat_Data> heartbeat_data = new List<Heartbeat_Data>();
+    private List<SmartWatch> smartwatch_data = new List<SmartWatch>();
+    private List<HeartBeat> heartbeat_data = new List<HeartBeat>();
     private Dictionary<Guid, Guid> production_batch = new Dictionary<Guid, Guid>();
 
     protected override async Task OnInitializedAsync()
@@ -87,13 +81,13 @@ else
         foreach (var data in smartwatch_data)
         {
             heartbeat_data = await _dataAccess.HeartbeatQuery(data);
-            ShowBtnPress(data.Activity_Id);
+            data.Heartbeat = heartbeat_data.Last().Heartbeat;
         }
     }
 
     private void ShowBtnPress(Guid id)
     {
-        SmartWatch_Data tmpData = smartwatch_data.First(f => f.Activity_Id == id);
+        SmartWatch tmpData = smartwatch_data.First(f => f.Activity_Id == id);
         tmpData.ShowDetails = !tmpData.ShowDetails;
     }
 }

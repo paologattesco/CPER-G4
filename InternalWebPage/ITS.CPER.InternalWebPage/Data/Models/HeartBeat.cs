@@ -2,7 +2,7 @@
 
 namespace ITS.CPER.InternalWebPage.Data.Models
 {
-    public class Heartbeat_Data
+    public class HeartBeat
     {
         public Instant Time { get; set; }
         public int Heartbeat { get; set; }
