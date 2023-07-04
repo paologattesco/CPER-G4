@@ -2,6 +2,7 @@
 using ITS.CPER.InternalWebPage.Data.Models;
 using InfluxDB.Client;
 using NodaTime;
+using Npgsql;
 
 namespace ITS.CPER.InternalWebPage.Data.Services;
 
@@ -11,14 +12,49 @@ public class DataAccess : IDataAccess
     private readonly string _influxToken;
     private readonly string _bucket;
     private readonly string _org;
+    private readonly string _host;
+    private readonly string _user;
+    private readonly string _dbname;
+    private readonly string _password;
+    private readonly string _port;
     public DataAccess(IConfiguration configuration)
     {
         _connectionDb = configuration.GetConnectionString("DbConnection");
         _influxToken = configuration.GetConnectionString("InfluxToken");
         _bucket = configuration.GetConnectionString("Bucket");
         _org = configuration.GetConnectionString("Org");
+        _host = configuration.GetConnectionString("Host");
+        _user = configuration.GetConnectionString("User");
+        _dbname = configuration.GetConnectionString("Dbname");
+        _password = configuration.GetConnectionString("Password");
+        _port = configuration.GetConnectionString("Port");
     }
 
+    public Task<Dictionary<Guid, Guid>> GetProductionBatch()
+    {
+        string connString = $"User ID={_user};Password={_password};Host={_host};Port={_port};Database={_dbname};";
+        Guid smartwatch_id;
+        Guid batch_id;
+        Dictionary<Guid,Guid> ListOfPb = new Dictionary<Guid,Guid>();
+        using (var conn = new NpgsqlConnection(connString))
+        {
+            conn.Open();
+            var controlDate = new NpgsqlCommand("SELECT smartwatch_id, batch_id FROM ProductionBatch", conn);
+            controlDate.ExecuteNonQuery();
+
+            using (NpgsqlDataReader reader = controlDate.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    smartwatch_id = Guid.Parse((string)reader["smartwatch_id"]);
+                    batch_id = Guid.Parse((string)reader["batch_id"]);
+                    ListOfPb.Add(smartwatch_id, batch_id);
+                }
+                reader.Close();
+            }
+        }
+        return Task.FromResult(ListOfPb);
+    }
     public async Task<List<SmartWatch_Data>> GetSmartWatchesDataAsync()
     {
         using var connection = new SqlConnection(_connectionDb);
