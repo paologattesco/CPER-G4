@@ -168,7 +168,7 @@ public class DataAccess : IDataAccess
     }
 
     //QUERY INFLUX PER TUTTE LE ATTIVITA'
-    //LONGITUDE è MESSO SUL BUCKET COME LONIGITUDE
+    //LONGITUDE è MESSO SUL BUCKET COME LONIGITUDE...è GIA' STATO CAMBIATA LA INSERT SUL SIMULATORE
     //public async Task<List<Activity>> ActivitiesQuery(SmartWatch data)
     //{
     //    using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
