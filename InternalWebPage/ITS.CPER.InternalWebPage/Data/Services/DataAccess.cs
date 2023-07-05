@@ -61,14 +61,13 @@ public class DataAccess : IDataAccess
         connection.Open();
         SqlCommand sql = connection.CreateCommand();
         sql.CommandText = @"
-            SELECT a.FK_SmartWatch_Id
-            ,a.Id
-            ,a.Initial_Latitude
-            ,a.Initial_Longitude
-            ,a.Final_Latitude
-            ,a.Final_Longitude
-            FROM [dbo].[Activities] AS a
-            JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
+            SELECT FK_SmartWatch_Id
+            ,Id
+            ,Initial_Latitude
+            ,Initial_Longitude
+            ,Final_Latitude
+            ,Final_Longitude
+            FROM [dbo].[Activities]
             ";
         sql.ExecuteNonQuery();
         var result = new List<SmartWatch>();

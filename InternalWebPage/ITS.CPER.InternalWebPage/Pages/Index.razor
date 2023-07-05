@@ -13,88 +13,98 @@
 }
 else
 {
+  
+    List<Guid> SmartWatchesList = new List<Guid>();
     //DA METTERE UN SOLO SMARTWATCH
     <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm">
+
         <ColGroup>
             <col style="width:200px;" />
             <col style="width:200px;" />
             <col />
             <col style="width:200px;" />
         </ColGroup>
+        
         <HeaderContent>
             <MudTh></MudTh>
             <MudTh><strong>SmartWatch_Id</strong></MudTh>
             <MudTh><strong>Production_Batch</strong></MudTh>
         </HeaderContent>
         <RowTemplate>
+           
             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.SmartWatch_Id))">@((context.ShowSmartWatchDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
             <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
-
+          
 @*            <MudTd DataLabel="ProdBatch">prod a caso</MudTd>
 *@
             @*SCOMMENTARE SOTTO SOLO SE SIAMO IN ITS*@
             <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
         </RowTemplate>
         <ChildRowContent>
-            @if (context.ShowSmartWatchDetails)
-            {
-                <MudTr>
-                    <td colspan="4">
-                        <MudCard Elevation="0">
-                            <MudCardHeader>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.body1">Data details for SmartWatch <strong>@context.SmartWatch_Id</strong></MudText>
-                                </CardHeaderContent>
-                            </MudCardHeader>
-                            <MudCardContent Class="pa-0">
-                                <MudTable Items="@AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == context.SmartWatch_Id)).ToList()" Context="ActivityContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
-                                    <RowTemplate>
-                                        <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPressActivities(ActivityContext.Key))">@((ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(false)).FirstOrDefault()) ? "▼" : "▲") Details</MudButton></MudTd>
-                                        <MudTd><strong>Activity_Id</strong></MudTd>
+
+                @if (context.ShowSmartWatchDetails)
+                {
+                    <MudTr>
+                        <td colspan="4">
+                            <MudCard Elevation="0">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.body1">Data details for SmartWatch <strong>@context.SmartWatch_Id</strong></MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent Class="pa-0">
+                                    <MudTable Items="@AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == context.SmartWatch_Id)).ToList()" Context="ActivityContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                        <RowTemplate>
+                                            <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPressActivities(ActivityContext.Key))">@(
+                                        (ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(false)).FirstOrDefault()) ? "▼" : "▲"
+                                        ) Details</MudButton></MudTd>
+                                    <MudTd><strong>Activity_Id</strong></MudTd>
                                     <MudTd DataLabel="Activity_Id">@ActivityContext.Key</MudTd>
-                                    </RowTemplate>
-                                    <ChildRowContent>
+                                </RowTemplate>
+                                <ChildRowContent>
                                     @if (ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(true)).FirstOrDefault())
                                     {
-                                    <MudTr>
-                                        <td colspan="4">
-                                            <MudCard Elevation="0">
-                                                <MudCardHeader>
-                                                    <CardHeaderContent>
-                                                            <MudText Typo="Typo.body1">Data details for Activity <strong>@ActivityContext.Key</strong></MudText>
-                                                    </CardHeaderContent>
-                                                </MudCardHeader>
-                                                <MudCardContent Class="pa-0">
-                                                        <MudTable Items="@AllActivities[ActivityContext.Key]" Context="DetailsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
-                                                        <HeaderContent>
-                                                            <MudTh><strong>Latitude</strong></MudTh>
-                                                            <MudTh><strong>Longitude</strong></MudTh>
-                                                            <MudTh><strong>Heartbeat</strong></MudTh>
-                                                        </HeaderContent>
-                                                        <RowTemplate>
-                                                                <MudTd DataLabel="Final_Latitude">@DetailsContext.Final_Latitude</MudTd>
-                                                                <MudTd DataLabel="Final_Longitude">@DetailsContext.Final_Longitude</MudTd>
-                                                                <MudTd DataLabel="Heartbeat">@DetailsContext.Heartbeat</MudTd>
-                                                        </RowTemplate>
-                                                    </MudTable>
-                                                </MudCardContent>
-                                            </MudCard>
-                                        </td>
-                                    </MudTr>
-                                    }
-                                </ChildRowContent>
-                                </MudTable>
-                            </MudCardContent>
-                        </MudCard>
-                    </td>
-                </MudTr>
+                                        <MudTr>
+                                            <td colspan="4">
+                                                <MudCard Elevation="0">
+                                                    <MudCardHeader>
+                                                        <CardHeaderContent>
+                                                                <MudText Typo="Typo.body1">Data details for Activity <strong>@ActivityContext.Key</strong></MudText>
+                                                        </CardHeaderContent>
+                                                    </MudCardHeader>
+                                                    <MudCardContent Class="pa-0">
+                                                            <MudTable Items="@AllActivities[ActivityContext.Key]" Context="DetailsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                                            <HeaderContent>
+                                                                <MudTh><strong>Latitude</strong></MudTh>
+                                                                <MudTh><strong>Longitude</strong></MudTh>
+                                                                <MudTh><strong>Heartbeat</strong></MudTh>
+                                                            </HeaderContent>
+                                                            <RowTemplate>
+                                                                    <MudTd DataLabel="Final_Latitude">@DetailsContext.Final_Latitude</MudTd>
+                                                                    <MudTd DataLabel="Final_Longitude">@DetailsContext.Final_Longitude</MudTd>
+                                                                    <MudTd DataLabel="Heartbeat">@DetailsContext.Heartbeat</MudTd>
+                                                            </RowTemplate>
+                                                        </MudTable>
+                                                    </MudCardContent>
+                                                </MudCard>
+                                            </td>
+                                        </MudTr>
+                                        }
+                                    </ChildRowContent>
+                                    </MudTable>
+                                </MudCardContent>
+                            </MudCard>
+                        </td>
+                    </MudTr>
                 }
+            
             </ChildRowContent>
         </MudTable>
 }
 
 
 @code {
+    private List<SmartWatch> ListOfSmartWatchesActivities = new List<SmartWatch>();
     private List<SmartWatch> smartwatch_data = new List<SmartWatch>();
     private List<Activity> activity_data = new List<Activity>();
     private List<HeartBeat> heartbeat_data = new List<HeartBeat>();
@@ -103,14 +113,17 @@ else
     private Dictionary<Guid, List<Activity>> AllActivities = new Dictionary<Guid, List<Activity>>();
     protected override async Task OnInitializedAsync()
     {
-        smartwatch_data = await _dataAccess.GetSmartWatchesDataAsync();
+        ListOfSmartWatchesActivities = await _dataAccess.GetSmartWatchesDataAsync();
         production_batch = await _dataAccess.GetProductionBatch();
-        foreach (var data in smartwatch_data)
+        foreach (var data in ListOfSmartWatchesActivities)
         {
             activity_data = await _dataAccess.ActivitiesQuery(data);
             AllActivities.Add(data.Activity_Id, activity_data);
         }
-        var a = 0;
+        smartwatch_data = ListOfSmartWatchesActivities
+        .GroupBy(obj => obj.SmartWatch_Id)
+        .Select(group => group.First())
+        .ToList();
     }
     private void ShowBtnPress(Guid id)
     {
