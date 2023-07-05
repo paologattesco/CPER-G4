@@ -189,6 +189,8 @@ public class DataAccess : IDataAccess
         {
             Activity newActivity = new Activity()
             {
+                SmartWatch_Id = data.SmartWatch_Id,
+                Activity_Id = data.Activity_Id,
                 Final_Latitude = latitude[i],
                 Final_Longitude = longitude[i],
                 Heartbeat = heartbeat[i]

@@ -47,7 +47,7 @@ else
                                 </CardHeaderContent>
                             </MudCardHeader>
                             <MudCardContent Class="pa-0">
-                                <MudTable Items="@AllActivities" Context="ActivityContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                <MudTable Items="@AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == context.SmartWatch_Id)).ToList()" Context="ActivityContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
                                     <RowTemplate>
                                         <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPressActivities(ActivityContext.Key))">@((ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(false)).FirstOrDefault()) ? "▼" : "▲") Details</MudButton></MudTd>
                                         <MudTd><strong>Activity_Id</strong></MudTd>
@@ -65,7 +65,7 @@ else
                                                     </CardHeaderContent>
                                                 </MudCardHeader>
                                                 <MudCardContent Class="pa-0">
-                                                        <MudTable Items="@AllActivities.Where(x => x.Key.Equals(ActivityContext.Key)).SelectMany(x => x.Value).ToList()" Context="DetailsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                                        <MudTable Items="@AllActivities[ActivityContext.Key]" Context="DetailsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
                                                         <HeaderContent>
                                                             <MudTh><strong>Latitude</strong></MudTh>
                                                             <MudTh><strong>Longitude</strong></MudTh>
