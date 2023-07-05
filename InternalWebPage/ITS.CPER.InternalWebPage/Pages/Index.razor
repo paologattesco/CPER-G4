@@ -21,7 +21,6 @@ else
         <ColGroup>
             <col style="width:200px;" />
             <col style="width:200px;" />
-            <col />
             <col style="width:200px;" />
         </ColGroup>
         
@@ -29,7 +28,9 @@ else
             <MudTh></MudTh>
             <MudTh><strong>SmartWatch_Id</strong></MudTh>
             <MudTh><strong>Production_Batch</strong></MudTh>
+            <MudTh><strong>Status</strong></MudTh>
         </HeaderContent>
+        
         <RowTemplate>
            
             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.SmartWatch_Id))">@((context.ShowSmartWatchDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
@@ -39,6 +40,14 @@ else
 *@
             @*SCOMMENTARE SOTTO SOLO SE SIAMO IN ITS*@
             <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
+            @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
+            {
+                <MudTd Style="color: firebrick">🔴 Anomaly</MudTd>
+            }
+            else
+            {
+                <MudTd Style="color: green">🟢 Ok</MudTd>
+            }
         </RowTemplate>
         <ChildRowContent>
 
@@ -60,6 +69,14 @@ else
                                         ) Details</MudButton></MudTd>
                                     <MudTd><strong>Activity_Id</strong></MudTd>
                                     <MudTd DataLabel="Activity_Id">@ActivityContext.Key</MudTd>
+                                    @*@if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
+                                    {
+                                        <MudTd Style="color: firebrick">🔴 Anomaly</MudTd>
+                                    }
+                                    else
+                                    {
+                                        <MudTd Style="color: green">🟢 Ok</MudTd>
+                                    }*@
                                 </RowTemplate>
                                 <ChildRowContent>
                                     @if (ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(true)).FirstOrDefault())
@@ -80,9 +97,32 @@ else
                                                                 <MudTh><strong>Heartbeat</strong></MudTh>
                                                             </HeaderContent>
                                                             <RowTemplate>
-                                                                    <MudTd DataLabel="Final_Latitude">@DetailsContext.Final_Latitude</MudTd>
-                                                                    <MudTd DataLabel="Final_Longitude">@DetailsContext.Final_Longitude</MudTd>
-                                                                    <MudTd DataLabel="Heartbeat">@DetailsContext.Heartbeat</MudTd>
+                                                                @if (DetailsContext.Final_Latitude > 90 || DetailsContext.Final_Latitude < -90)
+                                                            {
+                                                                <MudTd DataLabel="Final_Latitude" Style="color: firebrick">@DetailsContext.Final_Latitude</MudTd>
+                                                            }
+                                                            else
+                                                            {
+                                                                <MudTd DataLabel="Final_Latitude">@DetailsContext.Final_Latitude</MudTd>
+                                                            }
+
+                                                            @if (DetailsContext.Final_Longitude > 180 || DetailsContext.Final_Longitude < -180)
+                                                            {
+                                                                <MudTd DataLabel="Final_Longitude" Style="color: firebrick">@DetailsContext.Final_Longitude</MudTd>
+                                                            }
+                                                            else
+                                                            {
+                                                                <MudTd DataLabel="Final_Longitude">@DetailsContext.Final_Longitude</MudTd>
+                                                            }
+
+                                                            @if (DetailsContext.Heartbeat > 200 || DetailsContext.Heartbeat < 30)
+                                                            {
+                                                                <MudTd DataLabel="Heartbeat" Style="color: firebrick">@DetailsContext.Heartbeat</MudTd>
+                                                            }
+                                                            else
+                                                            {
+                                                                <MudTd DataLabel="Heartbeat">@DetailsContext.Heartbeat</MudTd>
+                                                            }
                                                             </RowTemplate>
                                                         </MudTable>
                                                     </MudCardContent>
