@@ -36,11 +36,11 @@ else
             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.SmartWatch_Id))">@((context.ShowSmartWatchDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
             <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
           
-@*            <MudTd DataLabel="ProdBatch">prod a caso</MudTd>
-*@
+            <MudTd DataLabel="ProdBatch">prod a caso</MudTd>
+
             @*SCOMMENTARE SOTTO SOLO SE SIAMO IN ITS*@
-            <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
-            @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
+@*            <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
+*@            @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
             {
                 <MudTd Style="color: firebrick">🔴 Anomaly</MudTd>
             }
@@ -154,16 +154,33 @@ else
     protected override async Task OnInitializedAsync()
     {
         ListOfSmartWatchesActivities = await _dataAccess.GetSmartWatchesDataAsync();
-        production_batch = await _dataAccess.GetProductionBatch();
+        //production_batch = await _dataAccess.GetProductionBatch();
         foreach (var data in ListOfSmartWatchesActivities)
         {
             activity_data = await _dataAccess.ActivitiesQuery(data);
             AllActivities.Add(data.Activity_Id, activity_data);
+            var HeartAnomaly = activity_data.Where(x => x.Heartbeat < 30 || x.Heartbeat > 200).ToList();
+            var heartOk = activity_data[0].Heartbeat;
+            if(HeartAnomaly.Count != 0)
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Heartbeat = Convert.ToInt32(HeartAnomaly[0]);
+                }
+            }
+            else
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Heartbeat = heartOk;
+                }
+            }
         }
         smartwatch_data = ListOfSmartWatchesActivities
         .GroupBy(obj => obj.SmartWatch_Id)
         .Select(group => group.First())
         .ToList();
+        var a = 0;
     }
     private void ShowBtnPress(Guid id)
     {
