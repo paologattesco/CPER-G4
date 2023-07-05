@@ -16,37 +16,38 @@ else
   
     List<Guid> SmartWatchesList = new List<Guid>();
     //DA METTERE UN SOLO SMARTWATCH
-    <MudTable Items="@smartwatch_data" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@smartwatch_data" Style="border-radius: 20px;" Hover="true" Breakpoint="Breakpoint.Sm">
 
         <ColGroup>
             <col style="width:200px;" />
-            <col style="width:200px;" />
-            <col style="width:200px;" />
+            <col style="width:400px;" />
+            <col style="width:400px;" />
+            <col style="width:255px;" />
         </ColGroup>
         
         <HeaderContent>
             <MudTh></MudTh>
-            <MudTh><strong>SmartWatch_Id</strong></MudTh>
-            <MudTh><strong>Production_Batch</strong></MudTh>
-            <MudTh><strong>Status</strong></MudTh>
+            <MudTh Style="text-align:center;"><strong>SmartWatch_Id</strong></MudTh>
+            <MudTh Style="text-align:center;"><strong>Production_Batch</strong></MudTh>
+            <MudTh Style="text-align:center;"><strong>Status</strong></MudTh>
         </HeaderContent>
         
         <RowTemplate>
-           
+
             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.SmartWatch_Id))">@((context.ShowSmartWatchDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
-            <MudTd DataLabel="SmartWatch_Id">@context.SmartWatch_Id</MudTd>
-          
-            <MudTd DataLabel="ProdBatch">prod a caso</MudTd>
+            <MudTd DataLabel="SmartWatch_Id" Style="text-align:center;">@context.SmartWatch_Id</MudTd>
+
+            <MudTd DataLabel="ProdBatch" Style="text-align:center;">prod a caso</MudTd>
 
             @*SCOMMENTARE SOTTO SOLO SE SIAMO IN ITS*@
 @*            <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
 *@            @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
             {
-                <MudTd Style="color: firebrick">🔴 Anomaly</MudTd>
+                <MudTd Style="color: firebrick; text-align:center;">🔴 Anomaly</MudTd>
             }
             else
             {
-                <MudTd Style="color: green">🟢 Ok</MudTd>
+                <MudTd Style="color: green; text-align:center;">🟢 Ok</MudTd>
             }
         </RowTemplate>
         <ChildRowContent>
@@ -63,20 +64,34 @@ else
                                 </MudCardHeader>
                                 <MudCardContent Class="pa-0">
                                     <MudTable Items="@AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == context.SmartWatch_Id)).ToList()" Context="ActivityContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                    <ColGroup>
+                                        <col style="width:200px;" />
+                                        <col style="width:400px;" />
+                                        <col style="width:400px;" />
+                                        <col style="width:255px;" />
+                                    </ColGroup>
+
+                                    <HeaderContent>
+                                        <MudTh></MudTh>
+                                        <MudTh Style="text-align:center;"><strong>Activity_Id</strong></MudTh>
+                                        <MudTh></MudTh>
+                                        <MudTh></MudTh>
+                                    </HeaderContent>
                                         <RowTemplate>
                                             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPressActivities(ActivityContext.Key))">@(
                                         (ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(false)).FirstOrDefault()) ? "▼" : "▲"
                                         ) Details</MudButton></MudTd>
-                                    <MudTd><strong>Activity_Id</strong></MudTd>
-                                    <MudTd DataLabel="Activity_Id">@ActivityContext.Key</MudTd>
-                                    @*@if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
+
+                                    <MudTd DataLabel="Activity_Id" Style="text-align:center;">@ActivityContext.Key</MudTd>
+                                    <MudTd></MudTd>
+                                    @if (ActivityContext.Value.Any(a => a.Final_Latitude > 90) || ActivityContext.Value.Any(a => a.Final_Latitude < -90) || ActivityContext.Value.Any(a => a.Final_Longitude > 180) || ActivityContext.Value.Any(a => a.Final_Longitude < -180) || ActivityContext.Value.Any(a => a.Heartbeat > 200) || ActivityContext.Value.Any(a => a.Heartbeat < 30))
                                     {
-                                        <MudTd Style="color: firebrick">🔴 Anomaly</MudTd>
+                                        <MudTd Style="color: firebrick; text-align:center;">🔴 Anomaly</MudTd>
                                     }
                                     else
                                     {
-                                        <MudTd Style="color: green">🟢 Ok</MudTd>
-                                    }*@
+                                        <MudTd Style="color: green; text-align:center;">🟢 Ok</MudTd>
+                                    }
                                 </RowTemplate>
                                 <ChildRowContent>
                                     @if (ActivityContext.Value.Select(x => x.ShowActivityDetails.Equals(true)).FirstOrDefault())
@@ -159,28 +174,35 @@ else
         {
             activity_data = await _dataAccess.ActivitiesQuery(data);
             AllActivities.Add(data.Activity_Id, activity_data);
+
+            //var a = AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == data.SmartWatch_Id)).ToList();
+            //var c = a.ForEach(x => x.Value.Any(a => a.Final_Latitude < 90));
             var HeartAnomaly = activity_data.Where(x => x.Heartbeat < 30 || x.Heartbeat > 200).ToList();
             var heartOk = activity_data[0].Heartbeat;
+
             if(HeartAnomaly.Count != 0)
             {
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
-                    item.Heartbeat = Convert.ToInt32(HeartAnomaly[0]);
+                    item.Heartbeat = Convert.ToInt32(HeartAnomaly[0].Heartbeat);
                 }
             }
             else
             {
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
-                    item.Heartbeat = heartOk;
+                    item.Heartbeat = Convert.ToInt32(heartOk);
                 }
             }
         }
+        
+        
         smartwatch_data = ListOfSmartWatchesActivities
         .GroupBy(obj => obj.SmartWatch_Id)
         .Select(group => group.First())
         .ToList();
-        var a = 0;
+        //var a = AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == ListOfSmartWatchesActivities.SmartWatch_Id)).ToList();
+        //var c = 0;
     }
     private void ShowBtnPress(Guid id)
     {
