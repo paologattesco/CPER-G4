@@ -173,92 +173,58 @@ public class DataAccess : IDataAccess
     public async Task<List<Activity>> ActivitiesQuery(SmartWatch data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
-        var activity_id = Convert.ToString(data.Activity_Id);
-        var smartwatch_id = Convert.ToString(data.SmartWatch_Id);
-        var HeartBeatQuery = "from(bucket:\"SmartWatches\") " +
-            "|> range(start: 0) \r\n" +
-            "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
-            $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
-            $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
-            "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\")\r\n  " +
-            "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
+        var query = "from(bucket:\"SmartWatches\") " +
+                    "|> range(start: 0) \r\n" +
+                    "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
+                    $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{data.Activity_Id}\")\r\n  " +
+                    $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{data.SmartWatch_Id}\")\r\n  " +
+                    "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\" or r[\"_field\"] == \"Lonigitude\" or r[\"_field\"] == \"Latitude\")\r\n  " +
+                    "|> keep(columns: [\"_time\", \"_field\", \"_value\"])\r\n  ";
 
         var queryApi = client.GetQueryApi();
-        var fluxTables = await queryApi.QueryAsync(HeartBeatQuery, _org);
+        var fluxTables = await queryApi.QueryAsync(query, _org);
 
-        var Heartbeat = new List<int>();
+        var activities = new List<Activity>();
+        var activityDict = new Dictionary<Guid, Activity>();
+
         fluxTables.ForEach(fluxTable =>
         {
             var fluxRecords = fluxTable.Records;
 
             fluxRecords.ForEach(fluxRecord =>
             {
+                var time = (Instant)fluxRecord.GetTime();
+                var field = (string)fluxRecord.GetValueByKey("_field");
+                var value = fluxRecord.GetValue();
 
-                Heartbeat.Add(Convert.ToInt32(fluxRecord.GetValue()));
+                if (!activityDict.TryGetValue(data.Activity_Id, out var activity))
+                {
+                    activity = new Activity
+                    {
+                        Activity_Id = data.Activity_Id,
+                        Final_Latitude = 0, // Set initial values
+                        Final_Longitude = 0,
+                        Heartbeat = 0
+                    };
+                    activityDict[data.Activity_Id] = activity;
+                    activities.Add(activity);
+                }
 
+                if (field == "Heartbeat")
+                {
+                    activity.Heartbeat = Convert.ToInt32(value);
+                }
+                else if (field == "Lonigitude")
+                {
+                    activity.Final_Longitude = Convert.ToDouble(value);
+                }
+                else if (field == "Latitude")
+                {
+                    activity.Final_Latitude = Convert.ToDouble(value);
+                }
             });
         });
 
-        var FinalLongitude = "from(bucket:\"SmartWatches\") " +
-           "|> range(start: 0) \r\n" +
-           "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
-           $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
-           $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
-           "|> filter(fn: (r) => r[\"_field\"] == \"Lonigitude\")\r\n  " +
-           "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
-
-        queryApi = client.GetQueryApi();
-        fluxTables = await queryApi.QueryAsync(FinalLongitude, _org);
-
-        var Longitude = new List<double>();
-        fluxTables.ForEach(fluxTable =>
-        {
-            var fluxRecords = fluxTable.Records;
-
-            fluxRecords.ForEach(fluxRecord =>
-            {
-
-                Longitude.Add(Convert.ToInt32(fluxRecord.GetValue()));
-
-            });
-        });
-
-        var FinalLatitude = "from(bucket:\"SmartWatches\") " +
-          "|> range(start: 0) \r\n" +
-          "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
-          $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{activity_id}\")\r\n  " +
-          $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{smartwatch_id}\")\r\n  " +
-          "|> filter(fn: (r) => r[\"_field\"] == \"Latitude\")\r\n  " +
-          "|> keep(columns: [\"_time\", \"_value\"])\r\n  ";
-
-        queryApi = client.GetQueryApi();
-        fluxTables = await queryApi.QueryAsync(FinalLatitude, _org);
-
-        var Latitude = new List<double>();
-        fluxTables.ForEach(fluxTable =>
-        {
-            var fluxRecords = fluxTable.Records;
-
-            fluxRecords.ForEach(fluxRecord =>
-            {
-
-                Latitude.Add(Convert.ToInt32(fluxRecord.GetValue()));
-
-            });
-        });
-        List<Activity> activity = new List<Activity>();
-        for (int i = 0; i < Heartbeat.Count(); i++)
-        {
-            Activity NewActivity = new Activity()
-            {
-                Activity_Id = data.Activity_Id,
-                Final_Latitude = Latitude[i],
-                Final_Longitude = Longitude[i],
-                Heartbeat = Heartbeat[i]
-            };
-            activity.Add(NewActivity);
-        }
-       
-        return activity;
+        return activities;
     }
 }
