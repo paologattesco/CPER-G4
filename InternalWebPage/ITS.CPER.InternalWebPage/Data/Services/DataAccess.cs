@@ -3,7 +3,6 @@ using ITS.CPER.InternalWebPage.Data.Models;
 using InfluxDB.Client;
 using NodaTime;
 using Npgsql;
-using InfluxDB.Client.Core.Flux.Domain;
 
 namespace ITS.CPER.InternalWebPage.Data.Services;
 
@@ -93,45 +92,6 @@ public class DataAccess : IDataAccess
         return result;
     }
 
-    public async Task<List<Activity>> GetActivitiesAsync(Guid id)
-    {
-        using var connection = new SqlConnection(_connectionDb);
-        connection.Open();
-        SqlCommand sql = connection.CreateCommand();
-        sql.CommandText = @"
-            SELECT a.FK_SmartWatch_Id
-            ,a.Id
-            ,a.Initial_Latitude
-            ,a.Initial_Longitude
-            ,a.Final_Latitude
-            ,a.Final_Longitude
-            FROM [dbo].[Activities] AS a
-            JOIN [dbo].[SmartWatches] AS s on (a.FK_SmartWatch_Id = s.Id)
-            WHERE a.FK_SmartWatch_Id = @id
-            ";
-        sql.Parameters.AddWithValue("@id", id);
-        sql.ExecuteNonQuery();
-        
-        var result = new List<Activity>();
-        using (SqlDataReader reader = sql.ExecuteReader())
-        {
-            while (reader.Read())
-            {
-                Activity activity = new Activity
-                {
-                    Activity_Id = Guid.Parse((string)reader["Id"]),
-                    Initial_Latitude = Convert.ToDouble(reader["Initial_Latitude"]),
-                    Initial_Longitude = Convert.ToDouble(reader["Initial_Longitude"]),
-                    Final_Latitude = Convert.ToDouble(reader["Final_Latitude"]),
-                    Final_Longitude = Convert.ToDouble(reader["Final_Longitude"])
-                };
-                result.Add(activity);
-            }
-            reader.Close();
-        }
-        return result;
-    }
-
     public async Task<List<HeartBeat>> HeartbeatQuery(SmartWatch data)
     {
         using var client = new InfluxDBClient("https://westeurope-1.azure.cloud2.influxdata.com/", _influxToken);
@@ -178,7 +138,7 @@ public class DataAccess : IDataAccess
                     "|> filter(fn: (r) => r[\"_measurement\"] == \"smartwatches\")\r\n  " +
                     $"|> filter(fn: (r) => r[\"Activity_Id\"] == \"{data.Activity_Id}\")\r\n  " +
                     $"|> filter(fn: (r) => r[\"SmartWatch_Id\"] == \"{data.SmartWatch_Id}\")\r\n  " +
-                    "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\" or r[\"_field\"] == \"Lonigitude\" or r[\"_field\"] == \"Latitude\")\r\n  " +
+                    "|> filter(fn: (r) => r[\"_field\"] == \"Heartbeat\" or r[\"_field\"] == \"Longitude\" or r[\"_field\"] == \"Latitude\")\r\n  " +
                     "|> keep(columns: [\"_time\", \"_field\", \"_value\"])\r\n  ";
 
         var queryApi = client.GetQueryApi();
@@ -186,6 +146,9 @@ public class DataAccess : IDataAccess
 
         var activities = new List<Activity>();
         var activityDict = new Dictionary<Guid, Activity>();
+        List<int> heartbeat = new List<int>();
+        List<double> latitude = new List<double>();
+        List<double> longitude = new List<double>();
 
         fluxTables.ForEach(fluxTable =>
         {
@@ -201,30 +164,37 @@ public class DataAccess : IDataAccess
                 {
                     activity = new Activity
                     {
-                        Activity_Id = data.Activity_Id,
                         Final_Latitude = 0, // Set initial values
                         Final_Longitude = 0,
                         Heartbeat = 0
                     };
                     activityDict[data.Activity_Id] = activity;
-                    activities.Add(activity);
                 }
 
                 if (field == "Heartbeat")
                 {
-                    activity.Heartbeat = Convert.ToInt32(value);
+                   heartbeat.Add(Convert.ToInt32(value));
                 }
-                else if (field == "Lonigitude")
+                else if (field == "Longitude")
                 {
-                    activity.Final_Longitude = Convert.ToDouble(value);
+                    longitude.Add(Convert.ToDouble(value));
                 }
                 else if (field == "Latitude")
                 {
-                    activity.Final_Latitude = Convert.ToDouble(value);
+                    latitude.Add(Convert.ToDouble(value));
                 }
             });
         });
-
+        for (int i = 0; i < heartbeat.Count; i++)
+        {
+            Activity newActivity = new Activity()
+            {
+                Final_Latitude = latitude[i],
+                Final_Longitude = longitude[i],
+                Heartbeat = heartbeat[i]
+            };
+            activities.Add(newActivity);
+        }
         return activities;
     }
 }
