@@ -16,7 +16,7 @@ public class SmartWatch
     public async Task ApiPost(SmartWatch details)
     {
         var client = new HttpClient();
-        var apiUrl = new Uri("http://localhost:7210/api/Function1");
+        var apiUrl = new Uri("https://its-cper-g4-senddataqueue.azurewebsites.net/api/Function1?code=-VjKK5tw1POHjoqqNmWGD-fwE1bag2K2Ylm4U4L10MnMAzFuUUyA1g==");
 
         var json = System.Text.Json.JsonSerializer.Serialize(details);
         var content = new StringContent(json, Encoding.UTF8, "application/json");

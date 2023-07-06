@@ -172,6 +172,7 @@ else
     private Activity tmp = new Activity();
     private Dictionary<Guid, Guid> production_batch = new Dictionary<Guid, Guid>();
     private Dictionary<Guid, List<Activity>> AllActivities = new Dictionary<Guid, List<Activity>>();
+    private List<SmartWatch> AnomalySmartWatch = new List<SmartWatch>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -214,6 +215,8 @@ else
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
                     item.Heartbeat = Convert.ToInt32(heartAnomaly[0].Heartbeat);
+                    AddAnomalyToSmartWatchList(item);
+
                 }
             }
             else
@@ -224,7 +227,7 @@ else
                 }
             }
 
-            var latitudeAnomaly = activity_data.Where(x => x.Final_Latitude < 90 || x.Final_Latitude > -90).ToList();
+            var latitudeAnomaly = activity_data.Where(x => x.Final_Latitude > 90 || x.Final_Latitude < -90).ToList();
             var latitudeOk = activity_data[0].Final_Latitude;
 
             if (latitudeAnomaly.Count != 0)
@@ -232,6 +235,7 @@ else
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
                     item.Final_Latitude = Convert.ToDouble(latitudeAnomaly[0].Final_Latitude);
+                    AddAnomalyToSmartWatchList(item);
                 }
             }
             else
@@ -242,7 +246,7 @@ else
                 }
             }
 
-            var longitudeAnomaly = activity_data.Where(x => x.Final_Longitude < 180 || x.Final_Longitude > -180).ToList();
+            var longitudeAnomaly = activity_data.Where(x => x.Final_Longitude > 180 || x.Final_Longitude < -180).ToList();
             var longitudeOk = activity_data[0].Final_Latitude;
 
             if (longitudeAnomaly.Count != 0)
@@ -250,6 +254,7 @@ else
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
                     item.Final_Longitude = Convert.ToDouble(longitudeAnomaly[0].Final_Longitude);
+                    AddAnomalyToSmartWatchList(item);
                 }
             }
             else
@@ -268,7 +273,24 @@ else
         .Select(group => group.First())
         .ToList();
 
-        var a=0;
+        foreach (var anomalyItem in AnomalySmartWatch)
+        {
+            var matchingItem = smartwatch_data.FirstOrDefault(x => x.SmartWatch_Id == anomalyItem.SmartWatch_Id);
+            if (matchingItem != null)
+            {
+                matchingItem.SmartWatch_Id = anomalyItem.SmartWatch_Id;
+                matchingItem.Activity_Id = anomalyItem.Activity_Id;
+                matchingItem.Final_Latitude = anomalyItem.Final_Latitude;
+                matchingItem.Final_Longitude = anomalyItem.Final_Longitude;
+                matchingItem.Heartbeat = anomalyItem.Heartbeat;
+            }
+            var index = smartwatch_data.FindIndex(x => x.SmartWatch_Id == anomalyItem.SmartWatch_Id);
+            if (index != -1)
+            {
+                smartwatch_data[index] = matchingItem;
+            }
+        }
+        var a = 0;
     }
     private void ShowBtnPress(Guid id)
     {
@@ -280,5 +302,18 @@ else
     {
         Activity tmpData = AllActivities[id].First();
         tmpData.ShowActivityDetails = !tmpData.ShowActivityDetails;
+    }
+
+    private void AddAnomalyToSmartWatchList(SmartWatch item)
+    {
+        SmartWatch Anomaly = new SmartWatch()
+            {
+                SmartWatch_Id = item.SmartWatch_Id,
+                Activity_Id = item.Activity_Id,
+                Final_Latitude = item.Final_Latitude,
+                Final_Longitude = item.Final_Longitude,
+                Heartbeat = item.Heartbeat
+            };
+        AnomalySmartWatch.Add(Anomaly);
     }
 }
