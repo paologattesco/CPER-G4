@@ -9,6 +9,5 @@ public interface IDataAccess
     Task<List<SmartWatch_Data>> GetSmartWatchDataAsync(Guid id);
     Task<List<Heartbeat_Data>> HeartbeatQuery(SmartWatch_Data data);
     Guid GetUserId(string userName);
-    void InsertProductionBatch(Guid smartwatchId);
 
 }
