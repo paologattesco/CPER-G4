@@ -35,7 +35,7 @@ public class DataAccess : IDataAccess
         string connString = $"User ID={_user};Password={_password};Host={_host};Port={_port};Database={_dbname};";
         Guid smartwatch_id;
         Guid batch_id;
-        Dictionary<Guid,Guid> ListOfPb = new Dictionary<Guid,Guid>();
+        Dictionary<Guid, Guid> ListOfPb = new Dictionary<Guid, Guid>();
         using (var conn = new NpgsqlConnection(connString))
         {
             conn.Open();
@@ -172,7 +172,7 @@ public class DataAccess : IDataAccess
 
                 if (field == "Heartbeat")
                 {
-                   heartbeat.Add(Convert.ToInt32(value));
+                    heartbeat.Add(Convert.ToInt32(value));
                 }
                 else if (field == "Longitude")
                 {
@@ -198,4 +198,86 @@ public class DataAccess : IDataAccess
         }
         return activities;
     }
+    public async Task<List<Guid>> GetSmartWatchesId()
+    {
+        using var connection = new SqlConnection(_connectionDb);
+        connection.Open();
+        SqlCommand sql = connection.CreateCommand();
+        sql.CommandText = @"
+            SELECT Id
+            FROM [dbo].[SmartWatches]
+            ";
+        sql.ExecuteNonQuery();
+        var result = new List<Guid>();
+        using (SqlDataReader reader = sql.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                result.Add(Guid.Parse((string)reader["Id"]));
+            }
+            reader.Close();
+        }
+        return result;
+    }
+    public void InsertProductionBatch(List<Guid> smartwatches_id)
+    {
+        string connString = $"User ID={_user};Password={_password};Host={_host};Port={_port};Database={_dbname};";
+        var todayDate = DateTime.Now;
+        var tmp_date = "";
+        var tmp_batch_id = "";
+        DateTime date;
+        Guid batch_id;
+        for (int i = 0; i < smartwatches_id.Count; i++)
+        {
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                var controlDate = new NpgsqlCommand("SELECT date, batch_id FROM ProductionBatch WHERE date = (SELECT MAX(date) FROM ProductionBatch)", conn);
+                controlDate.ExecuteNonQuery();
+
+                using (NpgsqlDataReader reader = controlDate.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tmp_date = Convert.ToString(reader["date"]);
+                        tmp_batch_id = Convert.ToString(reader["batch_id"]);
+                    }
+                    reader.Close();
+                }
+
+                using (var command = new NpgsqlCommand("INSERT INTO ProductionBatch (batch_id, smartwatch_id, date) VALUES (@batch_id, @smartwatch_id, @date)", conn))
+                {
+                    if (tmp_date != "")
+                    {
+                        date = Convert.ToDateTime(tmp_date);
+                        batch_id = Guid.Parse(tmp_batch_id);
+                        if (todayDate.Year == date.Year && todayDate.Month == date.Month && todayDate.Day == date.Day)
+                        {
+                            command.Parameters.AddWithValue("@batch_id", batch_id);
+                            command.Parameters.AddWithValue("@smartwatch_id", smartwatches_id[i]);
+                            command.Parameters.AddWithValue("@date", DateTime.Now);
+                            command.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@batch_id", Guid.NewGuid());
+                            command.Parameters.AddWithValue("@smartwatch_id", smartwatches_id[i]);
+                            command.Parameters.AddWithValue("@date", DateTime.Now);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@batch_id", Guid.NewGuid());
+                        command.Parameters.AddWithValue("@smartwatch_id", smartwatches_id[i]);
+                        command.Parameters.AddWithValue("@date", DateTime.Now);
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                conn.Close();
+            }
+        }
+    }
 }
+

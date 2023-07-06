@@ -8,4 +8,6 @@ public interface IDataAccess
     Task<List<SmartWatch>> GetSmartWatchesDataAsync();
     Task<List<Activity>> ActivitiesQuery(SmartWatch data);
     Task<Dictionary<Guid, Guid>> GetProductionBatch();
+    void InsertProductionBatch(List<Guid> smartwatches_id);
+    Task<List<Guid>> GetSmartWatchesId();
 }
