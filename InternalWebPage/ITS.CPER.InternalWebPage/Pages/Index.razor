@@ -41,13 +41,10 @@ else
             <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
             @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
             {
-                Console.WriteLine(context.Final_Latitude < -90);
                 <MudTd Style="color: firebrick; text-align:center;">🔴 Anomaly</MudTd>
             }
             else
             {
-                Console.WriteLine(context.Final_Latitude < -90);
-
                 <MudTd Style="color: green; text-align:center;">🟢 Ok</MudTd>
             }
         </RowTemplate>
