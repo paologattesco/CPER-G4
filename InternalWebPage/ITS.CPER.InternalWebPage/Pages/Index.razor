@@ -37,16 +37,17 @@ else
             <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.SmartWatch_Id))">@((context.ShowSmartWatchDetails == false) ? "▼" : "▲") Details</MudButton></MudTd>
             <MudTd DataLabel="SmartWatch_Id" Style="text-align:center;">@context.SmartWatch_Id</MudTd>
 
-            @*            <MudTd DataLabel="ProdBatch" Style="text-align:center;">prod a caso</MudTd>
-        *@
             @*SCOMMENTARE SOTTO SOLO SE SIAMO IN ITS*@
             <MudTd DataLabel="ProdBatch">@production_batch[context.SmartWatch_Id]</MudTd>
             @if (context.Final_Latitude > 90 || context.Final_Latitude < -90 || context.Final_Longitude > 180 || context.Final_Longitude < -180 || context.Heartbeat > 200 || context.Heartbeat < 30)
             {
+                Console.WriteLine(context.Final_Latitude < -90);
                 <MudTd Style="color: firebrick; text-align:center;">🔴 Anomaly</MudTd>
             }
             else
             {
+                Console.WriteLine(context.Final_Latitude < -90);
+
                 <MudTd Style="color: green; text-align:center;">🟢 Ok</MudTd>
             }
         </RowTemplate>
@@ -171,6 +172,7 @@ else
     private Activity tmp = new Activity();
     private Dictionary<Guid, Guid> production_batch = new Dictionary<Guid, Guid>();
     private Dictionary<Guid, List<Activity>> AllActivities = new Dictionary<Guid, List<Activity>>();
+
     protected override async Task OnInitializedAsync()
     {
         ListOfSmartWatchId = await _dataAccess.GetSmartWatchesId();
@@ -204,16 +206,14 @@ else
             activity_data = await _dataAccess.ActivitiesQuery(data);
             AllActivities.Add(data.Activity_Id, activity_data);
 
-            //var a = AllActivities.Where(x => x.Value.Any(y => y.SmartWatch_Id == data.SmartWatch_Id)).ToList();
-            //var c = a.ForEach(x => x.Value.Any(a => a.Final_Latitude < 90));
-            var HeartAnomaly = activity_data.Where(x => x.Heartbeat < 30 || x.Heartbeat > 200).ToList();
+            var heartAnomaly = activity_data.Where(x => x.Heartbeat < 30 || x.Heartbeat > 200).ToList();
             var heartOk = activity_data[0].Heartbeat;
 
-            if (HeartAnomaly.Count != 0)
+            if (heartAnomaly.Count != 0)
             {
                 foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
                 {
-                    item.Heartbeat = Convert.ToInt32(HeartAnomaly[0].Heartbeat);
+                    item.Heartbeat = Convert.ToInt32(heartAnomaly[0].Heartbeat);
                 }
             }
             else
@@ -223,6 +223,43 @@ else
                     item.Heartbeat = Convert.ToInt32(heartOk);
                 }
             }
+
+            var latitudeAnomaly = activity_data.Where(x => x.Final_Latitude < 90 || x.Final_Latitude > -90).ToList();
+            var latitudeOk = activity_data[0].Final_Latitude;
+
+            if (latitudeAnomaly.Count != 0)
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Final_Latitude = Convert.ToDouble(latitudeAnomaly[0].Final_Latitude);
+                }
+            }
+            else
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Final_Latitude = Convert.ToDouble(latitudeOk);
+                }
+            }
+
+            var longitudeAnomaly = activity_data.Where(x => x.Final_Longitude < 180 || x.Final_Longitude > -180).ToList();
+            var longitudeOk = activity_data[0].Final_Latitude;
+
+            if (longitudeAnomaly.Count != 0)
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Final_Longitude = Convert.ToDouble(longitudeAnomaly[0].Final_Longitude);
+                }
+            }
+            else
+            {
+                foreach (var item in ListOfSmartWatchesActivities.Where(x => x.Activity_Id == data.Activity_Id))
+                {
+                    item.Final_Longitude = Convert.ToDouble(longitudeOk);
+                }
+            }
+
         }
 
 
@@ -231,7 +268,7 @@ else
         .Select(group => group.First())
         .ToList();
 
-
+        var a=0;
     }
     private void ShowBtnPress(Guid id)
     {
